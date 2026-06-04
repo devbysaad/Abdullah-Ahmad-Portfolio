@@ -1,35 +1,29 @@
-# Vercel deployment
+# Vercel — frontend ONLY
 
-Frontend only. Host the API on Railway, Render, or Fly (`server/`).
+Do **not** create a Vercel project for `server/`. Express + MongoDB will not run on Vercel serverless.
 
-## Choose one setup
+## Setup
 
-### A — Root Directory: `client` (recommended)
+1. One Vercel project for this repo.
+2. **Settings → General → Root Directory** → `client`
+3. Uses `client/vercel.json` — do **not** add custom Install/Build commands in the dashboard.
+4. If you see `npm install --prefix client`, remove it from Vercel settings (that breaks when Root Directory is `client` or `server`).
 
-1. Vercel → **Settings → General → Root Directory** → `client`
-2. Uses `client/vercel.json` (`npm install`, output `dist`)
-3. Do **not** override Install/Build in the dashboard
-
-### B — Root Directory: empty (repo root)
-
-1. Leave Root Directory blank
-2. Uses root `vercel.json` (`npm install --prefix client`, output `client/dist`)
-
-## Environment variables (Vercel dashboard)
+## Environment variables (Vercel)
 
 | Name | Example |
 |------|---------|
 | `VITE_API_URL` | `https://your-api.up.railway.app/api` |
 | `VITE_SITE_URL` | `https://your-site.vercel.app` |
 
-Never add `JWT_SECRET`, `ADMIN_PASSWORD`, or `MONGODB_URI` here.
+Never put `JWT_SECRET`, `ADMIN_PASSWORD`, or `MONGODB_URI` here.
 
-## API host
+## Backend
 
-On Railway/Render, set:
+Deploy `server/` on **Railway** or **Render** — see `server/DEPLOY.md`.
+
+On the API host:
 
 ```
 CLIENT_URL=https://your-site.vercel.app
 ```
-
-Redeploy Vercel after changing env vars.
