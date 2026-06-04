@@ -70,17 +70,19 @@ npm start      # listens on PORT (default 3000)
 
 **Do not deploy `server/` to Vercel** — use Railway/Render/Fly for the API.
 
-1. Connect the repo; root `vercel.json` builds `client/dist`.
-2. Host the API elsewhere (`npm start` in `server/`).
-3. **Local:** copy `client/.env.example` → `client/.env.local` and set `VITE_API_URL`.
-4. **Vercel → Settings → Environment Variables** (Production + Preview):
+1. Connect the repo.
+2. In Vercel → **Settings → General → Root Directory**, set **`client`** (required).  
+   Do not use `npm install --prefix client` in the dashboard — `vercel.json` already runs `npm install` from that folder.
+3. Host the API elsewhere (`npm start` in `server/`).
+4. **Local:** copy `client/.env.example` → `client/.env.local` and set `VITE_API_URL`.
+5. **Vercel → Settings → Environment Variables** (Production + Preview):
 
    | Variable | Example |
    |----------|---------|
    | `VITE_API_URL` | `https://your-api.up.railway.app/api` |
    | `VITE_SITE_URL` | `https://your-site.vercel.app` (optional) |
 
-5. On the **API host**, set `CLIENT_URL` to your Vercel URL(s).
+6. On the **API host**, set `CLIENT_URL` to your Vercel URL(s).
 
 Only `VITE_*` vars belong in the frontend — they are baked into the build. Never put `JWT_SECRET`, `ADMIN_PASSWORD`, or `MONGODB_URI` in the client env.
 
