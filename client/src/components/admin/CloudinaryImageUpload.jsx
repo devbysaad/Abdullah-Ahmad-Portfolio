@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { adminApi } from '../../lib/api';
+import { adminApi, getApiErrorMessage } from '../../lib/api';
 import { resolveMediaUrl } from '../../lib/mediaUrl';
 
 export default function CloudinaryImageUpload({
@@ -23,11 +23,7 @@ export default function CloudinaryImageUpload({
       onChange(url);
       toast.success('Uploaded to Cloudinary');
     } catch (err) {
-      const msg =
-        err.response?.data?.message ||
-        err.message ||
-        'Upload failed — check Cloudinary env on the server';
-      toast.error(msg);
+      toast.error(getApiErrorMessage(err, 'Upload failed — check Cloudinary env on the server'));
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = '';

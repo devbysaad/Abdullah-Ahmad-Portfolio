@@ -30,18 +30,33 @@ const { uploadRouter } = require('./modules/upload/upload.route');
 
 const app = express();
 
+if (env.isProduction) {
+  app.set('trust proxy', 1);
+}
+
 app.use(
   cors({
-    origin: env.clientUrl,
+    origin(origin, callback) {
+      if (!origin) return callback(null, true);
+      if (env.clientUrls.includes(origin)) return callback(null, true);
+      if (!env.isProduction) return callback(null, true);
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
   })
 );
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 app.use(loggerMiddleware);
 app.use('/api', generalLimiter);
 
-app.get(API_PATHS.HEALTH, (_req, res) => res.json({ ok: true }));
+app.get(API_PATHS.HEALTH, (_req, res) => {
+  res.json({
+    ok: true,
+    env: env.nodeEnv,
+    mongo: require('mongoose').connection.readyState === 1,
+  });
+});
 
 app.use(API_PATHS.PUBLIC.PROJECTS, publicProjectRouter);
 app.use(API_PATHS.PUBLIC.TESTIMONIALS, publicTestimonialRouter);
@@ -69,9 +84,13 @@ app.use(
 );
 app.use(`${API_PATHS.ADMIN_BASE}/upload`, adminLimiter, authMiddleware, uploadRouter);
 
-if (env.nodeEnv === 'production') {
+app.use('/api', (_req, res) => {
+  res.status(404).json({ success: false, message: 'API route not found' });
+});
+
+if (env.isProduction) {
   const clientDist = path.join(__dirname, '../../client/dist');
-  app.use(express.static(clientDist));
+  app.use(express.static(clientDist, { maxAge: '1d', index: false }));
   app.get(/^(?!\/api).*/, (_req, res) => {
     res.sendFile(path.join(clientDist, 'index.html'));
   });

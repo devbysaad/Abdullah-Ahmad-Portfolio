@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { submitContact } from '../../lib/api';
+import { getApiErrorMessage, submitContact } from '../../lib/api';
 import { fadeIn, viewportOnce } from '../../lib/motion';
 import BookingDetailsStep from './BookingDetailsStep';
 import BookingScheduler from './BookingScheduler';
@@ -46,8 +46,8 @@ export default function BookingFlow({ about }) {
       });
       toast.success('Appointment requested!');
       setStep('success');
-    } catch {
-      toast.error('Could not book appointment. Try again.');
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, 'Could not book appointment. Try again.'));
     } finally {
       setSubmitting(false);
     }

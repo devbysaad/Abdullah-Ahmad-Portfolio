@@ -1,6 +1,5 @@
 import SmoothScroll from '../components/SmoothScroll';
 import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
 import HeroHeadingSection from '../components/HeroHeadingSection';
 import HeroVideoSection from '../components/HeroVideoSection';
 import BrandsStrip from '../components/BrandsStrip';
@@ -16,30 +15,17 @@ import Footer from '../components/Footer';
 import { usePortfolioData } from '../hooks/usePortfolioData';
 
 export default function Home() {
-  const { projects, services, testimonials, about, experience, loading, error } =
+  const { projects, services, testimonials, about, experience, loading, apiOnline } =
     usePortfolioData();
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-[#f4f4f4]">
         <div
           className="w-10 h-10 rounded-full border-2 border-t-transparent animate-spin"
           style={{ borderColor: 'var(--color-accent)', borderTopColor: 'transparent' }}
+          aria-label="Loading portfolio"
         />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 section-pad text-center">
-        <p className="text-lg text-black/80">Could not load portfolio data.</p>
-        <p style={{ color: 'var(--color-muted)' }}>{error}</p>
-        <p className="text-sm" style={{ color: 'var(--color-muted)' }}>
-          Ensure the API server is running on port 5001 (not 5000 — macOS uses that for
-          AirPlay) and MongoDB is connected. Restart the server after updating{' '}
-          <code className="text-accent">server/.env</code>.
-        </p>
       </div>
     );
   }
@@ -47,6 +33,14 @@ export default function Home() {
   return (
     <SmoothScroll>
       <Navbar />
+      {!apiOnline && (
+        <div
+          className="fixed top-24 left-1/2 z-40 -translate-x-1/2 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-center text-xs text-amber-900 shadow-sm"
+          role="status"
+        >
+          Showing offline content — connect the API and MongoDB for live data.
+        </div>
+      )}
       <main>
         <div className="hero-region" data-name="hero-region">
           <HeroHeadingSection about={about} />

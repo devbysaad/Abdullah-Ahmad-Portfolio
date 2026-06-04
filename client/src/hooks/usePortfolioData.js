@@ -6,42 +6,64 @@ import {
   fetchServices,
   fetchTestimonials,
 } from '../lib/api';
+import { FALLBACK_EXPERIENCE } from '../content/aak.constants';
+import { FALLBACK_TESTIMONIALS } from '../components/testimonials/testimonials.constants';
+
+const EMPTY = {
+  projects: [],
+  services: [],
+  testimonials: FALLBACK_TESTIMONIALS,
+  about: null,
+  experience: FALLBACK_EXPERIENCE,
+};
+
+async function loadEndpoint(name, fetcher, fallback) {
+  try {
+    const data = await fetcher();
+    return { ok: true, data };
+  } catch (err) {
+    console.warn(`[portfolio] ${name} failed:`, err?.message || err);
+    return { ok: false, data: fallback };
+  }
+}
 
 export function usePortfolioData() {
-  const [data, setData] = useState({
-    projects: [],
-    services: [],
-    testimonials: [],
-    about: null,
-    experience: [],
-  });
+  const [data, setData] = useState(EMPTY);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [apiOnline, setApiOnline] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
+
     (async () => {
-      try {
-        const [projects, services, testimonials, about, experience] = await Promise.all([
-          fetchProjects(),
-          fetchServices(),
-          fetchTestimonials(),
-          fetchAbout(),
-          fetchExperience(),
-        ]);
-        if (!cancelled) {
-          setData({ projects, services, testimonials, about, experience });
-        }
-      } catch (err) {
-        if (!cancelled) setError(err.message || 'Failed to load portfolio');
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
+      const results = await Promise.all([
+        loadEndpoint('projects', fetchProjects, []),
+        loadEndpoint('services', fetchServices, []),
+        loadEndpoint('testimonials', fetchTestimonials, FALLBACK_TESTIMONIALS),
+        loadEndpoint('about', fetchAbout, null),
+        loadEndpoint('experience', fetchExperience, FALLBACK_EXPERIENCE),
+      ]);
+
+      if (cancelled) return;
+
+      const [projects, services, testimonials, about, experience] = results;
+      const anyOk = results.some((r) => r.ok);
+
+      setData({
+        projects: projects.data,
+        services: services.data,
+        testimonials: testimonials.data?.length ? testimonials.data : FALLBACK_TESTIMONIALS,
+        about: about.data,
+        experience: experience.data?.length ? experience.data : FALLBACK_EXPERIENCE,
+      });
+      setApiOnline(anyOk);
+      setLoading(false);
     })();
+
     return () => {
       cancelled = true;
     };
   }, []);
 
-  return { ...data, loading, error };
+  return { ...data, loading, apiOnline };
 }

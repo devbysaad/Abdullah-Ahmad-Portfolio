@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { adminApi, checkAuth, logout } from '../lib/api';
+import { adminApi, checkAuth, getApiErrorMessage, logout } from '../lib/api';
 import CloudinaryImageUpload from '../components/admin/CloudinaryImageUpload';
 
 const TABS = ['Projects', 'Services', 'Experience', 'Testimonials', 'About'];
@@ -45,20 +45,24 @@ export default function AdminDashboard() {
   const [editingId, setEditingId] = useState(null);
 
   const load = async () => {
-    const [projects, services, experience, testimonials, about] = await Promise.all([
-      adminApi.projects.list(),
-      adminApi.services.list(),
-      adminApi.experience.list(),
-      adminApi.testimonials.list(),
-      adminApi.about.get(),
-    ]);
-    setData({ projects, services, experience, testimonials, about });
+    try {
+      const [projects, services, experience, testimonials, about] = await Promise.all([
+        adminApi.projects.list(),
+        adminApi.services.list(),
+        adminApi.experience.list(),
+        adminApi.testimonials.list(),
+        adminApi.about.get(),
+      ]);
+      setData({ projects, services, experience, testimonials, about });
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, 'Could not load admin data'));
+    }
   };
 
   useEffect(() => {
     checkAuth()
       .then((r) => {
-        if (!r.data.authenticated) navigate('/admin-login');
+        if (!r.authenticated) navigate('/admin-login');
         else load();
       })
       .catch(() => navigate('/admin-login'));
@@ -120,21 +124,29 @@ export default function AdminDashboard() {
 
   const saveAbout = async (e) => {
     e.preventDefault();
-    await adminApi.about.update({
-      bio: form.bio,
-      videoUrl: form.videoUrl,
-      profileImageUrl: form.profileImageUrl,
-      contactEmail: form.contactEmail,
-      linkedIn: form.linkedIn,
-      github: form.github,
-      stats: {
-        years: form.years,
-        clients: form.clients,
-        apps: form.apps,
-      },
-    });
-    toast.success('About updated');
-    load();
+    const existing = data.about || {};
+    try {
+      await adminApi.about.update({
+        bio: form.bio,
+        whyMeIntro: existing.whyMeIntro,
+        highlights: existing.highlights,
+        skills: existing.skills,
+        videoUrl: form.videoUrl,
+        profileImageUrl: form.profileImageUrl,
+        contactEmail: form.contactEmail,
+        linkedIn: form.linkedIn,
+        github: form.github,
+        stats: {
+          years: form.years,
+          clients: form.clients,
+          apps: form.apps,
+        },
+      });
+      toast.success('About updated');
+      load();
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, 'Could not save about'));
+    }
   };
 
   const startEditAbout = () => {

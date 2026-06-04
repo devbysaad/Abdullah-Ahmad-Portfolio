@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { login } from '../lib/api';
+import { getApiErrorMessage, login } from '../lib/api';
 
 export default function AdminLogin() {
   const [password, setPassword] = useState('');
@@ -15,8 +15,8 @@ export default function AdminLogin() {
       await login(password);
       toast.success('Welcome back');
       navigate('/admin');
-    } catch {
-      toast.error('Invalid password');
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, 'Invalid password'));
     } finally {
       setLoading(false);
     }

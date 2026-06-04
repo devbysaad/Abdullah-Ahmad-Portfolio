@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { submitContact } from '../../lib/api';
+import { getApiErrorMessage, submitContact } from '../../lib/api';
 
 export default function QuickMessagePanel({ onClose }) {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -14,8 +14,8 @@ export default function QuickMessagePanel({ onClose }) {
       toast.success('Message sent — talk soon!');
       setForm({ name: '', email: '', message: '' });
       onClose?.();
-    } catch {
-      toast.error('Could not send message. Try again.');
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, 'Could not send message. Try again.'));
     } finally {
       setSending(false);
     }

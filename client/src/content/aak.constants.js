@@ -51,6 +51,40 @@ export const DEFAULT_HIGHLIGHTS = [
   },
 ];
 
+/** Shown when /api/experience is unavailable or empty */
+export const FALLBACK_EXPERIENCE = [
+  {
+    _id: 'exp-fallback-0',
+    company: 'Tapforce',
+    role: 'Full Stack Engineer',
+    period: 'Jun. 2025 – Present',
+    location: 'Remote · Contract',
+    description:
+      'Developing and ideating new flows to optimize a legacy codebase/ed-tech platform in React, while occasionally handling back-end work in Node.js and MongoDB.',
+    order: 0,
+  },
+  {
+    _id: 'exp-fallback-1',
+    company: 'NPC Labs',
+    role: 'UX Engineer',
+    period: 'Feb. 2025 – May 2025',
+    location: 'Remote · Contract',
+    description:
+      "Migrated pixel art functionality from Liveblocks' SvelteKit pixel editor to the client's Next.js project.",
+    order: 1,
+  },
+  {
+    _id: 'exp-fallback-2',
+    company: 'Dropella',
+    role: 'Senior Frontend Developer',
+    period: 'Jun. 2024 – Aug. 2024',
+    location: 'Remote · Contract',
+    description:
+      'Led a team of 10 developers and launched the first version of Dropella on Vercel.',
+    order: 2,
+  },
+];
+
 export const DEFAULT_SKILLS = [
   'Next.js',
   'Node.js',
