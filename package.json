@@ -2,7 +2,7 @@
   "name": "abdullah-ahmad-portfolio",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev": "concurrently \"PORT=3001 npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "build": "npm run build --prefix client",
     "start": "NODE_ENV=production npm run start --prefix server",
     "seed": "npm run seed --prefix server",

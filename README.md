@@ -20,11 +20,11 @@ cd server && npm run seed
 npm run dev
 ```
 
-- Public site: http://localhost:5173
-- API: http://localhost:5001
-- Admin (no public link): http://localhost:5173/admin-login
+- Public site: http://localhost:3000
+- API (dev): http://localhost:3001 — proxied via `/api` while Vite runs
+- Admin: http://localhost:3000/admin-login
 
-> **macOS:** Port 5000 is often used by AirPlay. This project defaults to **5001**.
+> **Dev:** Vite uses port **3000**; Express runs on **3001** so both can run together. **Production** (`npm start`) serves everything on **3000**.
 
 ## Admin
 
@@ -47,7 +47,7 @@ npm run build
 #   CLOUDINARY_* (for admin uploads)
 
 npm run seed   # once, against production DB
-npm start      # listens on PORT (default 5001)
+npm start      # listens on PORT (default 3000)
 ```
 
 ### Environment checklist
@@ -66,9 +66,27 @@ npm start      # listens on PORT (default 5001)
 
 `GET /api/health` returns `{ ok, env, mongo }` for uptime monitors.
 
+### Vercel (frontend + env)
+
+**Do not deploy `server/` to Vercel** — use Railway/Render/Fly for the API.
+
+1. Connect the repo; root `vercel.json` builds `client/dist`.
+2. Host the API elsewhere (`npm start` in `server/`).
+3. **Local:** copy `client/.env.example` → `client/.env.local` and set `VITE_API_URL`.
+4. **Vercel → Settings → Environment Variables** (Production + Preview):
+
+   | Variable | Example |
+   |----------|---------|
+   | `VITE_API_URL` | `https://your-api.up.railway.app/api` |
+   | `VITE_SITE_URL` | `https://your-site.vercel.app` (optional) |
+
+5. On the **API host**, set `CLIENT_URL` to your Vercel URL(s).
+
+Only `VITE_*` vars belong in the frontend — they are baked into the build. Never put `JWT_SECRET`, `ADMIN_PASSWORD`, or `MONGODB_URI` in the client env.
+
 ### Split frontend + API (optional)
 
-If the client is on a different domain than the API, set `CLIENT_URL` to the frontend origin and configure the client build to call the API base URL (proxy in dev only). Same-origin deploy avoids CORS and cookie issues.
+If the client is on a different domain than the API, set `CLIENT_URL` on the server and `VITE_API_URL` in the Vercel project settings (build-time only). Same-origin deploy (single host) needs no frontend env.
 
 ## Resilience
 

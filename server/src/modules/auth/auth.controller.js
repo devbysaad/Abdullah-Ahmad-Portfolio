@@ -10,7 +10,7 @@ const login = (req, res) => {
   res.cookie('token', token, {
     httpOnly: true,
     secure: env.cookieSecure,
-    sameSite: 'lax',
+    sameSite: env.cookieSecure ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000,
     path: '/',
   });

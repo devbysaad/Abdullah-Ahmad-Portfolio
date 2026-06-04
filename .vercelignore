@@ -1,0 +1,6 @@
+server
+node_modules
+.git
+*.md
+project-instruction.md
+project-workflow.md

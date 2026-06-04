@@ -20,7 +20,7 @@ requiredEnv.forEach((key) => {
 const nodeEnv = runtimeNodeEnv || process.env.NODE_ENV || 'development';
 
 /** Comma-separated in CLIENT_URL for preview + production domains */
-const clientUrls = (process.env.CLIENT_URL || 'http://localhost:5173')
+const clientUrls = (process.env.CLIENT_URL || 'http://localhost:3000')
   .split(',')
   .map((s) => s.trim())
   .filter(Boolean);
@@ -34,11 +34,11 @@ const env = {
   cookieSecure:
     process.env.COOKIE_SECURE === 'true' ||
     (nodeEnv === 'production' && process.env.COOKIE_SECURE !== 'false' && !isLocalClient),
-  port: Number(process.env.PORT || 5001),
+  port: Number(process.env.PORT || 3000),
   mongoUri: process.env.MONGODB_URI,
   jwtSecret: process.env.JWT_SECRET,
   adminPassword: process.env.ADMIN_PASSWORD,
-  clientUrl: clientUrls[0] || 'http://localhost:5173',
+  clientUrl: clientUrls[0] || 'http://localhost:3000',
   clientUrls,
   cloudinary: {
     cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
