@@ -2,6 +2,7 @@ const { z } = require('zod');
 
 const projectBody = z.object({
   name: z.string().min(1),
+  summary: z.string().optional().default(''),
   description: z.string().min(1),
   techStack: z.array(z.string()).optional().default([]),
   imageUrl: z.string().optional().default(''),

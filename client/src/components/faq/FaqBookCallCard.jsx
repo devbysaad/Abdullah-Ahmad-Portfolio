@@ -1,8 +1,8 @@
 import { REFERENCE_PROFILE_IMAGE } from '../about/about.constants';
-import { FAQ_PROFILE_IMAGE } from './faq.constants';
+import { resolveMediaUrl } from '../../lib/mediaUrl';
 
 export default function FaqBookCallCard({ profileImageUrl }) {
-  const src = profileImageUrl?.trim() || FAQ_PROFILE_IMAGE || REFERENCE_PROFILE_IMAGE;
+  const src = resolveMediaUrl(profileImageUrl, REFERENCE_PROFILE_IMAGE);
 
   return (
     <div className="faq-bookcall-card" data-name="faq-bookcall-card">

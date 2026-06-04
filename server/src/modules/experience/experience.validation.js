@@ -4,6 +4,7 @@ const experienceBody = z.object({
   company: z.string().min(1),
   role: z.string().min(1),
   period: z.string().min(1),
+  location: z.string().optional().default(''),
   description: z.string().optional().default(''),
   order: z.number().optional().default(0),
 });

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { adminApi, checkAuth, logout } from '../lib/api';
+import CloudinaryImageUpload from '../components/admin/CloudinaryImageUpload';
 
 const TABS = ['Projects', 'Services', 'Experience', 'Testimonials', 'About'];
 
@@ -193,7 +194,7 @@ export default function AdminDashboard() {
         <div className="grid lg:grid-cols-2 gap-8">
           <form onSubmit={saveProject} className="card-surface p-6 space-y-3">
             <h2 className="font-semibold mb-2">{editingId ? 'Edit' : 'Add'} Project</h2>
-            {['name', 'description', 'imageUrl', 'badge', 'badgeSub', 'order'].map((key) => (
+            {['name', 'description', 'badge', 'badgeSub', 'order'].map((key) => (
               <input
                 key={key}
                 placeholder={key}
@@ -204,6 +205,12 @@ export default function AdminDashboard() {
                 required={key === 'name' || key === 'description'}
               />
             ))}
+            <CloudinaryImageUpload
+              label="Project image"
+              value={form.imageUrl ?? ''}
+              onChange={(url) => setForm({ ...form, imageUrl: url })}
+              folder="projects"
+            />
             <input
               placeholder="techStack (comma separated)"
               value={form.techStack ?? ''}
@@ -315,7 +322,7 @@ export default function AdminDashboard() {
         <div className="grid lg:grid-cols-2 gap-8">
           <form onSubmit={saveTestimonial} className="card-surface p-6 space-y-3">
             <h2 className="font-semibold mb-2">{editingId ? 'Edit' : 'Add'} Testimonial</h2>
-            {['name', 'role', 'company', 'text', 'avatar', 'order'].map((key) => (
+            {['name', 'role', 'company', 'text', 'order'].map((key) => (
               <input
                 key={key}
                 placeholder={key}
@@ -325,6 +332,12 @@ export default function AdminDashboard() {
                 style={inputStyle}
               />
             ))}
+            <CloudinaryImageUpload
+              label="Avatar"
+              value={form.avatar ?? ''}
+              onChange={(url) => setForm({ ...form, avatar: url })}
+              folder="testimonials"
+            />
             <button type="submit" className="btn-primary !py-2 !px-4 text-sm">
               Save
             </button>
@@ -365,7 +378,7 @@ export default function AdminDashboard() {
               style={inputStyle}
             />
           ))}
-          {['videoUrl', 'profileImageUrl', 'contactEmail', 'linkedIn', 'github'].map((key) => (
+          {['videoUrl', 'contactEmail', 'linkedIn', 'github'].map((key) => (
             <input
               key={key}
               placeholder={key}
@@ -375,6 +388,12 @@ export default function AdminDashboard() {
               style={inputStyle}
             />
           ))}
+          <CloudinaryImageUpload
+            label="Profile photo"
+            value={form.profileImageUrl ?? ''}
+            onChange={(url) => setForm({ ...form, profileImageUrl: url })}
+            folder="profile"
+          />
           <button type="submit" className="btn-primary !py-2 !px-4 text-sm">
             Save About
           </button>

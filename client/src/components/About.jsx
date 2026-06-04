@@ -2,7 +2,9 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, viewportOnce } from '../lib/motion';
 import AboutBio from './about/AboutBio';
+import AboutSkills from './about/AboutSkills';
 import AboutStatCard from './about/AboutStatCard';
+import { resolveMediaUrl } from '../lib/mediaUrl';
 import {
   ABOUT_LABEL,
   ABOUT_TITLE,
@@ -33,66 +35,47 @@ function buildBioParagraphs(about) {
 export default function About({ about }) {
   const stats = useMemo(() => buildStats(about), [about]);
   const bioParagraphs = useMemo(() => buildBioParagraphs(about), [about]);
-  const profileSrc = about?.profileImageUrl?.trim() || REFERENCE_PROFILE_IMAGE;
+  const profileSrc = resolveMediaUrl(about?.profileImageUrl, REFERENCE_PROFILE_IMAGE);
 
   return (
-    <section id="about" className="section-pad py-16 md:py-20 lg:py-24" data-name="about-section">
+    <section id="about" className="about-section section-pad" data-name="about-section">
       <div className="content-wrap">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
           variants={fadeIn}
-          className="about-drumroll-panel w-full"
+          className="about-drumroll-panel"
           data-name="about-drumroll-panel"
         >
-          <header
-            className="mb-10 flex flex-col items-center gap-5 text-center md:mb-12 md:gap-8"
-            data-name="about-drumroll-header"
-          >
-            <p
-              className="m-0 uppercase tracking-normal"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '13px',
-                fontWeight: 500,
-                color: '#fe4b01',
-              }}
-            >
-              {ABOUT_LABEL}
-            </p>
-            <h2
-              className="m-0 font-semibold text-white"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(36px, 6vw, 53px)',
-                lineHeight: 1.05,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              {ABOUT_TITLE}
-            </h2>
+          <header className="about-drumroll-header" data-name="about-drumroll-header">
+            <p className="about-drumroll-label">{ABOUT_LABEL}</p>
+            <h2 className="about-drumroll-title">{ABOUT_TITLE}</h2>
           </header>
 
-          <div
-            className="mx-auto flex w-full max-w-[1100px] flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center lg:gap-9"
-            data-name="about-drumroll-body"
-          >
+          <div className="about-drumroll-body" data-name="about-drumroll-body">
             <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={viewportOnce}
               variants={fadeIn}
-              className="about-photo-frame w-full shrink-0 lg:w-[470px]"
+              className="about-drumroll-media"
               data-name="about-photo"
             >
-              <img
-                src={profileSrc}
-                alt="Abdullah Ahmad"
-                className="h-[min(306px,56vw)] w-full rounded-2xl object-cover object-center lg:h-[306px]"
-                loading="lazy"
-                decoding="async"
-              />
+              <div className="about-photo-frame">
+                {profileSrc ? (
+                  <img
+                    src={profileSrc}
+                    alt="Abdullah Ahmad"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <div className="about-photo-placeholder" aria-hidden>
+                    Add profile photo in Admin
+                  </div>
+                )}
+              </div>
             </motion.div>
 
             <motion.div
@@ -101,13 +84,10 @@ export default function About({ about }) {
               viewport={viewportOnce}
               variants={fadeIn}
               custom={0.1}
-              className="flex w-full min-w-0 flex-1 flex-col gap-8 md:gap-10"
+              className="about-drumroll-content"
               data-name="about-copy-column"
             >
-              <div
-                className="flex w-full flex-row gap-2.5 md:gap-[10px]"
-                data-name="about-stats-row"
-              >
+              <div className="about-drumroll-stats" data-name="about-stats-row">
                 {stats.map((stat) => (
                   <AboutStatCard
                     key={stat.key}
@@ -118,7 +98,10 @@ export default function About({ about }) {
                 ))}
               </div>
 
-              <AboutBio paragraphs={bioParagraphs} />
+              <div className="about-drumroll-copy">
+                <AboutBio paragraphs={bioParagraphs} />
+                <AboutSkills about={about} />
+              </div>
             </motion.div>
           </div>
         </motion.div>

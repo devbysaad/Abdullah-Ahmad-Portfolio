@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import ProjectModal from './ProjectModal';
 import { fadeIn, viewportOnce } from '../lib/motion';
+import WorkDeviceShowcase from './work/WorkDeviceShowcase';
 import { WORK_COPY } from './work/work.constants';
-import WorkPanel from './work/WorkPanel';
 import { AwardBadge, StatBadge } from './work/WorkBadges';
 
 function ViewProjectButton({ onClick }) {
@@ -44,23 +44,38 @@ function mergeItem(project, index) {
   return {
     _id: project?._id || `work-${index}`,
     name: project?.name || copy.name,
+    summary:
+      project?.summary?.trim() ||
+      copy.description ||
+      project?.description?.split('.')[0] ||
+      copy.name,
     description: project?.description || copy.description,
     techStack: project?.techStack || [],
+    imageUrl: project?.imageUrl?.trim() || '',
     badge: copy.badge,
-    panel: copy.panel,
+    layout: copy.layout || 'phone-left',
   };
 }
 
 export default function Work({ projects = [] }) {
   const [active, setActive] = useState(null);
-  const items = Array.from({ length: 4 }, (_, i) => mergeItem(projects[i], i));
+  const items = useMemo(() => {
+    const sorted = [...projects].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    const count = Math.max(sorted.length, WORK_COPY.length);
+    return Array.from({ length: Math.min(count, 4) }, (_, i) =>
+      mergeItem(sorted[i], i)
+    );
+  }, [projects]);
 
   return (
     <section id="work" className="bg-white section-pad py-16 md:py-20 lg:py-24">
       <div className="content-wrap max-w-[1280px]">
-        <h2 className="heading-display text-center text-[36px] md:text-[53px] font-semibold md:font-semibold tracking-[-0.83px] text-black mb-10 md:mb-12">
-          Selected work
-        </h2>
+        <header className="mb-10 text-center md:mb-12">
+          <p className="mb-4 text-[13px] font-medium tracking-normal text-[#fe4b01]">SELECTED WORK</p>
+          <h2 className="heading-display text-[36px] md:text-[53px] font-semibold tracking-[-0.83px] text-black m-0">
+            Selected work
+          </h2>
+        </header>
 
         <div className="border-t border-[#e8e8e8]">
           {items.map((project, i) => (
@@ -80,7 +95,7 @@ export default function Work({ projects = [] }) {
                       {project.name}.
                     </p>
                     <h3 className="font-[family-name:var(--font-display)] text-[32px] md:text-[36px] font-semibold leading-[1.44] tracking-[-0.02em] text-[#171717] max-w-[520px]">
-                      {project.description}
+                      {project.summary}
                     </h3>
                   </div>
 
@@ -89,9 +104,11 @@ export default function Work({ projects = [] }) {
                 </div>
 
                 <div className="flex flex-1 justify-center lg:justify-end min-w-0 w-full">
-                  <div className="w-full max-w-[552px]">
-                    <WorkPanel panelKey={project.panel} alt={`${project.name} project preview`} />
-                  </div>
+                  <WorkDeviceShowcase
+                    imageUrl={project.imageUrl}
+                    alt={`${project.name} project preview`}
+                    layout={project.layout}
+                  />
                 </div>
               </div>
             </motion.article>

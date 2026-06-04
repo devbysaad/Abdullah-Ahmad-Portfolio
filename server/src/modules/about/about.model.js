@@ -3,6 +3,14 @@ const mongoose = require('mongoose');
 const aboutSchema = new mongoose.Schema(
   {
     bio: { type: String, default: '' },
+    whyMeIntro: { type: String, default: '' },
+    highlights: [
+      {
+        title: { type: String, required: true },
+        description: { type: String, default: '' },
+      },
+    ],
+    skills: [{ type: String }],
     stats: {
       years: { type: String, default: '2+' },
       clients: { type: String, default: '30+' },

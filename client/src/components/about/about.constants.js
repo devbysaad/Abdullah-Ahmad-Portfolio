@@ -1,8 +1,10 @@
 /** About / “drumroll” — layout & assets from uiwithbugvi.com */
 const FRAMER = 'https://framerusercontent.com/images';
 
-/** Hassan profile photo (reference site) — fallback when admin has no image */
-export const REFERENCE_PROFILE_IMAGE = `${FRAMER}/eBm5wYezkYOY3b7kYReVxx6HVo.png`;
+import { DEFAULT_PROFILE_IMAGE } from '../../content/aak.constants';
+
+/** Profile from aak-tech.dev — fallback when admin has no image */
+export const REFERENCE_PROFILE_IMAGE = DEFAULT_PROFILE_IMAGE;
 
 /** iPhone decoration on downloads / apps stat card */
 export const STAT_PHONE_DECOR = `${FRAMER}/Ug5v6flKtGwbk0rzaKgz426w5Q.png`;
@@ -18,8 +20,8 @@ export const DEFAULT_STATS = [
   },
   {
     key: 'projects',
-    value: '30+',
-    lines: ['Completed', 'Projects'],
+    value: '20+',
+    lines: ['Satisfied', 'Clients'],
   },
   {
     key: 'apps',

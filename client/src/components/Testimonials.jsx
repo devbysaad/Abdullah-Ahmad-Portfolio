@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, viewportOnce } from '../lib/motion';
 import LoveLettersHeart from './testimonials/LoveLettersHeart';
@@ -10,10 +10,49 @@ import {
 } from './testimonials/testimonials.constants';
 
 export default function Testimonials({ testimonials }) {
+  const trackRef = useRef(null);
+
   const items = useMemo(() => {
     const list = testimonials?.length ? testimonials : FALLBACK_TESTIMONIALS;
     return [...list].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   }, [testimonials]);
+
+  const scrollTrack = useCallback((e) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const { scrollWidth, clientWidth } = el;
+    if (scrollWidth <= clientWidth) return;
+
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    if (delta === 0) return;
+
+    const atStart = el.scrollLeft <= 0;
+    const atEnd = el.scrollLeft + clientWidth >= scrollWidth - 2;
+    const scrollingLeft = delta < 0;
+    const scrollingRight = delta > 0;
+    const canScroll = (scrollingLeft && !atStart) || (scrollingRight && !atEnd);
+
+    if (canScroll) {
+      e.preventDefault();
+      e.stopPropagation();
+      el.scrollLeft += delta;
+    }
+  }, []);
+
+  /** Capture phase so Lenis does not swallow wheel over love letters */
+  useEffect(() => {
+    const section = document.getElementById('testimonials');
+    if (!section) return undefined;
+
+    const onWheel = (e) => {
+      const track = trackRef.current;
+      if (!track?.contains(e.target)) return;
+      scrollTrack(e);
+    };
+
+    section.addEventListener('wheel', onWheel, { passive: false, capture: true });
+    return () => section.removeEventListener('wheel', onWheel, { capture: true });
+  }, [scrollTrack]);
 
   return (
     <section
@@ -46,11 +85,14 @@ export default function Testimonials({ testimonials }) {
         whileInView="visible"
         viewport={viewportOnce}
         variants={fadeIn}
-          className="testimonials-track-outer no-scrollbar"
-          data-lenis-prevent
+        className="testimonials-track-outer no-scrollbar"
         data-name="testimonials-track-outer"
       >
-        <div className="testimonials-track" data-name="testimonials-track">
+        <div
+          ref={trackRef}
+          className="testimonials-track"
+          data-name="testimonials-track"
+        >
           {items.map((t) => (
             <TestimonialCard key={t._id ?? `${t.name}-${t.order}`} testimonial={t} />
           ))}

@@ -26,6 +26,7 @@ const {
 } = require('./modules/experience/experience.route');
 const { authRouter } = require('./modules/auth/auth.route');
 const { contactRouter } = require('./modules/contact/contact.route');
+const { uploadRouter } = require('./modules/upload/upload.route');
 
 const app = express();
 
@@ -66,6 +67,7 @@ app.use(
   authMiddleware,
   adminExperienceRouter
 );
+app.use(`${API_PATHS.ADMIN_BASE}/upload`, adminLimiter, authMiddleware, uploadRouter);
 
 if (env.nodeEnv === 'production') {
   const clientDist = path.join(__dirname, '../../client/dist');

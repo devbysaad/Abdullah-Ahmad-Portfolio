@@ -10,6 +10,19 @@ export const fadeIn = {
   }),
 };
 
+export const fadeUp = {
+  hidden: { opacity: 0.001, y: 24 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      delay: 0.2 + i * 0.06,
+      ease: [0.44, 0, 0.56, 1],
+    },
+  }),
+};
+
 export const viewportOnce = { once: true, amount: 0.25 };
 
 export const staggerContainer = {

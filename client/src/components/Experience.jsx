@@ -1,53 +1,53 @@
 import { motion } from 'framer-motion';
-import SectionHeading from './ui/SectionHeading';
-import { fadeUp, viewportOnce } from '../lib/motion';
+import { fadeIn, viewportOnce } from '../lib/motion';
 
-export default function Experience({ experience }) {
+export default function Experience({ experience = [] }) {
+  const items = [...experience].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
   return (
     <section
       id="experience"
-      className="section-pad py-24 md:py-32 border-t"
-      style={{ borderColor: 'var(--color-border)' }}
+      className="section-pad experience-section bg-white"
+      data-name="experience-section"
     >
-      <SectionHeading label="Experience" title="Where I've shipped" />
+      <div className="content-wrap max-w-[1280px]">
+        <motion.header
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={fadeIn}
+          className="experience-header"
+        >
+          <p className="experience-label">EXPERIENCE</p>
+          <h2 className="experience-title">Where I&apos;ve shipped</h2>
+          <p className="experience-sub">2+ years building for startups and industry-leading platforms.</p>
+        </motion.header>
 
-      <div className="relative max-w-3xl">
-        <div
-          className="absolute left-[7px] top-2 bottom-2 w-px"
-          style={{ background: 'var(--color-border)' }}
-        />
-        <ul className="space-y-10">
-          {experience.map((item, i) => (
-            <motion.li
+        <div className="experience-list border-t border-[#e8e8e8]">
+          {items.map((item, i) => (
+            <motion.article
               key={item._id}
               initial="hidden"
               whileInView="visible"
               viewport={viewportOnce}
-              variants={fadeUp}
+              variants={fadeIn}
               custom={i}
-              className="relative pl-10"
+              className="experience-row"
             >
-              <span
-                className="absolute left-0 top-1.5 w-3.5 h-3.5 rounded-full border-2"
-                style={{ borderColor: 'var(--color-accent)', background: 'var(--color-bg)' }}
-              />
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1">
-                <h3 className="text-xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
-                  {item.role}
-                </h3>
-                <span style={{ color: 'var(--color-muted)' }}>— {item.company}</span>
+              <div className="experience-row-main">
+                <p className="experience-company">{item.company}.</p>
+                <h3 className="experience-role">{item.role}</h3>
+                {item.description && (
+                  <p className="experience-desc">{item.description}</p>
+                )}
               </div>
-              <p className="text-sm mb-2 label-caps !text-muted" style={{ color: 'var(--color-muted)' }}>
-                {item.period}
-              </p>
-              {item.description && (
-                <p className="leading-relaxed" style={{ color: 'var(--color-muted)' }}>
-                  {item.description}
-                </p>
-              )}
-            </motion.li>
+              <div className="experience-row-meta">
+                <p className="experience-period">{item.period}</p>
+                {item.location && <p className="experience-location">{item.location}</p>}
+              </div>
+            </motion.article>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   );

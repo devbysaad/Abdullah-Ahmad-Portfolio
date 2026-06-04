@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useScrollProgress } from '../hooks/useSmoothScroll';
+import NavLogo from './NavLogo';
 
 const links = [
-  { href: '#services', label: 'Services' },
-  { href: '#work', label: 'Work' },
-  { href: '#about', label: 'About' },
+  { href: '#why-me', label: 'About' },
+  { href: '#work', label: 'Portfolio' },
+  { href: '#experience', label: 'Experience' },
   { href: '#testimonials', label: 'Testimonials' },
   { href: '#contact', label: 'Contact' },
 ];
@@ -30,12 +31,7 @@ export default function Navbar() {
         }`}
         style={{ minHeight: '64px' }}
       >
-        <a
-          href="#"
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-black text-[11px] font-semibold tracking-tight text-white"
-        >
-          b.
-        </a>
+        <NavLogo />
 
         <ul className="hidden md:flex items-center gap-5 px-1">
           {links.map((link) => (

@@ -1,26 +1,19 @@
-/** Testimonials — uiwithbugvi.com layout; avatars from aak-tech.dev (bundled in /public/testimonials) */
+/** Testimonials — avatars from aak-tech.dev CDN (not bundled in /public) */
 export const TESTIMONIALS_LABEL = 'TESTIMONIALS';
 export const TESTIMONIALS_TITLE = 'Love letters';
 
-/** Served from client/public/testimonials (fetched from https://www.aak-tech.dev/assets/testimonials/) */
+const AAK_ASSETS = 'https://www.aak-tech.dev/assets';
+
 export const TESTIMONIAL_AVATARS = {
-  rob: '/testimonials/rob.png',
-  saqib: '/testimonials/saqib.jpeg',
-  salik: '/testimonials/salik.jpeg',
-  ahsan: '/testimonials/ahsan.jpeg',
-  hisham: '/testimonials/hisham.webp',
+  rob: `${AAK_ASSETS}/testimonials/rob.png`,
+  saqib: `${AAK_ASSETS}/testimonials/saqib.jpeg`,
+  salik: `${AAK_ASSETS}/testimonials/salik.jpeg`,
+  ahsan: `${AAK_ASSETS}/testimonials/ahsan.jpeg`,
+  hisham: `${AAK_ASSETS}/testimonials/hisham.webp`,
 };
 
-/** Map legacy aak-tech.dev (or other) URLs to bundled local assets */
 export function resolveTestimonialAvatar(avatar) {
-  if (!avatar?.trim()) return '';
-  const value = avatar.trim();
-  if (value.startsWith('/testimonials/')) return value;
-  for (const local of Object.values(TESTIMONIAL_AVATARS)) {
-    const file = local.split('/').pop();
-    if (file && value.includes(file)) return local;
-  }
-  return value;
+  return avatar?.trim() || '';
 }
 
 /** Fallback when API is empty */

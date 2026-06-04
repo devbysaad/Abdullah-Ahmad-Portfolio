@@ -18,6 +18,12 @@ const env = {
   jwtSecret: process.env.JWT_SECRET,
   adminPassword: process.env.ADMIN_PASSWORD,
   clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
+    apiKey: process.env.CLOUDINARY_API_KEY || '',
+    apiSecret: process.env.CLOUDINARY_API_SECRET || '',
+    folder: process.env.CLOUDINARY_FOLDER || 'abdullah-portfolio',
+  },
 };
 
 module.exports = { env };

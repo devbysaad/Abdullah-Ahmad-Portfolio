@@ -22,4 +22,4 @@ export const FOOTER_DEFAULT_LIKES = 38;
 export const FOOTER_LIKES_STORAGE_KEY = 'abdullah-portfolio-footer-likes';
 export const FOOTER_LIKED_STORAGE_KEY = 'abdullah-portfolio-footer-liked';
 
-export const DEFAULT_CONTACT_EMAIL = 'hello@abdullahahmad.dev';
+export const DEFAULT_CONTACT_EMAIL = 'abdullah.ahmad@devnauts.io';

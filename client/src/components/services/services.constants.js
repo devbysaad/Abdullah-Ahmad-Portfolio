@@ -13,12 +13,12 @@ export const SERVICE_IMAGES = {
 export const CARD_SHADOW =
   '0 0.7065919983928324px 0.49461439887498265px -0.375px rgba(5,5,5,0.05), 0 1.8065619053231785px 1.264593333726225px -0.75px rgba(5,5,5,0.05), 0 3.6217592146567767px 2.5352314502597437px -1.125px rgba(5,5,5,0.05), 0 6.8655999097303715px 4.80591993681126px -1.5px rgba(5,5,5,0.05), 0 13.646761411524492px 9.552732988067145px -1.875px rgba(5,5,5,0.05), 0 30px 21px -2.25px rgba(5,5,5,0.06)';
 
-/** Default copy matches reference site; API may override title/description */
+/** Default copy; API may override title/description by card index */
 export const SERVICE_CARDS = [
   {
     key: 'web',
     title: 'Web apps.',
-    description: 'I design sleek and responsive web apps for any business challenge.',
+    description: 'Sleek, responsive products — from SaaS dashboards to marketplace features at scale.',
     bg: '#006c67',
     titleColor: '#ffffff',
     descriptionColor: 'rgba(255, 255, 255, 0.6)',
@@ -31,8 +31,8 @@ export const SERVICE_CARDS = [
   },
   {
     key: 'mobile',
-    title: 'Mobile apps.',
-    description: 'I design, refine, and make your app shine above the competition.',
+    title: 'SaaS builds.',
+    description: 'Stripe, Supabase, multi-tenant flows — shipped Dropella, DeltaTest & more end-to-end.',
     bg: '#fece7a',
     titleColor: '#000000',
     descriptionColor: 'rgba(0, 0, 0, 0.6)',
@@ -45,9 +45,8 @@ export const SERVICE_CARDS = [
   },
   {
     key: 'consulting',
-    title: 'Consulting',
-    description:
-      "I'll take your existing product and help you optimize your product for better results.",
+    title: 'Full stack.',
+    description: 'Next.js, SvelteKit, MERN & Node APIs — daily updates and on-time delivery.',
     bg: '#5e0130',
     titleColor: '#ffffff',
     descriptionColor: 'rgba(255, 255, 255, 0.6)',
@@ -60,8 +59,8 @@ export const SERVICE_CARDS = [
   },
   {
     key: 'nocode',
-    title: 'No-code dev.',
-    description: 'Build your online presence and have it stand out with a stellar no-code site.',
+    title: 'Scale & lead.',
+    description: 'Legacy migrations, Redis perf wins, and leading teams to production launches.',
     bg: '#31216f',
     titleColor: '#ffffff',
     descriptionColor: 'rgba(255, 255, 255, 0.6)',

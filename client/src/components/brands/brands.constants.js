@@ -7,7 +7,8 @@ import thewalt from '../../assets/brands/thewalt.svg';
 import goldenOps from '../../assets/brands/golden-ops.svg';
 import liftbuddyIcon from '../../assets/brands/liftbuddy-icon.svg';
 
-export const BRANDS_HEADING = "Over the years, I've collaborated with some amazing brands";
+export const BRANDS_HEADING =
+  "I've contributed to industry-leading platforms and shipped products for global startups";
 
 export const BRAND_MARKS = [
   { key: 'tecaudex', type: 'image', src: tecaudex, alt: 'Tecaudex', height: 29 },

@@ -45,6 +45,18 @@ export const adminApi = {
     get: () => api.get('/admin/about').then((r) => r.data),
     update: (data) => api.put('/admin/about', data).then((r) => r.data),
   },
+  upload: {
+    image: (file, folder = 'profile') => {
+      const form = new FormData();
+      form.append('file', file);
+      form.append('folder', folder);
+      return api
+        .post('/admin/upload', form, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+        .then((r) => r.data);
+    },
+  },
 };
 
 export default api;
