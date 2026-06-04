@@ -88,7 +88,7 @@ app.use('/api', (_req, res) => {
   res.status(404).json({ success: false, message: 'API route not found' });
 });
 
-if (env.isProduction) {
+if (env.isProduction && !env.onVercel) {
   const clientDist = path.join(__dirname, '../../client/dist');
   app.use(express.static(clientDist, { maxAge: '1d', index: false }));
   app.get(/^(?!\/api).*/, (_req, res) => {

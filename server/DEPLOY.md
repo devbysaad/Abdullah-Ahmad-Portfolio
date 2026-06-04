@@ -1,8 +1,10 @@
-# API deployment (Railway / Render)
+# API deployment
 
-The backend is **not** for Vercel. Use a Node host with a persistent process and MongoDB.
+## Vercel (serverless)
 
-## Railway (recommended)
+See root **`VERCEL.md` → section 2**. Root Directory must be **`server`**, Install = `npm install` only.
+
+## Railway (recommended for simplicity)
 
 1. [railway.app](https://railway.app) → New Project → Deploy from GitHub.
 2. **Root Directory** → `server`
@@ -33,6 +35,11 @@ Health check: `GET /api/health`
 4. **Start** → `npm start`
 5. Same env vars as above.
 
-## Do not use Vercel for this folder
+## Do not mix Root Directory settings
 
-If you pointed a Vercel project at `server/`, delete that project or disconnect it. Vercel is static/Vite only (`client/`).
+| Vercel project | Root Directory | Install command |
+|----------------|----------------|-----------------|
+| Frontend | `client` | `npm install` |
+| API | `server` | `npm install` |
+
+Never use `npm install --prefix client` on the API project.

@@ -18,6 +18,7 @@ requiredEnv.forEach((key) => {
 });
 
 const nodeEnv = runtimeNodeEnv || process.env.NODE_ENV || 'development';
+const onVercel = Boolean(process.env.VERCEL);
 
 /** Comma-separated in CLIENT_URL for preview + production domains */
 const clientUrls = (process.env.CLIENT_URL || 'http://localhost:3000')
@@ -29,7 +30,8 @@ const isLocalClient = clientUrls.some((u) => /localhost|127\.0\.0\.1/.test(u));
 
 const env = {
   nodeEnv,
-  isProduction: nodeEnv === 'production',
+  onVercel,
+  isProduction: nodeEnv === 'production' || onVercel,
   /** Secure cookies in production unless testing locally or COOKIE_SECURE=false */
   cookieSecure:
     process.env.COOKIE_SECURE === 'true' ||

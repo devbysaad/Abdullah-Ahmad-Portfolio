@@ -1,8 +1,6 @@
-server
-**/node_modules
 .git
-.env
-.env.local
-.env.*.local
+**/.env
+**/.env.local
+**/.env.*.local
 project-instruction.md
 project-workflow.md

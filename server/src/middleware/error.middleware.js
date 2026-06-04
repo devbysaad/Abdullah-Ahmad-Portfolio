@@ -14,7 +14,7 @@ const errorMiddleware = (err, _req, res, _next) => {
   if (err?.name === 'MulterError') {
     statusCode = 400;
     const message =
-      err.code === 'LIMIT_FILE_SIZE' ? 'Image must be 8 MB or smaller' : err.message;
+      err.code === 'LIMIT_FILE_SIZE' ? 'Image must be 4 MB or smaller' : err.message;
     return error(res, message, statusCode);
   }
 
