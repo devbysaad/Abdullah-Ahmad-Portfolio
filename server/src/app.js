@@ -4,6 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { API_PATHS } = require('./config/constants');
 const { env } = require('./config/env');
+const { isAllowedOrigin } = require('./lib/corsOrigins');
 const { loggerMiddleware } = require('./middleware/logger.middleware');
 const {
   generalLimiter,
@@ -37,9 +38,13 @@ if (env.isProduction) {
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin) return callback(null, true);
-      if (env.clientUrls.includes(origin)) return callback(null, true);
-      if (!env.isProduction) return callback(null, true);
+      if (
+        isAllowedOrigin(origin, env.clientUrls, {
+          isProduction: env.isProduction,
+        })
+      ) {
+        return callback(null, true);
+      }
       return callback(new Error(`CORS blocked for origin: ${origin}`));
     },
     credentials: true,

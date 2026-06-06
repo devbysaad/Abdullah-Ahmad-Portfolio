@@ -20,11 +20,10 @@ requiredEnv.forEach((key) => {
 const nodeEnv = runtimeNodeEnv || process.env.NODE_ENV || 'development';
 const onVercel = Boolean(process.env.VERCEL);
 
+const { parseClientUrls } = require('../lib/corsOrigins');
+
 /** Comma-separated in CLIENT_URL for preview + production domains */
-const clientUrls = (process.env.CLIENT_URL || 'http://localhost:5173')
-  .split(',')
-  .map((s) => s.trim())
-  .filter(Boolean);
+const clientUrls = parseClientUrls(process.env.CLIENT_URL);
 
 const isLocalClient = clientUrls.some((u) => /localhost|127\.0\.0\.1/.test(u));
 
