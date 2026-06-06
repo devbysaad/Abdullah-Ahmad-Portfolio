@@ -6,7 +6,15 @@
 function normalizeApiBase(value) {
   const raw = value?.trim();
   if (!raw) return '/api';
-  return raw.replace(/\/$/, '');
+
+  let base = raw.replace(/\/$/, '');
+
+  // Production URL must end with /api — routes are /api/projects, not /projects
+  if (/^https?:\/\//i.test(base) && !base.endsWith('/api')) {
+    base = `${base}/api`;
+  }
+
+  return base;
 }
 
 const apiBase = normalizeApiBase(import.meta.env.VITE_API_URL);
