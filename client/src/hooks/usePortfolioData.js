@@ -6,14 +6,14 @@ import {
   fetchServices,
   fetchTestimonials,
 } from '../lib/api';
-import { FALLBACK_EXPERIENCE } from '../content/aak.constants';
+import { FALLBACK_EXPERIENCE, FALLBACK_PROJECTS } from '../content/aak.constants';
 import {
   FALLBACK_TESTIMONIALS,
   normalizeTestimonials,
 } from '../components/testimonials/testimonials.constants';
 
 const EMPTY = {
-  projects: [],
+  projects: FALLBACK_PROJECTS,
   services: [],
   testimonials: FALLBACK_TESTIMONIALS,
   about: null,
@@ -43,7 +43,7 @@ export function usePortfolioData() {
 
     (async () => {
       const results = await Promise.all([
-        loadEndpoint('projects', fetchProjects, []),
+        loadEndpoint('projects', fetchProjects, FALLBACK_PROJECTS),
         loadEndpoint('services', fetchServices, []),
         loadEndpoint('testimonials', fetchTestimonials, FALLBACK_TESTIMONIALS),
         loadEndpoint('about', fetchAbout, null),
@@ -56,7 +56,7 @@ export function usePortfolioData() {
       const anyOk = results.some((r) => r.ok);
 
       setData({
-        projects: projects.data,
+        projects: projects.data?.length ? projects.data : FALLBACK_PROJECTS,
         services: services.data,
         testimonials: normalizeTestimonials(
           testimonials.data?.length ? testimonials.data : FALLBACK_TESTIMONIALS,

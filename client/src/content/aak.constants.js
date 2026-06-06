@@ -60,6 +60,49 @@ export const EXPERIENCE_COMPANIES = [
   { key: 'dubizzle-labs', name: 'Dubizzle Labs', domain: 'dubizzle.com', linkedin: 'https://www.linkedin.com/company/dubizzlelabs' },
 ];
 
+/** Shown when /api/projects is unavailable or empty */
+export const FALLBACK_PROJECTS = [
+  {
+    _id: 'proj-fallback-0',
+    name: 'Basemint',
+    description:
+      'Basemint is a social hub for artists to collaborate on drawings, pixel by pixel, and share them with the world.',
+    techStack: ['Next.js', 'React', 'Tailwind CSS', 'ShadCN', 'MongoDB', 'Liveblocks'],
+    imageUrl: 'https://www.aak-tech.dev/assets/projects/basemint-project.png',
+    order: 0,
+  },
+  {
+    _id: 'proj-fallback-1',
+    name: 'Auto Device',
+    description:
+      'DeltaTest transforms app testing — run mobile apps in the browser and share links without the app store.',
+    techStack: ['Next.js', 'React', 'Supabase', 'Tailwind CSS', 'ShadCN'],
+    imageUrl:
+      'https://www.aak-tech.dev/assets/projects/deltatest-mobile-emulator-saas-platform-project-image.png',
+    order: 1,
+  },
+  {
+    _id: 'proj-fallback-2',
+    name: 'Dropella',
+    description:
+      'A comprehensive e-commerce toolkit for tracking sales, research, and advertising insights.',
+    techStack: ['SvelteKit', 'TypeScript', 'Supabase', 'Stripe', 'Tailwind CSS'],
+    imageUrl:
+      'https://www.aak-tech.dev/assets/projects/dropella-sveltekit-supabase-project-image.jpg',
+    order: 2,
+  },
+  {
+    _id: 'proj-fallback-3',
+    name: 'Designer Pro',
+    description:
+      'A collaborative platform for designers and clients with image comments, video annotations, and a drawing canvas.',
+    techStack: ['SvelteKit', 'TypeScript', 'Firebase', 'Tailwind CSS'],
+    imageUrl:
+      'https://www.aak-tech.dev/assets/projects/designer-pro-designers-tool-app-project-image.png',
+    order: 3,
+  },
+];
+
 /** Shown when /api/experience is unavailable or empty */
 export const FALLBACK_EXPERIENCE = [
   {

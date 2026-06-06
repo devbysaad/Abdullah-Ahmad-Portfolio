@@ -51,7 +51,7 @@ function mergeItem(project, index) {
       copy.name,
     description: project?.description || copy.description,
     techStack: project?.techStack || [],
-    imageUrl: project?.imageUrl?.trim() || '',
+    imageUrl: project?.imageUrl?.trim() || copy.imageUrl || '',
     badge: copy.badge,
     layout: copy.layout || 'phone-left',
   };
