@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, viewportOnce } from '../lib/motion';
 import BookingFlow from './booking/BookingFlow';
+import EmailJsSetupBanner from './booking/EmailJsSetupBanner';
 import QuickMessagePanel from './booking/QuickMessagePanel';
 import {
   BOOKING_LABEL,
@@ -36,6 +37,8 @@ export default function Contact({ about }) {
           <h2 className="booking-page-title">{BOOKING_TITLE}</h2>
           <p className="booking-page-subtitle">{BOOKING_SUBTITLE}</p>
         </motion.header>
+
+        <EmailJsSetupBanner contactEmail={about?.contactEmail} />
 
         <BookingFlow about={about} />
 

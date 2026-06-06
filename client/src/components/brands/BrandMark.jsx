@@ -9,11 +9,13 @@ export default function BrandMark({ brand }) {
           alt=""
           className="h-[28px] w-auto shrink-0"
           aria-hidden="true"
+          loading="lazy"
+          decoding="async"
         />
         <span
           className="font-bold leading-none text-black"
           style={{
-            fontFamily: '"Clash Display", var(--font-display)',
+            fontFamily: 'var(--font-display)',
             fontSize: '18.52px',
           }}
         >
@@ -31,11 +33,13 @@ export default function BrandMark({ brand }) {
           alt=""
           className="h-[22px] w-[22px] shrink-0 object-contain"
           aria-hidden="true"
+          loading="lazy"
+          decoding="async"
         />
         <span
           className="font-semibold leading-none text-black"
           style={{
-            fontFamily: 'Raleway, var(--font-body)',
+            fontFamily: 'var(--font-body)',
             fontSize: '17px',
             fontWeight: 600,
           }}

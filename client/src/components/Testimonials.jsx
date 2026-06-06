@@ -1,58 +1,20 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, viewportOnce } from '../lib/motion';
 import LoveLettersHeart from './testimonials/LoveLettersHeart';
 import TestimonialCard from './testimonials/TestimonialCard';
 import {
   FALLBACK_TESTIMONIALS,
+  normalizeTestimonials,
   TESTIMONIALS_LABEL,
   TESTIMONIALS_TITLE,
 } from './testimonials/testimonials.constants';
 
 export default function Testimonials({ testimonials }) {
-  const trackRef = useRef(null);
-
-  const items = useMemo(() => {
-    const list = testimonials?.length ? testimonials : FALLBACK_TESTIMONIALS;
-    return [...list].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  }, [testimonials]);
-
-  const scrollTrack = useCallback((e) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const { scrollWidth, clientWidth } = el;
-    if (scrollWidth <= clientWidth) return;
-
-    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    if (delta === 0) return;
-
-    const atStart = el.scrollLeft <= 0;
-    const atEnd = el.scrollLeft + clientWidth >= scrollWidth - 2;
-    const scrollingLeft = delta < 0;
-    const scrollingRight = delta > 0;
-    const canScroll = (scrollingLeft && !atStart) || (scrollingRight && !atEnd);
-
-    if (canScroll) {
-      e.preventDefault();
-      e.stopPropagation();
-      el.scrollLeft += delta;
-    }
-  }, []);
-
-  /** Capture phase so Lenis does not swallow wheel over love letters */
-  useEffect(() => {
-    const section = document.getElementById('testimonials');
-    if (!section) return undefined;
-
-    const onWheel = (e) => {
-      const track = trackRef.current;
-      if (!track?.contains(e.target)) return;
-      scrollTrack(e);
-    };
-
-    section.addEventListener('wheel', onWheel, { passive: false, capture: true });
-    return () => section.removeEventListener('wheel', onWheel, { capture: true });
-  }, [scrollTrack]);
+  const items = useMemo(
+    () => normalizeTestimonials(testimonials?.length ? testimonials : FALLBACK_TESTIMONIALS),
+    [testimonials],
+  );
 
   return (
     <section
@@ -85,17 +47,20 @@ export default function Testimonials({ testimonials }) {
         whileInView="visible"
         viewport={viewportOnce}
         variants={fadeIn}
-        className="testimonials-track-outer no-scrollbar"
-        data-name="testimonials-track-outer"
+        className="testimonials-marquee-window"
+        data-name="testimonials-marquee-window"
       >
-        <div
-          ref={trackRef}
-          className="testimonials-track"
-          data-name="testimonials-track"
-        >
-          {items.map((t) => (
-            <TestimonialCard key={t._id ?? `${t.name}-${t.order}`} testimonial={t} />
-          ))}
+        <div className="testimonials-marquee-track" data-name="testimonials-marquee-track">
+          <div className="testimonials-marquee-set" aria-label="Client testimonials">
+            {items.map((t) => (
+              <TestimonialCard key={t.name} testimonial={t} />
+            ))}
+          </div>
+          <div className="testimonials-marquee-set" aria-hidden="true">
+            {items.map((t) => (
+              <TestimonialCard key={`${t.name}-dup`} testimonial={t} />
+            ))}
+          </div>
         </div>
       </motion.div>
     </section>

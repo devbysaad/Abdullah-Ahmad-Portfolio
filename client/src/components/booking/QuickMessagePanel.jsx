@@ -1,21 +1,23 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { getApiErrorMessage, submitContact } from '../../lib/api';
+import { isEmailJsConfigured } from '../../lib/env';
+import { getEmailJsErrorMessage, sendContactMessage } from '../../lib/emailjs';
 
 export default function QuickMessagePanel({ onClose }) {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [sending, setSending] = useState(false);
+  const emailJsReady = isEmailJsConfigured();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
     try {
-      await submitContact({ ...form, type: 'message' });
+      await sendContactMessage(form);
       toast.success('Message sent — talk soon!');
       setForm({ name: '', email: '', message: '' });
       onClose?.();
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'Could not send message. Try again.'));
+      toast.error(getEmailJsErrorMessage(err, 'Could not send message. Try again.'));
     } finally {
       setSending(false);
     }
@@ -69,7 +71,7 @@ export default function QuickMessagePanel({ onClose }) {
           />
         </div>
         <div className="booking-message-actions">
-          <button type="submit" className="btn-primary" disabled={sending}>
+          <button type="submit" className="btn-primary" disabled={sending || !emailJsReady}>
             {sending ? 'Sending…' : 'Send message'}
           </button>
           {onClose && (

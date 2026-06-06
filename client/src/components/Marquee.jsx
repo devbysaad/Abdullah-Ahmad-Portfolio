@@ -33,6 +33,8 @@ export default function Marquee({ projects }) {
                     src={project.imageUrl}
                     alt={project.name}
                     className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </li>

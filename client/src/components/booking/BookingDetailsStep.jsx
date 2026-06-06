@@ -13,6 +13,7 @@ export default function BookingDetailsStep({
   onBack,
   onSubmit,
   submitting,
+  emailJsReady = true,
 }) {
   const { dateStr, timeStr } = formatAppointmentSummary(
     selectedDate,
@@ -99,7 +100,11 @@ export default function BookingDetailsStep({
               className="booking-field-input booking-field-textarea"
             />
           </div>
-          <button type="submit" className="booking-submit-btn" disabled={submitting}>
+          <button
+            type="submit"
+            className="booking-submit-btn"
+            disabled={submitting || !emailJsReady}
+          >
             {submitting ? 'Booking…' : 'Book appointment'}
           </button>
         </form>

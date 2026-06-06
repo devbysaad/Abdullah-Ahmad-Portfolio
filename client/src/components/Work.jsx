@@ -12,7 +12,7 @@ function ViewProjectButton({ onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-5 py-2.5 font-[family-name:var(--font-display)] text-[18px] font-semibold leading-[1.8] text-black transition-colors hover:bg-neutral-50"
+      className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2.5 font-[family-name:var(--font-display)] text-base sm:text-[18px] font-semibold leading-[1.8] text-black transition-colors hover:bg-neutral-50"
     >
       View project
       <ArrowUpRight size={16} strokeWidth={2.25} className="shrink-0" />
@@ -72,7 +72,7 @@ export default function Work({ projects = [] }) {
       <div className="content-wrap max-w-[1280px]">
         <header className="mb-10 text-center md:mb-12">
           <p className="mb-4 text-[13px] font-medium tracking-normal text-[#fe4b01]">SELECTED WORK</p>
-          <h2 className="heading-display text-[36px] md:text-[53px] font-semibold tracking-[-0.83px] text-black m-0">
+          <h2 className="heading-display text-[clamp(2rem,7vw,3.3125rem)] font-semibold tracking-[-0.83px] text-black m-0">
             Selected work
           </h2>
         </header>
@@ -86,15 +86,15 @@ export default function Work({ projects = [] }) {
               viewport={viewportOnce}
               variants={fadeIn}
               custom={i}
-              className="border-b border-[#e8e8e8] py-12 md:py-[48px]"
+              className="border-b border-[#e8e8e8] py-10 sm:py-12 md:py-[48px]"
             >
               <div className="flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-0">
                 <div className="flex flex-1 flex-col gap-9 lg:pr-6 min-w-0">
                   <div className="flex flex-col gap-0">
-                    <p className="font-[family-name:var(--font-display)] text-[32px] md:text-[36px] font-semibold leading-[1.44] tracking-[-0.23px] text-[#6f6f71]">
+                    <p className="font-[family-name:var(--font-display)] text-[clamp(1.5rem,5vw,2.25rem)] font-semibold leading-[1.35] tracking-[-0.23px] text-[#6f6f71]">
                       {project.name}.
                     </p>
-                    <h3 className="font-[family-name:var(--font-display)] text-[32px] md:text-[36px] font-semibold leading-[1.44] tracking-[-0.02em] text-[#171717] max-w-[520px]">
+                    <h3 className="font-[family-name:var(--font-display)] text-[clamp(1.5rem,5vw,2.25rem)] font-semibold leading-[1.35] tracking-[-0.02em] text-[#171717] max-w-[520px]">
                       {project.summary}
                     </h3>
                   </div>
@@ -108,6 +108,7 @@ export default function Work({ projects = [] }) {
                     imageUrl={project.imageUrl}
                     alt={`${project.name} project preview`}
                     layout={project.layout}
+                    name={project.name}
                   />
                 </div>
               </div>

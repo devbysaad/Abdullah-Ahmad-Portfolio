@@ -1,5 +1,6 @@
-import { useLayoutEffect, useMemo, useRef } from 'react';
-import { gsap, ScrollTrigger } from '../lib/gsap';
+import { useEffect, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
+import { fadeIn, premiumEase, serviceFanHover, viewportOnce } from '../lib/motion';
 import { SERVICE_CARDS } from './services/services.constants';
 import ServiceCard from './services/ServiceCard';
 
@@ -17,101 +18,117 @@ function mergeCards(services) {
 }
 
 export default function Services({ services = [] }) {
-  const sectionRef = useRef(null);
-  const stageRef = useRef(null);
-  const cardRefs = useRef([]);
-
   const cards = useMemo(() => mergeCards(services), [services]);
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 900px)').matches,
+  );
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-
-      mm.add('(min-width: 700px)', () => {
-        cardRefs.current.forEach((el, idx) => {
-          if (!el) return;
-          gsap.set(el, {
-            opacity: 0,
-            y: 80,
-            rotation: 0,
-            scale: 0.92,
-            zIndex: cards[idx].zIndex,
-          });
-        });
-
-        gsap.to(cardRefs.current, {
-          opacity: 1,
-          y: 0,
-          rotation: (i) => cards[i].rotate,
-          scale: 1,
-          duration: 1,
-          ease: 'power3.out',
-          stagger: 0.08,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 72%',
-            once: true,
-          },
-        });
-      });
-
-      mm.add('(max-width: 699px)', () => {
-        gsap.from(cardRefs.current, {
-          opacity: 0,
-          y: 40,
-          duration: 0.8,
-          ease: 'power3.out',
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            once: true,
-          },
-        });
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [cards]);
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 900px)');
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
 
   return (
     <section
       id="services"
-      ref={sectionRef}
-      className="bg-white section-pad py-[100px] md:py-[120px]"
+      className="overflow-x-clip bg-white section-pad py-16 md:py-[100px] lg:py-[120px]"
     >
       <div className="content-wrap mx-auto max-w-[1280px]">
-        <header className="mb-10 text-center md:mb-14">
+        <motion.header
+          className="mb-10 text-center md:mb-14"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={fadeIn}
+        >
           <p className="mb-4 text-[13px] font-medium tracking-normal text-[#fe4b01]">SERVICES</p>
-          <h2 className="heading-display text-[40px] md:text-[57px] font-semibold leading-[1.08] tracking-[-0.02em] text-[#171717] mb-3">
+          <h2 className="heading-display text-[clamp(2rem,7vw,3.5625rem)] font-semibold leading-[1.08] tracking-[-0.02em] text-[#171717] mb-2">
             My superpowers
           </h2>
+          <p className="mx-auto mb-3 max-w-[640px] text-[15px] italic leading-relaxed text-black/55">
+            (no radioactive spider required — just years of shipping code)
+          </p>
           <p className="mx-auto max-w-[640px] text-[15px] leading-relaxed text-black/60">
             Full stack &amp; SaaS — SvelteKit, Next.js, Supabase &amp; MERN. Shipped for{' '}
             <strong className="font-semibold text-black/80">Zameen.com</strong>,{' '}
             <strong className="font-semibold text-black/80">Bayut.com</strong>, and 20+ clients.
           </p>
-        </header>
+        </motion.header>
 
-        <div className="flex justify-center overflow-visible px-2">
-          <div className="services-fan-stage" ref={stageRef}>
-            {cards.map((card, index) => (
-              <div
-                key={card.key}
-                ref={(el) => {
-                  cardRefs.current[index] = el;
-                }}
-                className="services-fan-card absolute cursor-default"
-                style={{
-                  zIndex: card.zIndex,
-                  left: card.left != null ? `${card.left}px` : undefined,
-                  right: card.right != null ? `${card.right}px` : undefined,
-                  top: 'calc(49.28% - 122.5px)',
-                }}
-              >
-                <ServiceCard card={card} />
-              </div>
-            ))}
+        <div className="services-fan-viewport">
+          <div className="services-fan-stage">
+            {cards.map((card, index) => {
+              const restRotate = isDesktop ? card.rotate : 0;
+
+              return (
+                <motion.div
+                  key={card.key}
+                  className="services-fan-card absolute"
+                  style={{
+                    zIndex: card.zIndex,
+                    left: card.left != null ? `${card.left}px` : undefined,
+                    right: card.right != null ? `${card.right}px` : undefined,
+                    top: 'calc(49.28% - 122.5px)',
+                    transformOrigin: '50% 88%',
+                  }}
+                  initial={{
+                    opacity: 0,
+                    y: isDesktop ? 72 : 32,
+                    rotate: 0,
+                    scale: isDesktop ? 0.94 : 1,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                    rotate: restRotate,
+                    scale: 1,
+                    transition: {
+                      opacity: {
+                        duration: isDesktop ? 0.55 : 0.45,
+                        delay: index * (isDesktop ? 0.05 : 0.06),
+                        ease: premiumEase,
+                      },
+                      y: {
+                        duration: isDesktop ? 0.55 : 0.45,
+                        delay: index * (isDesktop ? 0.05 : 0.06),
+                        ease: premiumEase,
+                      },
+                      rotate: {
+                        duration: isDesktop ? 0.55 : 0.45,
+                        delay: index * (isDesktop ? 0.05 : 0.06),
+                        ease: premiumEase,
+                      },
+                      scale: {
+                        duration: isDesktop ? 0.55 : 0.45,
+                        delay: index * (isDesktop ? 0.05 : 0.06),
+                        ease: premiumEase,
+                      },
+                    },
+                  }}
+                  whileHover={
+                    isDesktop
+                      ? {
+                          rotate: 0,
+                          scale: 1.14,
+                          y: -40,
+                          zIndex: 50,
+                        }
+                      : {
+                          scale: 1.06,
+                          y: -14,
+                          zIndex: 50,
+                        }
+                  }
+                  viewport={{ once: true, amount: 0.12, margin: '0px 0px -60px 0px' }}
+                  transition={serviceFanHover}
+                >
+                  <ServiceCard card={card} />
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>

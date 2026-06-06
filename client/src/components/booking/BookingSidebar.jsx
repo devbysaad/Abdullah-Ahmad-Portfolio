@@ -19,14 +19,14 @@ export default function BookingSidebar({
   return (
     <aside className="booking-sidebar" data-name="booking-sidebar">
       <div className="booking-host">
-        <img src={avatar} alt="" className="booking-host-avatar" width={40} height={40} />
+        <img src={avatar} alt="" className="booking-host-avatar" width={40} height={40} loading="lazy" decoding="async" />
         <span className="booking-host-name">Abdullah Ahmad</span>
       </div>
 
       <h3 className="booking-event-title">{BOOKING_EVENT_TITLE}</h3>
       <p className="booking-event-desc">{BOOKING_EVENT_DESCRIPTION}</p>
 
-      <div className="booking-meta-row">
+      <div className="booking-meta-row booking-meta-row--optional">
         <Check size={16} strokeWidth={2} aria-hidden="true" />
         <span>Requires confirmation</span>
       </div>
@@ -67,7 +67,7 @@ export default function BookingSidebar({
         </select>
       </div>
 
-      <div className="booking-meta-row booking-meta-row--muted">
+      <div className="booking-meta-row booking-meta-row--muted booking-meta-row--optional">
         <Clock size={16} strokeWidth={2} aria-hidden="true" />
         <span>{duration} min</span>
       </div>

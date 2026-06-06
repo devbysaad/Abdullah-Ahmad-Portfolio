@@ -7,7 +7,10 @@ import {
   fetchTestimonials,
 } from '../lib/api';
 import { FALLBACK_EXPERIENCE } from '../content/aak.constants';
-import { FALLBACK_TESTIMONIALS } from '../components/testimonials/testimonials.constants';
+import {
+  FALLBACK_TESTIMONIALS,
+  normalizeTestimonials,
+} from '../components/testimonials/testimonials.constants';
 
 const EMPTY = {
   projects: [],
@@ -27,9 +30,12 @@ async function loadEndpoint(name, fetcher, fallback) {
   }
 }
 
+/**
+ * Renders immediately with fallbacks — API data hydrates in the background.
+ * Never blocks the initial paint on network latency or cold API starts.
+ */
 export function usePortfolioData() {
   const [data, setData] = useState(EMPTY);
-  const [loading, setLoading] = useState(true);
   const [apiOnline, setApiOnline] = useState(true);
 
   useEffect(() => {
@@ -52,12 +58,13 @@ export function usePortfolioData() {
       setData({
         projects: projects.data,
         services: services.data,
-        testimonials: testimonials.data?.length ? testimonials.data : FALLBACK_TESTIMONIALS,
+        testimonials: normalizeTestimonials(
+          testimonials.data?.length ? testimonials.data : FALLBACK_TESTIMONIALS,
+        ),
         about: about.data,
         experience: experience.data?.length ? experience.data : FALLBACK_EXPERIENCE,
       });
       setApiOnline(anyOk);
-      setLoading(false);
     })();
 
     return () => {
@@ -65,5 +72,5 @@ export function usePortfolioData() {
     };
   }, []);
 
-  return { ...data, loading, apiOnline };
+  return { ...data, apiOnline };
 }

@@ -23,3 +23,42 @@ export const FOOTER_LIKES_STORAGE_KEY = 'abdullah-portfolio-footer-likes';
 export const FOOTER_LIKED_STORAGE_KEY = 'abdullah-portfolio-footer-liked';
 
 export const DEFAULT_CONTACT_EMAIL = 'abdullah.ahmad@devnauts.io';
+
+/** Footer social links — order: YT, IG, LinkedIn, GitHub, Medium, Upwork, Fiverr */
+export const SOCIAL_LINKS = [
+  {
+    key: 'youtube',
+    href: 'https://www.youtube.com/@AAKCodingChronicles-u4g',
+    label: 'YouTube',
+  },
+  {
+    key: 'instagram',
+    href: '',
+    label: 'Instagram',
+  },
+  {
+    key: 'linkedin',
+    href: 'https://www.linkedin.com/in/abdullah-ahmad-aak/',
+    label: 'LinkedIn',
+  },
+  {
+    key: 'github',
+    href: 'https://github.com/AbdullahAhmadAAK',
+    label: 'GitHub',
+  },
+  {
+    key: 'medium',
+    href: 'https://medium.com/@abdullahaak06',
+    label: 'Medium',
+  },
+  {
+    key: 'upwork',
+    href: 'https://www.upwork.com/freelancers/~010df0d53c18e1f56d',
+    label: 'Upwork',
+  },
+  {
+    key: 'fiverr',
+    href: 'https://www.fiverr.com/s/NN4a0w8',
+    label: 'Fiverr',
+  },
+];

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { DEFAULT_PROFILE_IMAGE, HERO_CTA_PRIMARY, HERO_CTA_SECONDARY } from '../content/aak.constants';
-import { resolveMediaUrl } from '../lib/mediaUrl';
+import { HERO_CTA_PRIMARY, HERO_CTA_SECONDARY } from '../content/aak.constants';
 import TelegramIcon from './hero/TelegramIcon';
 
 const UNDERLINE_ID = 'hero-ul';
@@ -66,9 +65,7 @@ function RoleCycler() {
   );
 }
 
-export default function HeroHeadingSection({ about }) {
-  const profileSrc = resolveMediaUrl(about?.profileImageUrl, DEFAULT_PROFILE_IMAGE);
-
+export default function HeroHeadingSection() {
   return (
     <section
       className="hero-heading-section section-pad"
@@ -172,20 +169,8 @@ export default function HeroHeadingSection({ about }) {
               <span className="hero-badge-label">Daily users · Zameen.com</span>
             </motion.div>
 
-            {/* Photo */}
-            <div className="hero-photo-frame">
-              {profileSrc ? (
-                <img
-                  src={profileSrc}
-                  alt="Abdullah Ahmad — Senior Full Stack Engineer"
-                  className="hero-photo-img"
-                  loading="eager"
-                  decoding="async"
-                />
-              ) : (
-                <div className="hero-photo-placeholder" />
-              )}
-            </div>
+            {/* Photo slot — empty until final image is ready */}
+            <div className="hero-photo-frame" aria-hidden="true" />
 
             {/* Badge BR */}
             <motion.div
@@ -208,7 +193,7 @@ export default function HeroHeadingSection({ about }) {
           transition={{ duration: 0.55, delay: 0.55, ease: [0.44, 0, 0.56, 1] }}
         >
           {[
-            { value: '2+', label: 'Years in Engineering' },
+            { value: '4+', label: 'Years in Engineering' },
             { value: '20+', label: 'Satisfied Clients' },
             { value: '12+', label: 'Apps Shipped' },
             { value: '60K+', label: 'Users Empowered' },

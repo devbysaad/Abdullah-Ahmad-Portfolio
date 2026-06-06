@@ -10,6 +10,23 @@ import liftbuddyIcon from '../../assets/brands/liftbuddy-icon.svg';
 export const BRANDS_HEADING =
   "I've contributed to industry-leading platforms and shipped products for global startups";
 
+/**
+ * Companies Abdullah has worked with — rendered as a logo strip.
+ * Logos load via Google favicon / site favicon; missing logos fall back to wordmark.
+ */
+export const COLLAB_BRANDS = [
+  { key: 'dubizzle-labs', name: 'Dubizzle Labs', domain: 'dubizzle.com' },
+  { key: 'olx', name: 'OLX', domain: 'olx.com' },
+  { key: 'zameen', name: 'Zameen', domain: 'zameen.com' },
+  { key: 'bayut', name: 'Bayut', domain: 'bayut.com' },
+  { key: 'npc-labs', name: 'NPC Labs', domain: 'npclabs.org' },
+  { key: 'tapforce', name: 'Tapforce', domain: 'tapforce.com' },
+  { key: 'autodevice', name: 'AutoDevice', domain: 'autodevice.io' },
+  { key: 'nybble', name: 'Nybble', domain: 'nybble.co.uk' },
+  { key: 'social-bevy', name: 'Social Bevy', domain: 'socialbevy.com' },
+  { key: 'dropella', name: 'Dropella', domain: 'dropella.io' },
+];
+
 export const BRAND_MARKS = [
   { key: 'tecaudex', type: 'image', src: tecaudex, alt: 'Tecaudex', height: 29 },
   {

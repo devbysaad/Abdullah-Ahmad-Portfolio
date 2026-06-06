@@ -1,5 +1,37 @@
 import { motion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
 import { fadeIn, viewportOnce } from '../lib/motion';
+import { EXPERIENCE_COMPANIES } from '../content/aak.constants';
+import CompanyLogo from './ui/CompanyLogo';
+
+function CompanyPill({ name, domain, linkedin }) {
+  return (
+    <a
+      className="exp-company-pill"
+      href={linkedin}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Open ${name} on LinkedIn in a new tab`}
+    >
+      <CompanyLogo
+        name={name}
+        domain={domain}
+        className="exp-company-pill-logo"
+        badgeClassName="exp-company-pill-logo exp-company-pill-logo--initials"
+        showInitials
+      />
+      <span className="exp-company-pill-label">{name}</span>
+      <span className="brand-logo-tooltip" role="tooltip">
+        {name}
+        <span className="exp-company-pill-tooltip-hint">
+          View on LinkedIn
+          <ArrowUpRight size={11} strokeWidth={2.5} />
+        </span>
+        <span className="brand-logo-tooltip-arrow" aria-hidden="true" />
+      </span>
+    </a>
+  );
+}
 
 export default function Experience({ experience = [] }) {
   const items = [...experience].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
@@ -20,7 +52,18 @@ export default function Experience({ experience = [] }) {
         >
           <p className="experience-label">EXPERIENCE</p>
           <h2 className="experience-title">Where I&apos;ve shipped</h2>
-          <p className="experience-sub">2+ years building for startups and industry-leading platforms.</p>
+          <p className="experience-sub">4+ years building for startups and industry-leading platforms.</p>
+
+          <div className="experience-companies" data-name="experience-company-pills">
+            {EXPERIENCE_COMPANIES.map((company) => (
+              <CompanyPill
+                key={company.key}
+                name={company.name}
+                domain={company.domain}
+                linkedin={company.linkedin}
+              />
+            ))}
+          </div>
         </motion.header>
 
         <div className="experience-list border-t border-[#e8e8e8]">

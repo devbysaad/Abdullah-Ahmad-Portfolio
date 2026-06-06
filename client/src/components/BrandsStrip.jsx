@@ -1,54 +1,55 @@
 import { motion } from 'framer-motion';
 import { fadeIn, viewportOnce } from '../lib/motion';
-import BrandMark from './brands/BrandMark';
-import { BRAND_MARKS, BRANDS_HEADING } from './brands/brands.constants';
+import BrandLogo from './brands/BrandLogo';
+import { COLLAB_BRANDS } from './brands/brands.constants';
 
-const marqueeMarks = [...BRAND_MARKS, ...BRAND_MARKS];
+const container = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.44, 0, 0.56, 1] } },
+};
 
 export default function BrandsStrip() {
   return (
     <section
       className="w-full pt-[60px] pb-14 md:pb-16"
       data-name="brands-section"
-      aria-label="Collaborated brands"
+      aria-label="Companies Abdullah has worked with"
     >
-      <div className="content-wrap px-5 md:px-10" data-name="brands-marquee-section">
+      <div className="content-wrap px-5 md:px-10" data-name="brands-logo-strip-section">
         <motion.p
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
           variants={fadeIn}
-          className="mx-auto mb-10 max-w-[640px] text-center font-semibold md:mb-12"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(15px, 2vw, 18px)',
-            lineHeight: 1.4,
-            color: 'rgba(0, 0, 0, 0.6)',
-          }}
-          data-name="brands-heading"
+          className="brands-strip-label"
+          data-name="brands-strip-label"
         >
-          {BRANDS_HEADING}
+          Trusted by teams at
         </motion.p>
 
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
-          variants={fadeIn}
-          className="brands-marquee-window"
-          data-name="brands-marquee-window"
+          variants={container}
+          className="brands-logo-strip"
+          data-name="brands-logo-strip"
         >
-          <div className="brands-marquee-track" data-name="brands-marquee-track">
-            {marqueeMarks.map((brand, index) => (
-              <div
-                key={`${brand.key}-${index}`}
-                className="brands-logo-item"
-                data-name="brands-logo-item"
-              >
-                <BrandMark brand={brand} />
-              </div>
-            ))}
-          </div>
+          {COLLAB_BRANDS.map((brand) => (
+            <motion.div key={brand.key} variants={item} className="brands-logo-strip-cell">
+              <BrandLogo
+                name={brand.name}
+                domain={brand.domain}
+                logo={brand.logo}
+                badge={brand.badge}
+              />
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>

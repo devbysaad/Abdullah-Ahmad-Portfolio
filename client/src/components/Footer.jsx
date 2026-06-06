@@ -13,29 +13,12 @@ import {
   FOOTER_HEADLINE,
   FOOTER_LIKE_LABEL,
   FOOTER_WATERMARK,
+  SOCIAL_LINKS,
 } from './footer/footer.constants';
 
 export default function Footer({ about }) {
   const email = about?.contactEmail?.trim() || DEFAULT_CONTACT_EMAIL;
   const year = new Date().getFullYear();
-
-  const socialLinks = [
-    {
-      key: 'linkedin',
-      href: about?.linkedIn,
-      label: 'LinkedIn',
-    },
-    {
-      key: 'github',
-      href: about?.github,
-      label: 'GitHub',
-    },
-    {
-      key: 'instagram',
-      href: about?.instagram,
-      label: 'Instagram',
-    },
-  ];
 
   return (
     <footer className="site-footer section-pad" data-name="site-footer">
@@ -60,7 +43,7 @@ export default function Footer({ about }) {
                 {FOOTER_HEADLINE.after}
               </h2>
               <p className="footer-blurb">{FOOTER_BLURB}</p>
-              <FooterSocialLinks links={socialLinks} />
+              <FooterSocialLinks links={SOCIAL_LINKS} />
             </div>
 
             <div className="footer-col footer-col--work" data-name="footer-work">

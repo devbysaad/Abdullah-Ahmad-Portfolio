@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { getApiErrorMessage, submitContact } from '../../lib/api';
+import { isEmailJsConfigured } from '../../lib/env';
+import { getEmailJsErrorMessage, sendAppointmentRequest } from '../../lib/emailjs';
 import { fadeIn, viewportOnce } from '../../lib/motion';
 import BookingDetailsStep from './BookingDetailsStep';
 import BookingScheduler from './BookingScheduler';
@@ -20,6 +21,7 @@ export default function BookingFlow({ about }) {
   const [use24h, setUse24h] = useState(false);
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
+  const emailJsReady = isEmailJsConfigured();
 
   const canContinue = Boolean(selectedDate && selectedTime);
 
@@ -34,8 +36,7 @@ export default function BookingFlow({ about }) {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await submitContact({
-        type: 'appointment',
+      await sendAppointmentRequest({
         name: form.name,
         email: form.email,
         message: form.message,
@@ -43,11 +44,13 @@ export default function BookingFlow({ about }) {
         appointmentDate: toISODateString(selectedDate),
         appointmentTime: selectedTime,
         timezone,
+        selectedDate,
+        use24h,
       });
-      toast.success('Appointment requested!');
+      toast.success('Appointment requested — check your email for confirmation!');
       setStep('success');
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'Could not book appointment. Try again.'));
+      toast.error(getEmailJsErrorMessage(err, 'Could not book appointment. Try again.'));
     } finally {
       setSubmitting(false);
     }
@@ -111,6 +114,7 @@ export default function BookingFlow({ about }) {
               onBack={() => setStep('schedule')}
               onSubmit={handleBook}
               submitting={submitting}
+              emailJsReady={emailJsReady}
             />
           </motion.div>
         )}

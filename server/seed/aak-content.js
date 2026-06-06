@@ -2,16 +2,21 @@
 
 const AAK_ASSETS = 'https://www.aak-tech.dev/assets';
 
+const DEVNAUTS_CLIENTS = 'https://www.devnauts.io/clients';
+
 const TESTIMONIAL_AVATARS = {
-  rob: `${AAK_ASSETS}/testimonials/rob.png`,
-  saqib: `${AAK_ASSETS}/testimonials/saqib.jpeg`,
+  alphonso: `${DEVNAUTS_CLIENTS}/alroundtree.jpeg`,
+  bilal: `${DEVNAUTS_CLIENTS}/bakht.jpg`,
+  rob: `${DEVNAUTS_CLIENTS}/rob.png`,
+  saqib: `${DEVNAUTS_CLIENTS}/saqib.jpg`,
+  hisham: `${DEVNAUTS_CLIENTS}/hisham.jpg`,
+  kelebogile: `${DEVNAUTS_CLIENTS}/Kelebogile.jpeg`,
   salik: `${AAK_ASSETS}/testimonials/salik.jpeg`,
   ahsan: `${AAK_ASSETS}/testimonials/ahsan.jpeg`,
-  hisham: `${AAK_ASSETS}/testimonials/hisham.webp`,
 };
 
 const WHY_ME_INTRO =
-  'With 2+ years of software development experience and a portfolio of 8 web applications, I specialize in delivering scalable, custom software and SaaS solutions. My expertise includes SvelteKit, Next.js, Supabase, and MERN Stack. I follow a streamlined process: gathering requirements, documenting action items, providing daily updates, and ensuring timely delivery.';
+  'With 4+ years of software development experience and a portfolio of 8 web applications, I specialize in delivering scalable, custom software and SaaS solutions. My expertise includes SvelteKit, Next.js, Supabase, and MERN Stack. I follow a streamlined process: gathering requirements, documenting action items, providing daily updates, and ensuring timely delivery.';
 
 const WHY_ME_HIGHLIGHTS = [
   {
@@ -27,7 +32,7 @@ const WHY_ME_HIGHLIGHTS = [
   {
     title: 'Professional Expertise',
     description:
-      'Bringing over two years of hands-on experience in developing robust, scalable applications.',
+      'Bringing over four years of hands-on experience in developing robust, scalable applications.',
   },
   {
     title: 'Unmatched Work Ethic',
@@ -248,7 +253,7 @@ const FAQ_ITEMS = [
   },
 ];
 
-const ABOUT_BIO = `Hellooo! I'm Abdullah Ahmad, a senior full stack software engineer from Pakistan with **2+ years in engineering**. I help transform ideas into functioning products!
+const ABOUT_BIO = `Hellooo! I'm Abdullah Ahmad, a senior full stack software engineer from Pakistan with **4+ years in engineering**. I help transform ideas into functioning products!
 
 I have shipped **20+ client engagements** and contributed to platforms like **Zameen.com** and **Bayut.com**. Building products from scratch is what excites me most.
 

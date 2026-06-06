@@ -19,8 +19,8 @@ const aboutSchema = new mongoose.Schema(
     videoUrl: { type: String, default: '' },
     profileImageUrl: { type: String, default: '' },
     contactEmail: { type: String, default: 'hello@abdullahahmad.dev' },
-    linkedIn: { type: String, default: 'https://linkedin.com/in/abdullahahmad' },
-    github: { type: String, default: 'https://github.com/abdullahahmad' },
+    linkedIn: { type: String, default: 'https://www.linkedin.com/in/abdullah-ahmad-aak/' },
+    github: { type: String, default: 'https://github.com/AbdullahAhmadAAK' },
   },
   { timestamps: true }
 );

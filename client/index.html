@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/avif" href="/abdullah.avif" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta
       name="description"
       content="Abdullah Ahmad — Senior full stack software engineer shipping for 500K users daily."
@@ -13,17 +13,28 @@
       property="og:description"
       content="Senior full stack software engineer shipping for 500K users daily."
     />
+    <!-- LCP hero image -->
+    <link rel="preload" as="image" href="/abdullah.avif" type="image/avif" fetchpriority="high" />
+    <!-- Fonts: non-blocking load (removed unused Raleway + Fontshare) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Raleway:wght@600;700&family=Sora:wght@400;600;700&display=swap"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Sora:wght@400;600;700&display=swap"
     />
-    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link
-      href="https://api.fontshare.com/v2/css?f[]=clash-display@700&display=swap"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Sora:wght@400;600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Sora:wght@400;600;700&display=swap"
+      />
+    </noscript>
     <title>Abdullah Ahmad — Senior Full Stack Engineer</title>
   </head>
   <body>

@@ -4,10 +4,19 @@ const PANEL_SHADOW =
 /**
  * Desktop + mobile device mockups (uiwithbugvi.com selected-work style).
  */
-export default function WorkDeviceShowcase({ imageUrl, alt = '', layout = 'phone-left' }) {
-  if (!imageUrl) return null;
+function PlaceholderScreen({ name }) {
+  return (
+    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#1a1a1a] via-[#241a15] to-[#3a2418]">
+      <span className="px-3 text-center font-[family-name:var(--font-display)] text-[clamp(13px,2vw,18px)] font-semibold tracking-tight text-white/85">
+        {name}
+      </span>
+    </div>
+  );
+}
 
+export default function WorkDeviceShowcase({ imageUrl, alt = '', layout = 'phone-left', name = '' }) {
   const phoneFirst = layout === 'phone-left';
+  const hasImage = Boolean(imageUrl);
 
   return (
     <div
@@ -26,7 +35,11 @@ export default function WorkDeviceShowcase({ imageUrl, alt = '', layout = 'phone
           <span className="h-2 w-2 rounded-full bg-[#28c840]" />
         </div>
         <div className="work-device-desktop-screen overflow-hidden rounded-b-xl border border-black/10 bg-white">
-          <img src={imageUrl} alt={alt} className="block h-full w-full object-cover object-top" loading="lazy" />
+          {hasImage ? (
+            <img src={imageUrl} alt={alt} className="block h-full w-full object-cover object-top" loading="lazy" />
+          ) : (
+            <PlaceholderScreen name={name} />
+          )}
         </div>
       </div>
 
@@ -37,13 +50,17 @@ export default function WorkDeviceShowcase({ imageUrl, alt = '', layout = 'phone
       >
         <div className="rounded-[22px] border-[3px] border-[#1a1a1a] bg-[#1a1a1a] p-1 shadow-lg">
           <div className="overflow-hidden rounded-[16px] bg-white aspect-[9/19.5]">
-            <img
-              src={imageUrl}
-              alt=""
-              aria-hidden="true"
-              className="block h-full w-full object-cover object-top"
-              loading="lazy"
-            />
+            {hasImage ? (
+              <img
+                src={imageUrl}
+                alt=""
+                aria-hidden="true"
+                className="block h-full w-full object-cover object-top"
+                loading="lazy"
+              />
+            ) : (
+              <PlaceholderScreen name={name} />
+            )}
           </div>
         </div>
       </div>

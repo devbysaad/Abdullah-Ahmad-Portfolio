@@ -15,7 +15,7 @@ export const ABOUT_TITLE = '*drumroll*';
 export const DEFAULT_STATS = [
   {
     key: 'years',
-    value: '2+',
+    value: '4+',
     lines: ['Years in', 'Engineering'],
   },
   {
@@ -33,8 +33,8 @@ export const DEFAULT_STATS = [
 
 export const DEFAULT_BIO_PARAGRAPHS = [
   {
-    text: "Hellooo! I'm Abdullah Ahmad, a senior full stack software engineer from Pakistan with an experience of **2+ years in engineering**. I help transform ideas into functioning products!",
-    highlights: ['2+ years in engineering'],
+    text: "Hellooo! I'm Abdullah Ahmad, a senior full stack software engineer from Pakistan with an experience of **4+ years in engineering**. I help transform ideas into functioning products!",
+    highlights: ['4+ years in engineering'],
   },
   {
     text: 'I have headlined **~30+ projects** and helped teams ship products that scale. The idea of taking products from scratch and building them is what excites me!',

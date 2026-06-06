@@ -1,82 +1,118 @@
-import { createContext, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import Lenis from 'lenis';
-import { gsap, ScrollTrigger } from '../lib/gsap';
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export const SmoothScrollContext = createContext(null);
 
 /**
- * Lenis smooth scroll + GSAP ScrollTrigger sync (standard stack for buttery scroll).
+ * Lenis + GSAP ScrollTrigger — loaded after first paint so they don't block LCP.
  */
 export function SmoothScrollProvider({ children, enabled = true }) {
   const lenisRef = useRef(null);
   const [ready, setReady] = useState(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!enabled || typeof window === 'undefined') return undefined;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return undefined;
 
-    const lenis = new Lenis({
-      duration: 1.35,
-      easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.15,
-      infinite: false,
-    });
+    let destroyed = false;
+    let lenis = null;
+    let gsapRef = null;
+    let ticker = null;
+    let onScroll = null;
+    let onAnchorClick = null;
+    let idleId = null;
+    let timeoutId = null;
 
-    lenisRef.current = lenis;
+    const init = async () => {
+      const [{ default: Lenis }, gsapModule] = await Promise.all([
+        import('lenis'),
+        import('../lib/gsap'),
+        import('lenis/dist/lenis.css'),
+      ]);
 
-    const onScroll = () => ScrollTrigger.update();
-    lenis.on('scroll', onScroll);
+      if (destroyed) return;
 
-    const ticker = (time) => {
-      lenis.raf(time * 1000);
-    };
-    gsap.ticker.add(ticker);
-    gsap.ticker.lagSmoothing(0);
+      const { gsap, ScrollTrigger } = gsapModule;
+      gsapRef = gsap;
 
-    document.documentElement.classList.add('lenis', 'lenis-smooth');
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
-      setReady(true);
-    });
+      lenis = new Lenis({
+        duration: 0.95,
+        easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1.15,
+        touchMultiplier: 1.2,
+        infinite: false,
+      });
 
-    const onAnchorClick = (event) => {
-      const anchor = event.target.closest('a[href^="#"]');
-      if (!anchor || anchor.dataset.nativeScroll !== undefined) return;
+      lenisRef.current = lenis;
 
-      const href = anchor.getAttribute('href');
-      if (!href) return;
+      onScroll = () => ScrollTrigger.update();
+      lenis.on('scroll', onScroll);
 
-      if (href === '#') {
+      ticker = (time) => {
+        lenis.raf(time * 1000);
+      };
+      gsap.ticker.add(ticker);
+      gsap.ticker.lagSmoothing(0);
+
+      document.documentElement.classList.add('lenis', 'lenis-smooth');
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+        setReady(true);
+      });
+
+      onAnchorClick = (event) => {
+        const anchor = event.target.closest('a[href^="#"]');
+        if (!anchor || anchor.dataset.nativeScroll !== undefined) return;
+
+        const href = anchor.getAttribute('href');
+        if (!href) return;
+
+        if (href === '#') {
+          event.preventDefault();
+          lenis.scrollTo(0);
+          return;
+        }
+
+        const target = document.querySelector(href);
+        if (!target) return;
+
         event.preventDefault();
-        lenis.scrollTo(0);
-        return;
-      }
+        lenis.scrollTo(target, { offset: -96 });
+      };
 
-      const target = document.querySelector(href);
-      if (!target) return;
-
-      event.preventDefault();
-      lenis.scrollTo(target, { offset: -96 });
+      document.addEventListener('click', onAnchorClick);
     };
 
-    document.addEventListener('click', onAnchorClick);
+    if (typeof requestIdleCallback === 'function') {
+      idleId = requestIdleCallback(init, { timeout: 1500 });
+    } else {
+      timeoutId = setTimeout(init, 80);
+    }
 
     return () => {
-      document.removeEventListener('click', onAnchorClick);
+      destroyed = true;
+
+      if (idleId != null) cancelIdleCallback(idleId);
+      if (timeoutId != null) clearTimeout(timeoutId);
+
       setReady(false);
       document.documentElement.classList.remove('lenis', 'lenis-smooth');
-      lenis.off('scroll', onScroll);
-      gsap.ticker.remove(ticker);
-      lenis.destroy();
+
+      if (onAnchorClick) document.removeEventListener('click', onAnchorClick);
+      if (lenis && onScroll) lenis.off('scroll', onScroll);
+      if (gsapRef && ticker) gsapRef.ticker.remove(ticker);
+
+      lenis?.destroy();
       lenisRef.current = null;
-      ScrollTrigger.clearScrollMemory?.();
-      ScrollTrigger.refresh();
+
+      import('../lib/gsap').then(({ ScrollTrigger }) => {
+        ScrollTrigger.clearScrollMemory?.();
+        ScrollTrigger.refresh();
+      });
     };
   }, [enabled]);
 

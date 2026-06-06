@@ -1,41 +1,51 @@
-import SmoothScroll from '../components/SmoothScroll';
+import { lazy, Suspense, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import HeroHeadingSection from '../components/HeroHeadingSection';
-import HeroVideoSection from '../components/HeroVideoSection';
-import BrandsStrip from '../components/BrandsStrip';
-import Services from '../components/Services';
-import WhyMe from '../components/WhyMe';
-import Work from '../components/Work';
-import Experience from '../components/Experience';
-import About from '../components/About';
-import FAQ from '../components/FAQ';
-import Testimonials from '../components/Testimonials';
-import Contact from '../components/Contact';
-import Footer from '../components/Footer';
+import SmoothScroll from '../components/SmoothScroll';
 import { usePortfolioData } from '../hooks/usePortfolioData';
 
-export default function Home() {
-  const { projects, services, testimonials, about, experience, loading, apiOnline } =
-    usePortfolioData();
+const HeroVideoSection = lazy(() => import('../components/HeroVideoSection'));
+const BrandsStrip = lazy(() => import('../components/BrandsStrip'));
+const WhyMe = lazy(() => import('../components/WhyMe'));
+const Services = lazy(() => import('../components/Services'));
+const Work = lazy(() => import('../components/Work'));
+const Experience = lazy(() => import('../components/Experience'));
+const About = lazy(() => import('../components/About'));
+const FAQ = lazy(() => import('../components/FAQ'));
+const Testimonials = lazy(() => import('../components/Testimonials'));
+const Contact = lazy(() => import('../components/Contact'));
+const Footer = lazy(() => import('../components/Footer'));
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f4f4f4]">
-        <div
-          className="w-10 h-10 rounded-full border-2 border-t-transparent animate-spin"
-          style={{ borderColor: 'var(--color-accent)', borderTopColor: 'transparent' }}
-          aria-label="Loading portfolio"
-        />
-      </div>
-    );
-  }
+function SectionShell({ minHeight = 'min-h-[80px]' }) {
+  return <div className={minHeight} aria-hidden="true" />;
+}
+
+export default function Home() {
+  const { projects, services, testimonials, about, experience, apiOnline } = usePortfolioData();
+
+  useEffect(() => {
+    const prefetch = [
+      import('../components/HeroVideoSection'),
+      import('../components/BrandsStrip'),
+      import('../components/WhyMe'),
+      import('../components/Services'),
+      import('../components/Work'),
+      import('../components/Experience'),
+      import('../components/About'),
+      import('../components/FAQ'),
+      import('../components/Testimonials'),
+      import('../components/Contact'),
+      import('../components/Footer'),
+    ];
+    prefetch.forEach((load) => load.catch(() => {}));
+  }, []);
 
   return (
     <SmoothScroll>
       <Navbar />
       {!apiOnline && (
         <div
-          className="fixed top-24 left-1/2 z-40 -translate-x-1/2 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-center text-xs text-amber-900 shadow-sm"
+          className="fixed top-20 sm:top-24 left-1/2 z-40 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-center text-[11px] sm:text-xs text-amber-900 shadow-sm"
           role="status"
         >
           Showing offline content — connect the API and MongoDB for live data.
@@ -43,20 +53,53 @@ export default function Home() {
       )}
       <main>
         <div className="hero-region" data-name="hero-region">
-          <HeroHeadingSection about={about} />
+          <HeroHeadingSection />
         </div>
-        <HeroVideoSection />
-        <BrandsStrip />
-        <WhyMe about={about} />
-        <Services services={services} />
-        <Work projects={projects} />
-        <Experience experience={experience} />
-        <About about={about} />
-        <FAQ about={about} />
-        <Testimonials testimonials={testimonials} />
-        <Contact about={about} />
+
+        <Suspense fallback={<SectionShell minHeight="min-h-[280px]" />}>
+          <HeroVideoSection />
+        </Suspense>
+
+        <Suspense fallback={<SectionShell />}>
+          <BrandsStrip />
+        </Suspense>
+
+        <Suspense fallback={<SectionShell minHeight="min-h-[320px]" />}>
+          <WhyMe about={about} />
+        </Suspense>
+
+        <Suspense fallback={<SectionShell minHeight="min-h-[420px]" />}>
+          <Services services={services} />
+        </Suspense>
+
+        <Suspense fallback={<SectionShell minHeight="min-h-[480px]" />}>
+          <Work projects={projects} />
+        </Suspense>
+
+        <Suspense fallback={<SectionShell minHeight="min-h-[360px]" />}>
+          <Experience experience={experience} />
+        </Suspense>
+
+        <Suspense fallback={<SectionShell minHeight="min-h-[520px]" />}>
+          <About about={about} />
+        </Suspense>
+
+        <Suspense fallback={<SectionShell minHeight="min-h-[400px]" />}>
+          <FAQ about={about} />
+        </Suspense>
+
+        <Suspense fallback={<SectionShell minHeight="min-h-[480px]" />}>
+          <Testimonials testimonials={testimonials} />
+        </Suspense>
+
+        <Suspense fallback={<SectionShell minHeight="min-h-[520px]" />}>
+          <Contact about={about} />
+        </Suspense>
       </main>
-      <Footer about={about} />
+
+      <Suspense fallback={<SectionShell minHeight="min-h-[280px]" />}>
+        <Footer about={about} />
+      </Suspense>
     </SmoothScroll>
   );
 }

@@ -19,17 +19,17 @@ export default function Navbar() {
 
   return (
     <header
-      className="fixed top-6 left-1/2 z-50 w-[calc(100%-2.5rem)] max-w-[1280px] -translate-x-1/2 pointer-events-none md:w-[calc(100%-5rem)]"
+      className="fixed top-4 sm:top-6 left-1/2 z-50 w-[calc(100%-1.5rem)] max-w-[1280px] -translate-x-1/2 pointer-events-none sm:w-[calc(100%-2.5rem)] md:w-[calc(100%-5rem)]"
       data-name="navbar-shell"
     >
       <motion.nav
         initial={{ opacity: 0.001 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.44, 0, 0.56, 1] }}
-        className={`pointer-events-auto mx-auto flex h-16 w-fit max-w-full items-center justify-between gap-5 glass-nav px-3 md:px-4 ${
+        className={`pointer-events-auto mx-auto flex h-14 sm:h-16 w-full max-w-full items-center justify-between gap-3 glass-nav px-3 sm:px-4 ${
           scrolled ? 'shadow-[0_8px_30px_rgba(0,0,0,0.08)]' : ''
         }`}
-        style={{ minHeight: '64px' }}
+        style={{ minHeight: '56px' }}
       >
         <NavLogo />
 
@@ -74,7 +74,7 @@ export default function Navbar() {
           initial={{ opacity: 0.001 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.35 }}
-          className="pointer-events-auto mx-auto mt-3 w-full max-w-sm glass-nav p-4 md:hidden"
+          className="pointer-events-auto mx-auto mt-3 w-full glass-nav p-4 md:hidden"
         >
           <div className="flex flex-col gap-3">
             {links.map((link) => (

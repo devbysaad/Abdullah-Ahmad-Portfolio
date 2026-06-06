@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, viewportOnce } from '../lib/motion';
 import AboutBio from './about/AboutBio';
-import AboutSkills from './about/AboutSkills';
 import AboutStatCard from './about/AboutStatCard';
 import { resolveMediaUrl } from '../lib/mediaUrl';
 import {
@@ -54,14 +53,7 @@ export default function About({ about }) {
           </header>
 
           <div className="about-drumroll-body" data-name="about-drumroll-body">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
-              variants={fadeIn}
-              className="about-drumroll-media"
-              data-name="about-photo"
-            >
+            <div className="about-drumroll-media" data-name="about-photo">
               <div className="about-photo-frame">
                 {profileSrc ? (
                   <img
@@ -76,17 +68,9 @@ export default function About({ about }) {
                   </div>
                 )}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
-              variants={fadeIn}
-              custom={0.1}
-              className="about-drumroll-content"
-              data-name="about-copy-column"
-            >
+            <div className="about-drumroll-content" data-name="about-copy-column">
               <div className="about-drumroll-stats" data-name="about-stats-row">
                 {stats.map((stat) => (
                   <AboutStatCard
@@ -100,9 +84,8 @@ export default function About({ about }) {
 
               <div className="about-drumroll-copy">
                 <AboutBio paragraphs={bioParagraphs} />
-                <AboutSkills about={about} />
               </div>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
       </div>

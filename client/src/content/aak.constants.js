@@ -9,7 +9,7 @@ export const HERO_CTA_PRIMARY = "Let's Ship";
 export const HERO_CTA_SECONDARY = 'Work with me';
 
 export const WHY_ME_TITLE = 'WHY ME ?';
-export const EXPERIENCE_TITLE = 'WORK EXPERIENCE (2+ YOE)';
+export const EXPERIENCE_TITLE = 'WORK EXPERIENCE (4+ YOE)';
 export const SKILLS_TITLE = 'SKILLS';
 
 /** Local fallback in public/; production profile comes from Cloudinary via API */
@@ -32,7 +32,7 @@ export const DEFAULT_HIGHLIGHTS = [
   {
     title: 'Professional Expertise',
     description:
-      'Bringing over two years of hands-on experience in developing robust, scalable applications.',
+      'Bringing over four years of hands-on experience in developing robust, scalable applications.',
   },
   {
     title: 'Unmatched Work Ethic',
@@ -49,6 +49,15 @@ export const DEFAULT_HIGHLIGHTS = [
     description:
       'Created 12+ cutting-edge applications, showcasing a diverse skill set and adaptability to various project needs.',
   },
+];
+
+/** Experience-section company pills → logo + link to the company's LinkedIn page */
+export const EXPERIENCE_COMPANIES = [
+  { key: 'tapforce', name: 'Tapforce', domain: 'tapforce.com', linkedin: 'https://www.linkedin.com/company/tapforce' },
+  { key: 'npc-labs', name: 'NPC Labs', domain: 'npclabs.org', linkedin: 'https://www.linkedin.com/company/npc-labs-inc' },
+  { key: 'nybble', name: 'Nybble', domain: 'nybble.co.uk', linkedin: 'https://www.linkedin.com/search/results/all/?keywords=Nybble.co.uk%20Ltd' },
+  { key: 'dropella', name: 'Dropella', domain: 'dropella.io', linkedin: 'https://www.linkedin.com/company/dropellaa' },
+  { key: 'dubizzle-labs', name: 'Dubizzle Labs', domain: 'dubizzle.com', linkedin: 'https://www.linkedin.com/company/dubizzlelabs' },
 ];
 
 /** Shown when /api/experience is unavailable or empty */

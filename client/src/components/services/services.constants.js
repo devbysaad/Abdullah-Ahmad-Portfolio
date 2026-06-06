@@ -13,6 +13,9 @@ export const SERVICE_IMAGES = {
 export const CARD_SHADOW =
   '0 0.7065919983928324px 0.49461439887498265px -0.375px rgba(5,5,5,0.05), 0 1.8065619053231785px 1.264593333726225px -0.75px rgba(5,5,5,0.05), 0 3.6217592146567767px 2.5352314502597437px -1.125px rgba(5,5,5,0.05), 0 6.8655999097303715px 4.80591993681126px -1.5px rgba(5,5,5,0.05), 0 13.646761411524492px 9.552732988067145px -1.875px rgba(5,5,5,0.05), 0 30px 21px -2.25px rgba(5,5,5,0.06)';
 
+export const CARD_SHADOW_HOVER =
+  '0 12px 32px rgba(0, 0, 0, 0.14), 0 28px 56px rgba(254, 75, 1, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.08)';
+
 /** Default copy; API may override title/description by card index */
 export const SERVICE_CARDS = [
   {
