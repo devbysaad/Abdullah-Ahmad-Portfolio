@@ -24,6 +24,11 @@ const connectDatabase = async () => {
       .then((conn) => {
         console.log('MongoDB connected');
         return conn;
+      })
+      .catch((err) => {
+        globalCache.__mongoose.promise = null;
+        globalCache.__mongoose.conn = null;
+        throw err;
       });
   }
 
