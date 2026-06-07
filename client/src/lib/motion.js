@@ -68,3 +68,20 @@ export const serviceFanEntranceMobile = {
     },
   }),
 };
+
+/** FAQ question — quick pop from top, then static */
+export const faqQuestionPop = {
+  hidden: { opacity: 0, y: -14, scale: 0.94 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 620,
+      damping: 28,
+      mass: 0.65,
+      delay: i * 0.05,
+    },
+  }),
+};

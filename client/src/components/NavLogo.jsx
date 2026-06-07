@@ -22,7 +22,7 @@ export default function NavLogo() {
         className="nav-logo-mark"
       >
         {/* Rounded black background */}
-        <rect width="34" height="34" rx="8" fill="#111011" />
+        <rect width="34" height="34" rx="8" fill="var(--color-text)" />
 
         {/* Left stroke of A */}
         <line
@@ -44,7 +44,7 @@ export default function NavLogo() {
         <line
           x1="11.5" y1="20"
           x2="22.5" y2="20"
-          stroke="#FE4B01"
+          stroke="var(--color-primary)"
           strokeWidth="2.6"
           strokeLinecap="round"
         />

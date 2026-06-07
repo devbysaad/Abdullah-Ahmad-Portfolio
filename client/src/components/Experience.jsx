@@ -1,10 +1,15 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { fadeIn, viewportOnce } from '../lib/motion';
+import npcLabsLogo from '../assets/brands/npc-labs.png';
 import { EXPERIENCE_COMPANIES } from '../content/aak.constants';
 import CompanyLogo from './ui/CompanyLogo';
 
-function CompanyPill({ name, domain, linkedin }) {
+const COMPANY_LOGOS = {
+  'npc-labs': npcLabsLogo,
+};
+
+function CompanyPill({ name, domain, linkedin, logoKey }) {
   return (
     <a
       className="exp-company-pill"
@@ -16,6 +21,7 @@ function CompanyPill({ name, domain, linkedin }) {
       <CompanyLogo
         name={name}
         domain={domain}
+        localLogo={COMPANY_LOGOS[logoKey]}
         className="exp-company-pill-logo"
         badgeClassName="exp-company-pill-logo exp-company-pill-logo--initials"
         showInitials
@@ -61,12 +67,13 @@ export default function Experience({ experience = [] }) {
                 name={company.name}
                 domain={company.domain}
                 linkedin={company.linkedin}
+                logoKey={company.key}
               />
             ))}
           </div>
         </motion.header>
 
-        <div className="experience-list border-t border-[#e8e8e8]">
+        <div className="experience-list border-t border-border-light">
           {items.map((item, i) => (
             <motion.article
               key={item._id}

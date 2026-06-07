@@ -25,7 +25,7 @@ function CrudList({ items, fields, onEdit, onDelete }) {
             </button>
             <button
               type="button"
-              className="text-xs px-4 py-2 rounded-full border border-red-500/40 text-red-400 hover:bg-red-500/10"
+              className="text-xs px-4 py-2 rounded-full border border-danger/40 text-danger-light hover:bg-danger/10"
               onClick={() => onDelete(item._id)}
             >
               Delete

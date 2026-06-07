@@ -16,7 +16,7 @@ export default function WhyMe({ about }) {
   return (
     <section
       id="why-me"
-      className="section-pad why-me-section bg-[#f4f4f4]"
+      className="section-pad why-me-section bg-bg"
       data-name="why-me-section"
     >
       <div className="content-wrap max-w-[1280px]">

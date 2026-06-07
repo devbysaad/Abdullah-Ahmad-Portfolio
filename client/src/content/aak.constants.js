@@ -13,7 +13,7 @@ export const EXPERIENCE_TITLE = 'WORK EXPERIENCE (4+ YOE)';
 export const SKILLS_TITLE = 'SKILLS';
 
 /** Local fallback in public/; production profile comes from Cloudinary via API */
-export const DEFAULT_PROFILE_IMAGE = '/abdullah.avif';
+export const DEFAULT_PROFILE_IMAGE = '/abdullah.png';
 
 export const DEFAULT_WHY_ME_INTRO =
   'Full stack engineer focused on scalable SaaS and product delivery. I have shipped for Zameen.com and Bayut.com, partnered with 20+ clients, and work across SvelteKit, Next.js, Supabase, and the MERN stack—with clear requirements, daily updates, and on-time releases.';

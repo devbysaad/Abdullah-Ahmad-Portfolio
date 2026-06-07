@@ -47,6 +47,7 @@ export default function BrandsStrip() {
                 domain={brand.domain}
                 logo={brand.logo}
                 badge={brand.badge}
+                url={brand.url}
               />
             </motion.div>
           ))}

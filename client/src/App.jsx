@@ -18,7 +18,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
-      <Toaster position="bottom-right" toastOptions={{ style: { background: '#241a15', color: '#fff' } }} />
+      <Toaster position="bottom-right" toastOptions={{ style: { background: 'var(--color-gradient-warm-mid)', color: 'var(--color-white)' } }} />
     </BrowserRouter>
   );
 }

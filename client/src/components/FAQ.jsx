@@ -50,6 +50,7 @@ export default function FAQ({ about }) {
               <FaqChatItem
                 key={item.q}
                 item={item}
+                index={index}
                 open={openSet.has(index)}
                 onToggle={() => handleToggle(index)}
               />

@@ -5,12 +5,12 @@ export default function WebIllustration() {
   return (
     <div className="relative mx-auto h-[104px] w-[160px] shrink-0">
       <div
-        className="absolute left-1/2 top-6 h-14 w-[87px] -translate-x-1/2 rounded-[7px] bg-[#ddd] shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
+        className="absolute left-1/2 top-6 h-14 w-[87px] -translate-x-1/2 rounded-[7px] bg-illustration-light shadow-[0_4px_12px_var(--color-black-a12)]"
         style={{ transform: 'translateX(-50%) rotate(4deg)' }}
         aria-hidden
       />
       <div
-        className="absolute left-1/2 top-6 h-14 w-[87px] -translate-x-1/2 rounded-[7px] bg-[#c7c7c7] shadow-[0_6px_16px_rgba(0,0,0,0.14)]"
+        className="absolute left-1/2 top-6 h-14 w-[87px] -translate-x-1/2 rounded-[7px] bg-illustration-mid shadow-[0_6px_16px_var(--color-black-a14)]"
         style={{ transform: 'translateX(-50%) rotate(8deg)' }}
         aria-hidden
       />

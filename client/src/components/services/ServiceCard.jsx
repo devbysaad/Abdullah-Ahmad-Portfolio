@@ -10,15 +10,15 @@ const VISUALS = {
 
 export default function ServiceCard({ card }) {
   const visual = VISUALS[card.key];
-  const isLight = card.bg === '#fece7a';
+  const isLight = card.bg === 'var(--color-service-gold)';
 
   return (
     <article
-      className={`service-card group relative flex h-[245px] w-[200px] cursor-default flex-col justify-between overflow-hidden rounded-2xl border px-4 pb-4 pt-5 shrink-0${isLight ? ' service-card--light' : ''}`}
+      className={`service-card group relative flex cursor-default flex-col overflow-hidden rounded-2xl border shrink-0${isLight ? ' service-card--light' : ''}`}
       style={{
         backgroundColor: card.bg,
         boxShadow: CARD_SHADOW,
-        borderColor: 'rgba(119, 119, 119, 0.25)',
+        borderColor: 'var(--color-gray-a25)',
       }}
     >
       <span
@@ -26,18 +26,18 @@ export default function ServiceCard({ card }) {
         aria-hidden="true"
       />
 
-      <div className="relative z-[1] flex h-[108px] w-full shrink-0 items-center justify-center overflow-hidden">
+      <div className="service-card-visual relative z-[1] flex w-full shrink-0 items-center justify-center overflow-hidden">
         {visual}
       </div>
 
-      <div className="relative z-[1] flex w-full flex-col gap-0.5">
+      <div className="service-card-copy relative z-[1] flex w-full flex-col">
         <h3
-          className="font-[family-name:var(--font-display)] text-[18px] font-semibold leading-tight"
+          className="service-card-title font-[family-name:var(--font-display)] font-semibold leading-tight"
           style={{ color: card.titleColor }}
         >
           {card.title}
         </h3>
-        <p className="text-[10.5px] leading-[1.45]" style={{ color: card.descriptionColor }}>
+        <p className="service-card-desc leading-[1.45]" style={{ color: card.descriptionColor }}>
           {card.description}
         </p>
       </div>

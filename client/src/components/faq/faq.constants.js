@@ -7,11 +7,11 @@ export const FAQ_TITLE = 'Have a question?';
 export const FAQ_PROFILE_IMAGE = `${FRAMER}/JKUzh2XaCBwQivW5Wa4KQOdLCs.png`;
 
 export const FAQ_COLORS = {
-  questionGrey: '#1a1c1d',
-  questionBlack: '#000000',
-  questionOpen: '#09162a',
-  questionTextOpen: '#0078ff',
-  answer: '#0078ff',
+  questionGrey: 'var(--color-device-navy)',
+  questionBlack: 'var(--color-black)',
+  questionOpen: 'var(--color-device-blue)',
+  questionTextOpen: 'var(--color-secondary)',
+  answer: 'var(--color-secondary)',
 };
 
 import { DEFAULT_FAQ_ITEMS } from '../../content/aak.constants';

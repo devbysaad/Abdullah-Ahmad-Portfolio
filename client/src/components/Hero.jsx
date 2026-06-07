@@ -73,7 +73,7 @@ export default function Hero() {
                         width: `${frameWidth}px`,
                         height: `${HERO_CARD_HEIGHT}px`,
                         borderRadius: '16px',
-                        border: '0.5px solid rgba(0, 0, 0, 0.15)',
+                        border: '0.5px solid var(--color-black-a15)',
                       }}
                       data-name="hero-card-frame"
                     >
@@ -93,7 +93,7 @@ export default function Hero() {
                         fontFamily: 'var(--font-display)',
                         fontSize: '12px',
                         lineHeight: '1.35',
-                        color: 'rgb(128, 128, 128)',
+                        color: 'var(--color-gray)',
                       }}
                     >
                       {card.label}
@@ -109,7 +109,7 @@ export default function Hero() {
           type="button"
           onClick={scrollNext}
           className="hidden md:flex absolute right-4 lg:right-8 top-[42%] -translate-y-1/2 h-[42px] w-[42px] rounded-full items-center justify-center text-white/90 transition-opacity hover:opacity-90"
-          style={{ backgroundColor: 'rgba(120, 120, 120, 0.85)' }}
+          style={{ backgroundColor: 'var(--color-gray-a85)' }}
           aria-label="Scroll showcase forward"
           data-name="hero-showcase-next"
         >

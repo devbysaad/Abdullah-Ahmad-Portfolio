@@ -3,13 +3,12 @@ import { motion } from 'framer-motion';
 import { fadeIn, viewportOnce } from '../lib/motion';
 import AboutBio from './about/AboutBio';
 import AboutStatCard from './about/AboutStatCard';
-import { resolveMediaUrl } from '../lib/mediaUrl';
+import { getProfileImageUrl } from '../lib/mediaUrl';
 import {
   ABOUT_LABEL,
   ABOUT_TITLE,
   DEFAULT_BIO_PARAGRAPHS,
   DEFAULT_STATS,
-  REFERENCE_PROFILE_IMAGE,
 } from './about/about.constants';
 
 function buildStats(about) {
@@ -34,61 +33,57 @@ function buildBioParagraphs(about) {
 export default function About({ about }) {
   const stats = useMemo(() => buildStats(about), [about]);
   const bioParagraphs = useMemo(() => buildBioParagraphs(about), [about]);
-  const profileSrc = resolveMediaUrl(about?.profileImageUrl, REFERENCE_PROFILE_IMAGE);
+  const profileSrc = getProfileImageUrl(about?.profileImageUrl);
 
   return (
-    <section id="about" className="about-section section-pad" data-name="about-section">
-      <div className="content-wrap">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          variants={fadeIn}
-          className="about-drumroll-panel"
-          data-name="about-drumroll-panel"
-        >
-          <header className="about-drumroll-header" data-name="about-drumroll-header">
-            <p className="about-drumroll-label">{ABOUT_LABEL}</p>
-            <h2 className="about-drumroll-title">{ABOUT_TITLE}</h2>
-          </header>
+    <section id="about" className="about-section" data-name="about-section">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce}
+        variants={fadeIn}
+        className="about-drumroll-panel"
+        data-name="about-drumroll-panel"
+      >
+        <header className="about-drumroll-header" data-name="about-drumroll-header">
+          <p className="about-drumroll-label">{ABOUT_LABEL}</p>
+          <h2 className="about-drumroll-title">{ABOUT_TITLE}</h2>
+        </header>
 
-          <div className="about-drumroll-body" data-name="about-drumroll-body">
-            <div className="about-drumroll-media" data-name="about-photo">
-              <div className="about-photo-frame">
-                {profileSrc ? (
-                  <img
-                    src={profileSrc}
-                    alt="Abdullah Ahmad"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                ) : (
-                  <div className="about-photo-placeholder" aria-hidden>
-                    Add profile photo in Admin
-                  </div>
-                )}
-              </div>
+        <div className="about-drumroll-body" data-name="about-drumroll-body">
+          <div className="about-drumroll-col about-drumroll-col--media" data-name="about-media-column">
+            <div className="about-photo-frame" data-name="about-photo">
+              {profileSrc ? (
+                <img
+                  src={profileSrc}
+                  alt="Abdullah Ahmad"
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <div className="about-photo-placeholder" aria-hidden>
+                  Add profile photo in Admin
+                </div>
+              )}
             </div>
 
-            <div className="about-drumroll-content" data-name="about-copy-column">
-              <div className="about-drumroll-stats" data-name="about-stats-row">
-                {stats.map((stat) => (
-                  <AboutStatCard
-                    key={stat.key}
-                    value={stat.value}
-                    lines={stat.lines}
-                    decoration={stat.decoration}
-                  />
-                ))}
-              </div>
-
-              <div className="about-drumroll-copy">
-                <AboutBio paragraphs={bioParagraphs} />
-              </div>
+            <div className="about-drumroll-stats" data-name="about-stats-row">
+              {stats.map((stat) => (
+                <AboutStatCard
+                  key={stat.key}
+                  value={stat.value}
+                  lines={stat.lines}
+                  decoration={stat.decoration}
+                />
+              ))}
             </div>
           </div>
-        </motion.div>
-      </div>
+
+          <div className="about-drumroll-col about-drumroll-col--copy" data-name="about-copy-column">
+            <AboutBio paragraphs={bioParagraphs} />
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

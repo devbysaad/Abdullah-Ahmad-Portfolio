@@ -25,7 +25,7 @@ export default function Marquee({ projects }) {
                 className="snap-center shrink-0 w-[280px] md:w-[360px] rounded-[16px] overflow-hidden border"
                 style={{
                   borderColor: 'var(--color-border)',
-                  boxShadow: '-3.2px 1.07px 8.57px rgba(0,0,0,0.1), -12px 8px 28px rgba(0,0,0,0.06)',
+                  boxShadow: '-3.2px 1.07px 8.57px var(--color-black-a10), -12px 8px 28px var(--color-black-a6)',
                 }}
               >
                 <div className="aspect-[1/1.1] md:aspect-[1/1] overflow-hidden bg-white">

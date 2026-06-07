@@ -41,7 +41,7 @@ export default function HeroVideoSection() {
           viewport={{ once: true, amount: 0.35 }}
           variants={fadeIn}
           className="relative overflow-hidden rounded-2xl sm:rounded-[30px] border bg-black"
-          style={{ borderColor: 'rgba(34, 34, 34, 0.16)' }}
+          style={{ borderColor: 'var(--color-charcoal-a16)' }}
           data-name="hero-video-frame"
         >
           <div className="aspect-[16/9] w-full">
@@ -58,7 +58,7 @@ export default function HeroVideoSection() {
           <button
             type="button"
             onClick={handleToggle}
-            className="absolute left-1/2 top-1/2 flex h-14 w-14 sm:h-20 sm:w-20 md:h-24 md:w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[6px] border-white bg-white text-black transition-colors duration-300 hover:bg-red-600 hover:text-white sm:border-[8px]"
+            className="absolute left-1/2 top-1/2 flex h-14 w-14 sm:h-20 sm:w-20 md:h-24 md:w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[6px] border-white bg-white text-black transition-colors duration-300 hover:bg-primary hover:text-white sm:border-[8px]"
             aria-label={isPlaying ? 'Pause video' : 'Play video'}
           >
             {isPlaying ? <Pause size={30} fill="currentColor" /> : <Play size={34} fill="currentColor" />}

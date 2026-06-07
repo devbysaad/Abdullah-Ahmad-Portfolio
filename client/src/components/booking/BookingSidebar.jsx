@@ -1,6 +1,5 @@
 import { Check, Clock, Globe, Video } from 'lucide-react';
-import { REFERENCE_PROFILE_IMAGE } from '../about/about.constants';
-import { resolveMediaUrl } from '../../lib/mediaUrl';
+import { getProfileImageUrl } from '../../lib/mediaUrl';
 import {
   BOOKING_EVENT_DESCRIPTION,
   BOOKING_EVENT_TITLE,
@@ -14,7 +13,7 @@ export default function BookingSidebar({
   timezone,
   onTimezoneChange,
 }) {
-  const avatar = resolveMediaUrl(profileImageUrl, REFERENCE_PROFILE_IMAGE);
+  const avatar = getProfileImageUrl(profileImageUrl);
 
   return (
     <aside className="booking-sidebar" data-name="booking-sidebar">

@@ -15,7 +15,7 @@
       ]
     },
     {
-      "source": "/abdullah.avif",
+      "source": "/abdullah.png",
       "headers": [
         {
           "key": "Cache-Control",

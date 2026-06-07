@@ -1,6 +1,5 @@
-/** Domains with no reliable public favicon — skip remote requests, use wordmark/initials. */
 /** Domains with no reliable public favicon — use initials/wordmark only (no network 404s). */
-const NO_REMOTE_LOGO = new Set(['dropella.io', 'npclabs.org']);
+const NO_REMOTE_LOGO = new Set(['dropella.io']);
 
 /** Logo sources — direct site favicon, then DuckDuckGo (no Google/gstatic — avoids 404 noise). */
 export function companyLogoSources(domain) {

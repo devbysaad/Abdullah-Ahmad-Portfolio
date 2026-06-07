@@ -2,12 +2,15 @@ import {
   formatTestimonialRole,
   resolveTestimonialAvatar,
   splitTestimonialParagraphs,
+  testimonialFlagUrl,
 } from './testimonials.constants';
 
 export default function TestimonialCard({ testimonial }) {
   const paragraphs = splitTestimonialParagraphs(testimonial.text);
   const subtitle = formatTestimonialRole(testimonial.role, testimonial.company);
   const avatarSrc = resolveTestimonialAvatar(testimonial.avatar);
+  const flagSrc = testimonialFlagUrl(testimonial.countryCode);
+  const profileUrl = testimonial.profileUrl?.trim();
 
   return (
     <article className="testimonial-card" data-name="testimonial-card">
@@ -32,13 +35,38 @@ export default function TestimonialCard({ testimonial }) {
               loading="lazy"
               decoding="async"
               className="testimonial-card-avatar"
+              draggable={false}
             />
           ) : (
             <div className="testimonial-card-avatar testimonial-card-avatar--placeholder" aria-hidden="true" />
           )}
+          {flagSrc ? (
+            <img
+              src={flagSrc}
+              alt=""
+              width={18}
+              height={12}
+              loading="lazy"
+              decoding="async"
+              className="testimonial-card-flag"
+              draggable={false}
+              aria-hidden="true"
+            />
+          ) : null}
         </div>
         <div className="testimonial-card-meta">
-          <p className="testimonial-card-name">{testimonial.name}</p>
+          {profileUrl ? (
+            <a
+              href={profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="testimonial-card-name testimonial-card-name--link"
+            >
+              {testimonial.name}
+            </a>
+          ) : (
+            <p className="testimonial-card-name">{testimonial.name}</p>
+          )}
           {subtitle ? <p className="testimonial-card-role">{subtitle}</p> : null}
         </div>
       </footer>

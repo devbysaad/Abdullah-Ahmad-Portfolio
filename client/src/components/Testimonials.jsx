@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { useDragScroll } from '../hooks/useDragScroll';
 import { fadeIn, viewportOnce } from '../lib/motion';
 import LoveLettersHeart from './testimonials/LoveLettersHeart';
 import TestimonialCard from './testimonials/TestimonialCard';
@@ -11,6 +12,9 @@ import {
 } from './testimonials/testimonials.constants';
 
 export default function Testimonials({ testimonials }) {
+  const scrollerRef = useRef(null);
+  useDragScroll(scrollerRef);
+
   const items = useMemo(
     () => normalizeTestimonials(testimonials?.length ? testimonials : FALLBACK_TESTIMONIALS),
     [testimonials],
@@ -47,6 +51,7 @@ export default function Testimonials({ testimonials }) {
         whileInView="visible"
         viewport={viewportOnce}
         variants={fadeIn}
+        ref={scrollerRef}
         className="testimonials-marquee-window"
         data-name="testimonials-marquee-window"
       >
@@ -54,11 +59,6 @@ export default function Testimonials({ testimonials }) {
           <div className="testimonials-marquee-set" aria-label="Client testimonials">
             {items.map((t) => (
               <TestimonialCard key={t.name} testimonial={t} />
-            ))}
-          </div>
-          <div className="testimonials-marquee-set" aria-hidden="true">
-            {items.map((t) => (
-              <TestimonialCard key={`${t.name}-dup`} testimonial={t} />
             ))}
           </div>
         </div>

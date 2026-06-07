@@ -1,8 +1,7 @@
-import { REFERENCE_PROFILE_IMAGE } from '../about/about.constants';
-import { resolveMediaUrl } from '../../lib/mediaUrl';
+import { getProfileImageUrl } from '../../lib/mediaUrl';
 
 export default function FaqBookCallCard({ profileImageUrl }) {
-  const src = resolveMediaUrl(profileImageUrl, REFERENCE_PROFILE_IMAGE);
+  const src = getProfileImageUrl(profileImageUrl);
 
   return (
     <div className="faq-bookcall-card" data-name="faq-bookcall-card">
@@ -15,14 +14,14 @@ export default function FaqBookCallCard({ profileImageUrl }) {
       >
         <path
           d="M12 88 C45 20 95 35 128 52"
-          stroke="#d4d4d4"
+          stroke="var(--color-gray-d4)"
           strokeWidth="2"
           strokeLinecap="round"
           fill="none"
         />
         <path
           d="M128 52 L128 68 M128 52 L112 52"
-          stroke="#d4d4d4"
+          stroke="var(--color-gray-d4)"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

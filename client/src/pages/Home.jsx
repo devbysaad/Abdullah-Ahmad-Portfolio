@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import HeroHeadingSection from '../components/HeroHeadingSection';
 import SmoothScroll from '../components/SmoothScroll';
+import OfflineBanner from '../components/ui/OfflineBanner';
 import { usePortfolioData } from '../hooks/usePortfolioData';
 
 const HeroVideoSection = lazy(() => import('../components/HeroVideoSection'));
@@ -43,17 +44,10 @@ export default function Home() {
   return (
     <SmoothScroll>
       <Navbar />
-      {!apiOnline && (
-        <div
-          className="fixed top-20 sm:top-24 left-1/2 z-40 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-center text-[11px] sm:text-xs text-amber-900 shadow-sm"
-          role="status"
-        >
-          Showing offline content — connect the API and MongoDB for live data.
-        </div>
-      )}
+      {!apiOnline && <OfflineBanner />}
       <main>
         <div className="hero-region" data-name="hero-region">
-          <HeroHeadingSection />
+          <HeroHeadingSection about={about} />
         </div>
 
         <Suspense fallback={<SectionShell minHeight="min-h-[280px]" />}>

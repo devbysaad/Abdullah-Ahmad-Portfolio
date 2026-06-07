@@ -49,7 +49,7 @@ export default function ProjectModal({ project, onClose }) {
                     key={tech}
                     className="px-3 py-1 rounded-full text-xs font-medium"
                     style={{
-                      background: 'rgba(254, 75, 1, 0.12)',
+                      background: 'var(--color-primary-a12)',
                       color: 'var(--color-accent)',
                     }}
                   >

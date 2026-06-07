@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowRight, X } from 'lucide-react';
 import { useScrollProgress } from '../hooks/useSmoothScroll';
 import NavLogo from './NavLogo';
 
@@ -12,87 +12,139 @@ const links = [
   { href: '#contact', label: 'Contact' },
 ];
 
-/** Matches uiwithbugvi.com: fixed, top 24px, centered (framer-1n4yw3m-container) */
+const menuEase = [0.44, 0, 0.56, 1];
+const menuTransition = { duration: 0.42, ease: menuEase };
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const scrolled = useScrollProgress(40);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
+
+  const closeMenu = () => setOpen(false);
+
   return (
-    <header
-      className="fixed top-4 sm:top-6 left-1/2 z-50 w-[calc(100%-1.5rem)] max-w-[1280px] -translate-x-1/2 pointer-events-none sm:w-[calc(100%-2.5rem)] md:w-[calc(100%-5rem)]"
-      data-name="navbar-shell"
-    >
+    <header className="navbar-shell" data-name="navbar-shell">
       <motion.nav
+        layout
         initial={{ opacity: 0.001 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.44, 0, 0.56, 1] }}
-        className={`pointer-events-auto mx-auto flex h-14 sm:h-16 w-full max-w-full items-center justify-between gap-3 glass-nav px-3 sm:px-4 ${
-          scrolled ? 'shadow-[0_8px_30px_rgba(0,0,0,0.08)]' : ''
-        }`}
-        style={{ minHeight: '56px' }}
+        transition={{ layout: menuTransition, opacity: { duration: 0.6, ease: menuEase } }}
+        className={[
+          'glass-nav',
+          open ? 'glass-nav--open' : '',
+          scrolled && !open ? 'glass-nav--scrolled' : '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        data-name="navbar"
+        data-open={open || undefined}
       >
-        <NavLogo />
-
-        <ul className="hidden md:flex items-center gap-5 px-1">
-          {links.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-[14px] font-medium text-black/55 hover:text-black transition-colors duration-300"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <a
-          href="#contact"
-          className="hidden md:inline-flex items-center gap-2 rounded-[100px] bg-black py-2.5 pl-5 pr-2.5 text-[14px] font-semibold text-white transition-colors hover:bg-black/90"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
-          <span>Got an idea?</span>
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-black">
-            <ArrowRight size={12} strokeWidth={2.5} />
-          </span>
-        </a>
-
-        <button
-          type="button"
-          className="md:hidden p-1.5"
-          aria-label="Menu"
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className="block w-4 h-0.5 bg-black mb-1" />
-          <span className="block w-4 h-0.5 bg-black mb-1" />
-          <span className="block w-3 h-0.5 bg-black" />
-        </button>
-      </motion.nav>
-
-      {open && (
-        <motion.div
-          initial={{ opacity: 0.001 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.35 }}
-          className="pointer-events-auto mx-auto mt-3 w-full glass-nav p-4 md:hidden"
-        >
-          <div className="flex flex-col gap-3">
-            {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-[15px]"
-                onClick={() => setOpen(false)}
-              >
-                {link.label}
-              </a>
-            ))}
-            <a href="#contact" className="btn-primary w-fit" onClick={() => setOpen(false)}>
-              Let&apos;s Ship
-            </a>
+        <div className="glass-nav-mobile-top md:hidden">
+          <div className="glass-nav-icon-slot">
+            <AnimatePresence mode="wait" initial={false}>
+              {open ? (
+                <motion.button
+                  key="close"
+                  type="button"
+                  className="glass-nav-icon-btn"
+                  aria-label="Close menu"
+                  initial={{ opacity: 0, rotate: -45, scale: 0.85 }}
+                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                  exit={{ opacity: 0, rotate: 45, scale: 0.85 }}
+                  transition={{ duration: 0.28, ease: menuEase }}
+                  onClick={closeMenu}
+                >
+                  <X size={20} strokeWidth={2} color="var(--color-gray-999)" />
+                </motion.button>
+              ) : (
+                <motion.button
+                  key="menu"
+                  type="button"
+                  className="glass-nav-toggle glass-nav-toggle--two"
+                  aria-label="Open menu"
+                  aria-expanded={false}
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.85 }}
+                  transition={{ duration: 0.28, ease: menuEase }}
+                  onClick={() => setOpen(true)}
+                >
+                  <span />
+                  <span />
+                </motion.button>
+              )}
+            </AnimatePresence>
           </div>
-        </motion.div>
-      )}
+          <NavLogo />
+        </div>
+
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.div
+              key="mobile-body"
+              className="glass-nav-mobile-body md:hidden"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={menuTransition}
+              style={{ overflow: 'hidden' }}
+            >
+              <nav className="glass-nav-mobile-links" aria-label="Mobile navigation">
+                {links.map((link, i) => (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.35, delay: open ? 0.06 + i * 0.04 : 0, ease: menuEase }}
+                    onClick={closeMenu}
+                  >
+                    {link.label}
+                  </motion.a>
+                ))}
+              </nav>
+              <motion.div
+                className="glass-nav-mobile-cta"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 4 }}
+                transition={{ duration: 0.35, delay: 0.22, ease: menuEase }}
+              >
+                <a href="#contact" className="glass-nav-cta" onClick={closeMenu}>
+                  <span>Got an idea?</span>
+                  <span className="glass-nav-cta-icon">
+                    <ArrowRight size={12} strokeWidth={2.5} />
+                  </span>
+                </a>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="glass-nav-desktop hidden md:flex">
+          <NavLogo />
+          <ul className="glass-nav-links">
+            {links.map((link) => (
+              <li key={link.href}>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+          <a href="#contact" className="glass-nav-cta">
+            <span>Got an idea?</span>
+            <span className="glass-nav-cta-icon">
+              <ArrowRight size={12} strokeWidth={2.5} />
+            </span>
+          </a>
+        </div>
+      </motion.nav>
     </header>
   );
 }

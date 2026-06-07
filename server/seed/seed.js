@@ -6,7 +6,6 @@ const { Testimonial } = require('../src/modules/testimonials/testimonial.model')
 const { Service } = require('../src/modules/services/service.model');
 const { About } = require('../src/modules/about/about.model');
 const { Experience } = require('../src/modules/experience/experience.model');
-const { resolveSeedProfileImageUrl } = require('../src/utils/cloudinaryUpload');
 const {
   TESTIMONIAL_AVATARS,
   WHY_ME_INTRO,
@@ -74,25 +73,25 @@ const seed = async () => {
     {
       name: 'Alphonso Roundtree',
       role: 'Founder & CEO Social Bevy, Former NFL Athlete',
-      company: 'Abdullah',
+      company: '',
       text: `I had the pleasure of hiring Abdullah and I gotta tell you man, I really enjoyed working with him. He was really fast, really understood the project, and really delivered. I must say that I do plan to continue to work with him. You got my recommendation for sure. Hire Abdullah to take care of your tech needs.`,
       avatar: TESTIMONIAL_AVATARS.alphonso,
       order: 0,
     },
     {
-      name: 'Bilal Bakht Ahmad',
-      role: 'Founder',
-      company: 'AutoDevice.io',
-      text: 'Talented, committed, expert on full stack projects',
-      avatar: TESTIMONIAL_AVATARS.bilal,
-      order: 1,
-    },
-    {
       name: 'Rob Eccles',
       role: 'Project Development Manager at Nybble',
       company: '',
-      text: `I had the pleasure of working with Abdullah on our Pantry Application, and I couldn't be more impressed with his expertise and commitment to delivering a high-quality product. From the start, he demonstrated deep understanding of our requirements and delivered with excellence.`,
+      text: `I had the pleasure of working with Abdullah on our Pantry Application, and I couldn't be more impressed with his expertise and commitment to delivering a high-quality product. From the start, he demonstrated a deep understanding of our project requirements, ensuring every technical detail was addressed. His skills in the technology stack were top-notch, and he consistently provided innovative solutions to challenges, streamlining our application's functionality beyond what we initially envisioned. His proactive approach, strong communication skills, and dedication to excellence made him an invaluable asset to our team. I highly recommend Abdullah for any development project — his brilliance and professionalism set him apart!`,
       avatar: TESTIMONIAL_AVATARS.rob,
+      order: 1,
+    },
+    {
+      name: 'Kelebogile Mooketsi',
+      role: 'Founder @ Good Life Money-Mastery Solutions',
+      company: '',
+      text: `Wow! What a great expert who genuinely cares about my work. Proactive and on point to make sure every inch of the development is done right and aligns with the big picture. Abdullah goes the extra mile and has great and timely communication skills. This is the developer to pick for your backend project. I look forward to more milestones in my project with him.`,
+      avatar: TESTIMONIAL_AVATARS.kelebogile,
       order: 2,
     },
     {
@@ -107,17 +106,25 @@ const seed = async () => {
       name: 'Muhammad Hisham',
       role: 'Founder of KWJA Agency and Dropella',
       company: '',
-      text: `My experience with Abdullah has been exceptional. He is a true professional and dedicated expert who has worked with unicorn companies worth over 1 BILLION USD!! His efforts are unmatched compared to other agencies I've worked with.`,
+      text: `My experience with Abdullah has been exceptional. He is a true professional and dedicated expert who has worked with unicorn companies worth over 1 BILLION USD!! His efforts are unmatched compared to other agencies on Fiverr.`,
       avatar: TESTIMONIAL_AVATARS.hisham,
       order: 4,
     },
     {
-      name: 'Kelebogile Mooketsi',
-      role: 'Founder @ Good Life Money-Mastery Solutions',
+      name: 'Saiyed Sarosh Anis',
+      role: 'Founder @ Drico Digital',
       company: '',
-      text: `Wow! What a great team of experts who genuinely care about my work. Proactive and on point to make sure every inch of the development is done right and aligns with the big picture. They go the extra mile and have great attention to detail.`,
-      avatar: TESTIMONIAL_AVATARS.kelebogile,
+      text: `I had the pleasure of working with Abdullah, and I must say he is a thorough professional. He not only completed all the tasks on time but also created my website with exceptional precision. Abdullah clearly understood what I was looking for and delivered exactly what I needed. His dedication and attention to detail made the entire process smooth and stress-free. I highly recommend his services!`,
+      avatar: TESTIMONIAL_AVATARS.sarosh,
       order: 5,
+    },
+    {
+      name: 'Bilal Bakht Ahmad',
+      role: 'Founder',
+      company: 'AutoDevice.io',
+      text: 'Talented, committed, expert on full stack projects',
+      avatar: TESTIMONIAL_AVATARS.bilal,
+      order: 6,
     },
     {
       name: 'Salik Javeed',
@@ -125,7 +132,7 @@ const seed = async () => {
       company: '',
       text: `I am pleased to recommend Mr. Abdullah Ahmad, who worked as a Senior Front-End Developer and Team Lead at Dropella since 2023. Throughout his tenure, Abdullah showcased exceptional technical skills and strong leadership abilities. I am confident that Abdullah will continue to achieve excellence in his future endeavors, and I wish him all the best in his career.`,
       avatar: TESTIMONIAL_AVATARS.salik,
-      order: 6,
+      order: 7,
     },
     {
       name: 'Ahsan Sarwar',
@@ -133,18 +140,12 @@ const seed = async () => {
       company: '',
       text: `Abdullah is one of the most talented and hardworking software engineers I have worked with, and it has been an absolute pleasure. What sets him apart is his sense of responsibility and honesty in his work. Having collaborated on numerous projects with him, I can say he is someone you can always trust to get the job done right.`,
       avatar: TESTIMONIAL_AVATARS.ahsan,
-      order: 7,
+      order: 8,
     },
   ]);
 
-  const profileImageUrl = await resolveSeedProfileImageUrl();
-  if (profileImageUrl) {
-    console.log('Profile image:', profileImageUrl);
-  } else {
-    console.log(
-      'Profile image: skipped (set CLOUDINARY_* in .env and re-seed, or upload via Admin → About)'
-    );
-  }
+  // Profile photo is served from client/public/abdullah.png — leave empty unless using Admin upload
+  const profileImageUrl = '';
 
   await About.create({
     bio: ABOUT_BIO,

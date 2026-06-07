@@ -10,7 +10,7 @@ export default function Skills({ about }) {
   }, [about]);
 
   return (
-    <section id="skills" className="section-pad py-14 md:py-18 bg-[#f4f4f4]" data-name="skills-section">
+    <section id="skills" className="section-pad py-14 md:py-18 bg-bg" data-name="skills-section">
       <div className="content-wrap max-w-[1100px]">
         <motion.header
           initial="hidden"

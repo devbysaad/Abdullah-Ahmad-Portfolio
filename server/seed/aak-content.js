@@ -6,11 +6,12 @@ const DEVNAUTS_CLIENTS = 'https://www.devnauts.io/clients';
 
 const TESTIMONIAL_AVATARS = {
   alphonso: `${DEVNAUTS_CLIENTS}/alroundtree.jpeg`,
-  bilal: `${DEVNAUTS_CLIENTS}/bakht.jpg`,
   rob: `${DEVNAUTS_CLIENTS}/rob.png`,
+  kelebogile: `${DEVNAUTS_CLIENTS}/Kelebogile.jpeg`,
   saqib: `${DEVNAUTS_CLIENTS}/saqib.jpg`,
   hisham: `${DEVNAUTS_CLIENTS}/hisham.jpg`,
-  kelebogile: `${DEVNAUTS_CLIENTS}/Kelebogile.jpeg`,
+  sarosh: `${DEVNAUTS_CLIENTS}/sarosh.jpg`,
+  bilal: `${DEVNAUTS_CLIENTS}/bakht.jpg`,
   salik: `${AAK_ASSETS}/testimonials/salik.jpeg`,
   ahsan: `${AAK_ASSETS}/testimonials/ahsan.jpeg`,
 };

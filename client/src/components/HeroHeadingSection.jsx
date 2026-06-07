@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { HERO_CTA_PRIMARY, HERO_CTA_SECONDARY } from '../content/aak.constants';
+import { getProfileImageUrl } from '../lib/mediaUrl';
 import TelegramIcon from './hero/TelegramIcon';
+import LazyImage from './ui/LazyImage';
 
 const UNDERLINE_ID = 'hero-ul';
 
@@ -65,7 +67,9 @@ function RoleCycler() {
   );
 }
 
-export default function HeroHeadingSection() {
+export default function HeroHeadingSection({ about }) {
+  const profileSrc = getProfileImageUrl(about?.profileImageUrl);
+
   return (
     <section
       className="hero-heading-section section-pad"
@@ -78,7 +82,7 @@ export default function HeroHeadingSection() {
           <symbol id={UNDERLINE_ID} viewBox="0 0 157 21">
             <path
               d="M 130.23 16.539 C 131.221 13.74 98.752 6.956 95.785 6.464 C 71.739 2.481 48.042 2.24 23.943 5.672 C 16.99 6.663 10.15 8.342 3.298 9.792 C 1.04 10.27 3.231 10.261 4.412 10.427 C 14.912 11.909 25.43 13.261 36.002 14.24 C 66.83 17.093 97.718 17.68 128.659 18.489 C 137.063 18.709 145.815 19.018 154.176 18.11 C 155.079 18.012 155.246 17.754 154.341 17.328 C 150.668 15.602 146.349 14.527 142.365 13.66 C 116.129 7.952 88.69 6.852 61.846 8.522 C 51.806 9.147 41.521 9.994 31.67 12.003 C 30.52 12.237 29.373 12.489 28.225 12.732 C 27.041 12.983 30.555 13.421 31.764 13.539 C 53.179 15.633 74.907 16.573 96.436 16.388 C 111.175 16.26 126.484 15.837 140.918 12.783 C 141.774 12.602 153.008 10.961 149.263 9.275 C 145.349 7.513 140.837 6.913 136.581 6.316 C 122.725 4.371 108.716 3.075 94.713 2.501 C 76.459 1.751 58.502 3.05 40.339 4.484 C 36.723 4.77 32.594 5.779 29.019 5.469"
-              fill="transparent" strokeWidth="3.52" stroke="#FE4B01"
+              fill="transparent" strokeWidth="3.52" stroke="var(--color-primary)"
               strokeLinecap="round" strokeMiterlimit="10"
             />
           </symbol>
@@ -144,11 +148,6 @@ export default function HeroHeadingSection() {
               </a>
             </div>
 
-            <div className="hero-proof-row" aria-label="Notable clients">
-              {['Zameen.com', 'Bayut.com', 'Dubizzle Labs', 'Dropella', 'NPC Labs'].map((name) => (
-                <span key={name} className="hero-proof-chip">{name}</span>
-              ))}
-            </div>
           </motion.div>
 
           {/* RIGHT — photo */}
@@ -169,8 +168,14 @@ export default function HeroHeadingSection() {
               <span className="hero-badge-label">Daily users · Zameen.com</span>
             </motion.div>
 
-            {/* Photo slot — empty until final image is ready */}
-            <div className="hero-photo-frame" aria-hidden="true" />
+            <div className="hero-photo-frame">
+              <LazyImage
+                src={profileSrc}
+                alt="Abdullah Ahmad"
+                className="hero-photo-img"
+                priority
+              />
+            </div>
 
             {/* Badge BR */}
             <motion.div

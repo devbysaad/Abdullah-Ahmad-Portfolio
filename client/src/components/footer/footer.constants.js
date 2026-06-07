@@ -33,7 +33,7 @@ export const SOCIAL_LINKS = [
   },
   {
     key: 'instagram',
-    href: '',
+    href: 'https://www.instagram.com/abdullah.ahmad.aak/',
     label: 'Instagram',
   },
   {

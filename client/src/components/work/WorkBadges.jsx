@@ -27,7 +27,7 @@ export function AwardBadge({ lines, sub }) {
           </p>
         ))}
         {sub ? (
-          <p className="mt-0.5 font-[family-name:var(--font-display)] text-[10.2px] font-semibold leading-[10px] tracking-[0.03em] text-[#797b7c]">
+          <p className="mt-0.5 font-[family-name:var(--font-display)] text-[10.2px] font-semibold leading-[10px] tracking-[0.03em] text-caption">
             {sub}
           </p>
         ) : null}
@@ -51,7 +51,7 @@ export function StatBadge({ main, sub }) {
           {main}
         </p>
         {sub ? (
-          <p className="font-[family-name:var(--font-display)] text-[11px] font-semibold leading-[21px] tracking-[0.03em] text-[#797b7c]">
+          <p className="font-[family-name:var(--font-display)] text-[11px] font-semibold leading-[21px] tracking-[0.03em] text-caption">
             {sub}
           </p>
         ) : null}

@@ -1,16 +1,5 @@
-@import 'tailwindcss';
-
-@theme {
-  --color-bg: #f4f4f4;
-  --color-ink: #111011;
-  --color-muted: rgba(0, 0, 0, 0.6);
-  --color-accent: #fe4b01;
-  --color-border: rgba(34, 34, 34, 0.12);
-  --color-surface: #ffffff;
-  --color-glass: rgba(244, 244, 244, 0.12);
-  --font-display: 'Sora', system-ui, sans-serif;
-  --font-body: 'Inter Tight', 'Inter', system-ui, sans-serif;
-}
+@import "./styles/colors.css";
+@import "tailwindcss";
 
 * {
   box-sizing: border-box;
@@ -56,7 +45,7 @@ html.lenis body {
 
 ::selection {
   background: var(--color-ink);
-  color: #ffffff;
+  color: var(--color-white);
 }
 
 .section-pad {
@@ -87,12 +76,12 @@ html.lenis body {
 
 .btn-primary {
   @apply inline-flex items-center justify-center rounded-[100px] px-5 py-2.5 text-sm font-medium transition-all duration-300;
-  background: #000000;
-  color: #ffffff;
+  background: var(--color-black);
+  color: var(--color-white);
 }
 
 .btn-primary:hover {
-  background: rgba(0, 0, 0, 0.86);
+  background: var(--color-black-a86);
 }
 
 .btn-outline {
@@ -102,7 +91,7 @@ html.lenis body {
 }
 
 .btn-outline:hover {
-  border-color: rgba(0, 0, 0, 0.34);
+  border-color: var(--color-black-a34);
 }
 
 .surface-card {
@@ -110,10 +99,10 @@ html.lenis body {
   border: 1px solid var(--color-border);
   border-radius: 16px;
   box-shadow:
-    0 0.71px 0.49px -0.375px rgba(5, 5, 5, 0.045),
-    0 1.81px 1.26px -0.75px rgba(5, 5, 5, 0.05),
-    0 3.62px 2.52px -1.125px rgba(5, 5, 5, 0.055),
-    0 7.24px 5.04px -1.5px rgba(5, 5, 5, 0.06);
+    0 0.71px 0.49px -0.375px var(--color-shadow-a4),
+    0 1.81px 1.26px -0.75px var(--color-shadow-a5),
+    0 3.62px 2.52px -1.125px var(--color-shadow-a6),
+    0 7.24px 5.04px -1.5px var(--color-shadow-a6);
 }
 
 .card-surface {
@@ -121,18 +110,233 @@ html.lenis body {
   border: 1px solid var(--color-border);
   border-radius: 16px;
   box-shadow:
-    0 0.71px 0.49px -0.375px rgba(5, 5, 5, 0.045),
-    0 1.81px 1.26px -0.75px rgba(5, 5, 5, 0.05),
-    0 3.62px 2.52px -1.125px rgba(5, 5, 5, 0.055),
-    0 7.24px 5.04px -1.5px rgba(5, 5, 5, 0.06);
+    0 0.71px 0.49px -0.375px var(--color-shadow-a4),
+    0 1.81px 1.26px -0.75px var(--color-shadow-a5),
+    0 3.62px 2.52px -1.125px var(--color-shadow-a6),
+    0 7.24px 5.04px -1.5px var(--color-shadow-a6);
+}
+
+/* Bugvi navbar — uiwithbugvi.com framer-lK97X */
+.navbar-shell {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  z-index: 50;
+  width: 375px;
+  max-width: calc(100% - 20px);
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 .glass-nav {
-  border: 1px solid rgba(34, 34, 34, 0.12);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  border: none;
+  box-shadow: inset 0 0 0 1px var(--color-black-a3);
   border-radius: 100px;
-  background: rgba(244, 244, 244, 0.12);
+  background-color: var(--color-bg-a12);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
+  overflow: hidden;
+  pointer-events: auto;
+  transition:
+    border-radius 0.42s cubic-bezier(0.44, 0, 0.56, 1),
+    box-shadow 0.35s ease;
+}
+
+.glass-nav--scrolled {
+  box-shadow:
+    inset 0 0 0 1px var(--color-black-a3),
+    0 8px 30px var(--color-black-a8);
+}
+
+/* Mobile open — pill expands in place (framer-v-16whwnt) */
+@media (max-width: 767px) {
+  .glass-nav--open {
+    max-height: calc(100dvh - 48px);
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding: 0 10px 10px 0;
+  }
+}
+
+/* Mobile top row — hamburger/X left, logo right */
+.glass-nav-mobile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+  min-height: 44px;
+}
+
+.glass-nav-icon-slot {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.glass-nav-icon-slot .glass-nav-icon-btn,
+.glass-nav-icon-slot .glass-nav-toggle {
+  position: absolute;
+  inset: 0;
+}
+
+.glass-nav-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.glass-nav-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 6px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.glass-nav-toggle--two span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--color-gray-999);
+}
+
+.glass-nav-mobile-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.glass-nav-mobile-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  width: 100%;
+  padding: 20px;
+}
+
+.glass-nav-mobile-links a {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 6.5vw, 1.875rem);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  color: var(--color-gray-808);
+  text-decoration: none;
+  transition: color 0.4s cubic-bezier(0.44, 0, 0.56, 1);
+}
+
+.glass-nav-mobile-links a:hover {
+  color: var(--color-text-alt);
+}
+
+.glass-nav-mobile-cta {
+  display: flex;
+  justify-content: center;
+  padding: 8px 20px 4px;
+}
+
+/* Desktop row */
+@media (min-width: 768px) {
+  .navbar-shell {
+    width: auto;
+    max-width: calc(100% - 2.5rem);
+  }
+
+  .glass-nav-mobile-top,
+  .glass-nav-mobile-body {
+    display: none !important;
+  }
+
+  .glass-nav {
+    flex-direction: row;
+    width: max-content;
+    max-width: 100%;
+    padding: 0 10px 0 0;
+    min-height: 64px;
+  }
+
+  .glass-nav--open {
+    padding: 0 10px 0 0;
+  }
+}
+
+.glass-nav-desktop {
+  align-items: center;
+  gap: 20px;
+  padding: 0 0 0 10px;
+}
+
+.glass-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.glass-nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-black-a55);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.glass-nav-links a:hover {
+  color: var(--color-black);
+}
+
+.glass-nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 100px;
+  background: var(--color-black);
+  padding: 6px 10px 6px 20px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-white);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+.glass-nav-cta:hover {
+  background: var(--color-black-a90);
+}
+
+.glass-nav-cta-icon {
+  display: flex;
+  height: 24px;
+  width: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--color-white);
+  color: var(--color-black);
 }
 
 /* Nav logo */
@@ -154,12 +358,12 @@ html.lenis body {
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: #111011;
+  color: var(--color-text);
   white-space: nowrap;
 }
 
 .nav-logo-dot {
-  color: rgba(0, 0, 0, 0.4);
+  color: var(--color-black-a40);
   font-weight: 400;
 }
 
@@ -180,7 +384,7 @@ html.lenis body {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--color-black-a7) 1px, transparent 1px);
   background-size: 28px 28px;
   pointer-events: none;
   z-index: 0;
@@ -218,28 +422,28 @@ html.lenis body {
   align-items: center;
   gap: 0.5rem;
   border-radius: 100px;
-  border: 0.8px solid rgba(0,0,0,0.12);
-  background: #fff;
+  border: 0.8px solid var(--color-black-a12);
+  background: var(--color-white);
   padding: 0.35rem 0.875rem;
   font-family: var(--font-display);
   font-size: 13px;
   font-weight: 500;
-  color: rgba(0,0,0,0.75);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  color: var(--color-black-a75);
+  box-shadow: 0 1px 4px var(--color-black-a6);
 }
 
 .hero-available-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #22c55e;
+  background: var(--color-success);
   flex-shrink: 0;
   animation: hero-pulse 2.2s ease-in-out infinite;
 }
 
 @keyframes hero-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); }
-  50%       { box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+  0%, 100% { box-shadow: 0 0 0 0 var(--color-success-a55); }
+  50%       { box-shadow: 0 0 0 6px var(--color-success-a0); }
 }
 
 .hero-clock {
@@ -249,7 +453,7 @@ html.lenis body {
   font-family: var(--font-display);
   font-size: 13px;
   font-weight: 500;
-  color: rgba(0,0,0,0.5);
+  color: var(--color-black-a50);
   letter-spacing: 0.02em;
 }
 
@@ -257,7 +461,7 @@ html.lenis body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #fe4b01;
+  background: var(--color-primary);
   flex-shrink: 0;
   animation: hero-pulse-orange 2s ease-in-out infinite;
 }
@@ -302,7 +506,7 @@ html.lenis body {
   font-family: var(--font-display);
   font-size: 16px;
   font-weight: 500;
-  color: rgba(0,0,0,0.45);
+  color: var(--color-black-a45);
   letter-spacing: 0.04em;
 }
 
@@ -321,11 +525,11 @@ html.lenis body {
   font-weight: 700;
   line-height: 1.0;
   letter-spacing: -0.04em;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .hero-name-accent {
-  color: #111011;
+  color: var(--color-text);
 }
 
 .hero-name-line-wrap {
@@ -355,7 +559,7 @@ html.lenis body {
   font-family: var(--font-display);
   font-size: clamp(17px, 2.2vw, 22px);
   font-weight: 500;
-  color: rgba(0,0,0,0.45);
+  color: var(--color-black-a45);
   min-height: 1.4em;
 }
 
@@ -372,12 +576,12 @@ html.lenis body {
   font-size: clamp(15px, 1.7vw, 17px);
   line-height: 1.65;
   font-weight: 600;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .hero-subcopy-dim {
   font-weight: 400;
-  color: rgba(0,0,0,0.55);
+  color: var(--color-black-a55);
 }
 
 /* CTAs */
@@ -393,29 +597,29 @@ html.lenis body {
   align-items: center;
   justify-content: center;
   border-radius: 100px;
-  background: #111011;
+  background: var(--color-text);
   padding: 0.875rem 2rem;
   font-family: var(--font-display);
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-white);
   text-decoration: none;
   transition: background 0.25s, transform 0.2s;
 }
 
-.hero-cta-primary:hover { background: #fe4b01; transform: translateY(-2px); }
+.hero-cta-primary:hover { background: var(--color-primary); transform: translateY(-2px); }
 
 .hero-cta-chat {
   display: inline-flex;
   align-items: center;
   gap: 0.625rem;
   border-radius: 100px;
-  background: #ebebeb;
+  background: var(--color-surface-chrome);
   padding: 0.75rem 1.25rem;
   font-family: var(--font-display);
   font-size: 16px;
   font-weight: 600;
-  color: #111011;
+  color: var(--color-text);
   text-decoration: none;
   border: 1px solid transparent;
   transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease,
@@ -423,16 +627,16 @@ html.lenis body {
 }
 
 .hero-cta-chat:hover {
-  background: #111011;
-  color: #fff;
-  border-color: #111011;
+  background: var(--color-text);
+  color: var(--color-white);
+  border-color: var(--color-text);
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(17, 16, 17, 0.3);
+  box-shadow: 0 12px 30px var(--color-ink-a30);
 }
 
 .hero-cta-chat:active {
   transform: translateY(0);
-  box-shadow: 0 6px 16px rgba(17, 16, 17, 0.25);
+  box-shadow: 0 6px 16px var(--color-ink-a25);
 }
 
 .hero-cta-chat-icon {
@@ -442,36 +646,16 @@ html.lenis body {
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 50%;
-  background: rgba(255,255,255,0.65);
-  color: #229ED9;
+  background: var(--color-white-a65);
+  color: var(--color-telegram);
   flex-shrink: 0;
   transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
 .hero-cta-chat:hover .hero-cta-chat-icon {
-  background: #fe4b01;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-white);
   transform: rotate(-12deg) scale(1.08);
-}
-
-/* Proof chips */
-.hero-proof-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.45rem;
-}
-
-.hero-proof-chip {
-  padding: 0.3rem 0.75rem;
-  border-radius: 100px;
-  border: 0.8px solid rgba(0,0,0,0.11);
-  background: #fff;
-  font-family: var(--font-display);
-  font-size: 12px;
-  font-weight: 500;
-  color: rgba(0,0,0,0.5);
-  white-space: nowrap;
 }
 
 /* ── Photo column ── */
@@ -490,14 +674,14 @@ html.lenis body {
   width: 100%;
   aspect-ratio: 3 / 4;
   border-radius: 24px;
-  background: #f0f0f0;
+  overflow: hidden;
 }
 
 .hero-photo-img {
   display: block;
   width: 100%;
-  height: auto;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
   object-position: center top;
 }
 
@@ -509,8 +693,8 @@ html.lenis body {
   flex-direction: column;
   gap: 0.2rem;
   border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.11);
+  background: var(--color-white);
+  box-shadow: 0 4px 20px var(--color-black-a11);
   padding: 0.7rem 0.9rem;
   min-width: 130px;
   max-width: 170px;
@@ -543,13 +727,13 @@ html.lenis body {
   font-size: 17px;
   font-weight: 700;
   line-height: 1;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .hero-badge-label {
   font-size: 11px;
   line-height: 1.3;
-  color: rgba(0,0,0,0.48);
+  color: var(--color-black-a48);
 }
 
 /* ── Stats bar ── */
@@ -557,10 +741,10 @@ html.lenis body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: rgba(0,0,0,0.08);
+  background: var(--color-black-a8);
   border-radius: 18px;
   overflow: hidden;
-  border: 0.8px solid rgba(0,0,0,0.09);
+  border: 0.8px solid var(--color-black-a9);
 }
 
 @media (max-width: 479px) {
@@ -575,7 +759,7 @@ html.lenis body {
   align-items: center;
   gap: 0.2rem;
   padding: 1.1rem 0.75rem;
-  background: #fff;
+  background: var(--color-white);
   text-align: center;
 }
 
@@ -585,53 +769,41 @@ html.lenis body {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .hero-stat-label {
   font-size: 11px;
   font-weight: 500;
-  color: rgba(0,0,0,0.42);
+  color: var(--color-black-a42);
   letter-spacing: 0.01em;
 }
 
-/* About — drumroll panel */
+/* About — drumroll panel (outer shell: full-screen) */
 .about-section {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-}
-
-@media (min-width: 1024px) {
-  .about-section {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-  }
+  box-sizing: border-box;
+  width: 100%;
+  padding: clamp(2.5rem, 6vw, 4rem) 0;
 }
 
 .about-drumroll-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   width: 100%;
+  min-height: 100svh;
   overflow: hidden;
-  border-radius: 28px;
-  background-color: #000000;
-  padding: clamp(2rem, 5vw, 4.375rem) clamp(1.25rem, 4vw, 6.25rem)
+  border-radius: clamp(48px, 14vw, 160px);
+  background-color: var(--color-black);
+  padding: clamp(2.5rem, 5.5vw, 4.375rem) clamp(1.25rem, 5vw, 6.25rem)
     clamp(2.5rem, 5vw, 3.75rem);
-  gap: clamp(2rem, 5vw, 3.125rem);
-}
-
-@media (min-width: 768px) {
-  .about-drumroll-panel {
-    border-radius: clamp(48px, 8vw, 106px);
-  }
+  gap: clamp(2rem, 4.5vw, 3.125rem);
 }
 
 .about-drumroll-header {
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
   text-align: center;
 }
 
@@ -642,7 +814,7 @@ html.lenis body {
   font-weight: 500;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: #fe4b01;
+  color: var(--color-primary);
 }
 
 .about-drumroll-title {
@@ -652,7 +824,7 @@ html.lenis body {
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: var(--color-white);
 }
 
 .about-drumroll-body {
@@ -665,60 +837,62 @@ html.lenis body {
   margin: 0 auto;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 900px) {
   .about-drumroll-body {
-    grid-template-columns: minmax(260px, 470px) minmax(0, 1fr);
-    gap: 2.75rem;
-    align-items: start;
+    grid-template-columns: minmax(0, 470px) minmax(0, 1fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
   }
 }
 
-.about-drumroll-media {
+.about-drumroll-col--media {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   width: 100%;
   max-width: 470px;
-  justify-self: center;
+  margin: 0 auto;
 }
 
-@media (min-width: 1024px) {
-  .about-drumroll-media {
-    justify-self: start;
-    max-width: none;
+@media (min-width: 900px) {
+  .about-drumroll-col--media {
+    margin: 0;
   }
+}
+
+.about-drumroll-col--copy {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
 }
 
 .about-photo-frame {
   width: 100%;
-  border-radius: 16px;
+  aspect-ratio: 470 / 306;
+  border-radius: 24px;
   overflow: hidden;
-  background: #0f0f0f;
 }
 
 .about-photo-frame img {
   display: block;
   width: 100%;
-  height: auto;
-  max-height: none;
-  object-fit: contain;
-  object-position: center;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .about-photo-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: clamp(240px, 42vw, 306px);
-  border: 1px dashed rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.05);
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.about-drumroll-content {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
-  min-width: 0;
   width: 100%;
+  height: 100%;
+  min-height: 200px;
+  border: 1px dashed var(--color-white-a20);
+  background: var(--color-white-a5);
+  font-size: 14px;
+  color: var(--color-white-a40);
 }
 
 .about-drumroll-stats {
@@ -737,8 +911,8 @@ html.lenis body {
   justify-content: center;
   overflow: hidden;
   border-radius: 21px;
-  border: 0.5px solid rgba(255, 255, 255, 0.3);
-  background-color: #0f0f0f;
+  border: 0.5px solid var(--color-white-a30);
+  background-color: var(--color-surface-dark);
   padding: 1.5rem 0.75rem;
 }
 
@@ -752,7 +926,7 @@ html.lenis body {
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: 0.03em;
-  color: #ffffff;
+  color: var(--color-white);
 }
 
 .about-stat-lines {
@@ -768,14 +942,7 @@ html.lenis body {
   font-size: clamp(8px, 1.2vw, 13px);
   font-weight: 600;
   line-height: 1.2;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.about-drumroll-copy {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.25rem, 2.5vw, 1.75rem);
-  width: 100%;
+  color: var(--color-white-a60);
 }
 
 .about-bio {
@@ -783,6 +950,7 @@ html.lenis body {
   flex-direction: column;
   gap: 1.25rem;
   text-align: left;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -796,7 +964,7 @@ html.lenis body {
   font-family: var(--font-body);
   font-size: clamp(17px, 2vw, 20px);
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-white-a72);
 }
 
 @media (min-width: 768px) {
@@ -836,7 +1004,7 @@ html.lenis body {
   font-weight: 500;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: #fe4b01;
+  color: var(--color-primary);
 }
 
 .faq-title {
@@ -846,7 +1014,7 @@ html.lenis body {
   font-weight: 600;
   line-height: 1.08;
   letter-spacing: -0.02em;
-  color: #000000;
+  color: var(--color-black);
 }
 
 .faq-layout {
@@ -863,7 +1031,7 @@ html.lenis body {
 @media (min-width: 1024px) {
   .faq-layout {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     gap: 62px;
   }
@@ -880,9 +1048,9 @@ html.lenis body {
   max-width: 400px;
   aspect-ratio: 1 / 1;
   padding: 3rem 2rem 2.5rem;
-  border: 0.8px solid rgba(0, 0, 0, 0.3);
+  border: 0.8px solid var(--color-black-a30);
   border-radius: 20px;
-  background-color: #fafafa;
+  background-color: var(--color-surface-muted);
 }
 
 @media (min-width: 1024px) {
@@ -929,9 +1097,9 @@ html.lenis body {
   right: 0.25rem;
   width: 14px;
   height: 14px;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--color-white);
   border-radius: 9999px;
-  background-color: #24c400;
+  background-color: var(--color-success-bright);
 }
 
 .faq-bookcall-line {
@@ -940,7 +1108,7 @@ html.lenis body {
   font-size: clamp(18px, 2.2vw, 22px);
   font-weight: 600;
   line-height: 1.25;
-  color: #000000;
+  color: var(--color-black);
 }
 
 .faq-bookcall-cta {
@@ -949,17 +1117,17 @@ html.lenis body {
   justify-content: center;
   padding: 0.875rem 2.5rem;
   border-radius: 100px;
-  background-color: #000000;
+  background-color: var(--color-black);
   font-family: var(--font-display);
   font-size: 18px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--color-white);
   text-decoration: none;
   transition: background-color 0.2s ease;
 }
 
 .faq-bookcall-cta:hover {
-  background-color: rgba(0, 0, 0, 0.88);
+  background-color: var(--color-black-a88);
 }
 
 /* Chat FAQ list */
@@ -976,7 +1144,6 @@ html.lenis body {
     flex: 1;
     min-width: 0;
     max-width: 600px;
-    padding-top: 0.25rem;
   }
 }
 
@@ -986,7 +1153,7 @@ html.lenis body {
 
 .faq-answer-bubble {
   border-radius: 24px 24px 8px 24px;
-  background-color: #0078ff;
+  background-color: var(--color-secondary);
 }
 
 .faq-answer-wrap {
@@ -1005,20 +1172,14 @@ html.lenis body {
 }
 
 .faq-toggle--open {
-  background-color: #0078ff;
-  color: #ffffff;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
 }
 
 .faq-toggle--plus {
-  border: 1.5px solid #51565a;
+  border: 1.5px solid var(--color-border-ui);
   background-color: transparent;
-  color: #000000;
-}
-
-.faq-toggle--plus-black {
-  border: 1.5px solid rgba(255, 255, 255, 0.28);
-  background-color: #000000;
-  color: #ffffff;
+  color: var(--color-black);
 }
 
 .hero-shadow-word {
@@ -1027,7 +1188,7 @@ html.lenis body {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 0.9;
-  color: rgba(0, 0, 0, 0.08);
+  color: var(--color-black-a8);
   pointer-events: none;
   user-select: none;
 }
@@ -1045,12 +1206,12 @@ html.lenis body {
 
 .fade-mask-left::before {
   left: 0;
-  background: linear-gradient(90deg, white, rgba(255, 255, 255, 0));
+  background: linear-gradient(90deg, var(--color-white), var(--color-white-a0));
 }
 
 .fade-mask-left::after {
   right: 0;
-  background: linear-gradient(270deg, white, rgba(255, 255, 255, 0));
+  background: linear-gradient(270deg, var(--color-white), var(--color-white-a0));
 }
 
 /* Brands strip — uiwithbugvi.com (90px gap, edge mask, Framer logos) */
@@ -1061,17 +1222,17 @@ html.lenis body {
   height: 56px;
   mask-image: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 1) 8%,
-    rgba(0, 0, 0, 1) 92%,
-    rgba(0, 0, 0, 0) 100%
+    var(--color-black-a0) 0%,
+    var(--color-black-a100) 8%,
+    var(--color-black-a100) 92%,
+    var(--color-black-a0) 100%
   );
   -webkit-mask-image: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 1) 8%,
-    rgba(0, 0, 0, 1) 92%,
-    rgba(0, 0, 0, 0) 100%
+    var(--color-black-a0) 0%,
+    var(--color-black-a100) 8%,
+    var(--color-black-a100) 92%,
+    var(--color-black-a0) 100%
   );
 }
 
@@ -1115,7 +1276,7 @@ html.lenis body {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.4);
+  color: var(--color-black-a40);
 }
 
 .brands-logo-strip {
@@ -1164,20 +1325,21 @@ html.lenis body {
   transform: translateY(-2px);
 }
 
-/* Local image logos (e.g. icon on a solid background) → rounded badge */
+/* Badge logos (e.g. Social Bevy app icon) */
 .brand-logo-img--badge {
   height: 40px;
   width: 40px;
   max-height: 40px;
+  max-width: 40px;
   border-radius: 11px;
   object-fit: cover;
-  filter: none;
-  opacity: 0.9;
+  filter: grayscale(1);
+  opacity: 0.62;
 }
 
 .brand-logo-chip:hover .brand-logo-img--badge,
 .brand-logo-chip:focus-visible .brand-logo-img--badge {
-  filter: none;
+  filter: grayscale(0);
   opacity: 1;
   transform: translateY(-2px) scale(1.04);
 }
@@ -1187,18 +1349,23 @@ html.lenis body {
   font-size: 17px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--color-black-a45);
   white-space: nowrap;
   transition: color 0.25s ease, transform 0.25s ease;
 }
 
 .brand-logo-chip:hover .brand-logo-wordmark,
 .brand-logo-chip:focus-visible .brand-logo-wordmark {
-  color: #111011;
+  color: var(--color-text);
   transform: translateY(-2px);
 }
 
-/* Custom tooltip */
+.brand-logo-chip--link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Custom tooltip — company name */
 .brand-logo-tooltip {
   position: absolute;
   bottom: calc(100% + 12px);
@@ -1206,8 +1373,8 @@ html.lenis body {
   z-index: 20;
   padding: 0.45rem 0.75rem;
   border-radius: 10px;
-  background: #111011;
-  color: #fff;
+  background: var(--color-text);
+  color: var(--color-white);
   font-family: var(--font-display);
   font-size: 12.5px;
   font-weight: 600;
@@ -1217,7 +1384,7 @@ html.lenis body {
   opacity: 0;
   transform: translateX(-50%) translateY(6px) scale(0.94);
   transform-origin: bottom center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 10px 30px var(--color-black-a22);
   transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -1227,7 +1394,7 @@ html.lenis body {
   left: 50%;
   width: 9px;
   height: 9px;
-  background: #111011;
+  background: var(--color-text);
   transform: translate(-50%, -55%) rotate(45deg);
   border-radius: 2px;
 }
@@ -1261,12 +1428,12 @@ html.lenis body {
   align-items: center;
   padding: 0.5rem 1.05rem;
   border-radius: 100px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: #fff;
+  border: 1px solid var(--color-black-a12);
+  background: var(--color-white);
   font-family: var(--font-display);
   font-size: 14px;
   font-weight: 600;
-  color: #111011;
+  color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
   outline: none;
@@ -1276,15 +1443,15 @@ html.lenis body {
 
 .exp-company-pill:hover,
 .exp-company-pill:focus-visible {
-  background: #111011;
-  color: #fff;
-  border-color: #111011;
+  background: var(--color-text);
+  color: var(--color-white);
+  border-color: var(--color-text);
   transform: translateY(-2px);
-  box-shadow: 0 12px 26px rgba(17, 16, 17, 0.22);
+  box-shadow: 0 12px 26px var(--color-ink-a22);
 }
 
 .exp-company-pill:focus-visible {
-  box-shadow: 0 0 0 3px rgba(254, 75, 1, 0.35), 0 12px 26px rgba(17, 16, 17, 0.22);
+  box-shadow: 0 0 0 3px var(--color-primary-a35), 0 12px 26px var(--color-ink-a22);
 }
 
 .exp-company-pill:hover .brand-logo-tooltip,
@@ -1299,8 +1466,8 @@ html.lenis body {
   gap: 0.2rem;
   margin-left: 0.45rem;
   padding-left: 0.45rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.25);
-  color: #fe7a45;
+  border-left: 1px solid var(--color-white-a25);
+  color: var(--color-primary-light);
   font-weight: 600;
 }
 
@@ -1310,7 +1477,7 @@ html.lenis body {
   margin-right: 0.5rem;
   border-radius: 5px;
   object-fit: contain;
-  background: #fff;
+  background: var(--color-white);
   flex-shrink: 0;
   transition: transform 0.22s ease;
 }
@@ -1323,9 +1490,9 @@ html.lenis body {
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: #111011;
-  background: #f0f0f0;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--color-text);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-black-a8);
 }
 
 .company-logo-initials {
@@ -1336,9 +1503,9 @@ html.lenis body {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: #111011;
-  background: #f0f0f0;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--color-text);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-black-a8);
   border-radius: 6px;
 }
 
@@ -1378,7 +1545,7 @@ html.lenis body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--color-white-a70);
   flex-shrink: 0;
   margin-top: 3px;
 }
@@ -1388,14 +1555,14 @@ html.lenis body {
   font-family: var(--font-display);
   font-size: 11px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--color-white);
   line-height: 1.3;
 }
 
 .cv-web-tag {
   margin: 0;
   font-size: 9.5px;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--color-white-a55);
   line-height: 1.2;
 }
 
@@ -1417,14 +1584,14 @@ html.lenis body {
   font-family: var(--font-display);
   font-size: 11px;
   font-weight: 700;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .cv-saas-badge {
   font-size: 9px;
   font-weight: 600;
-  color: #16a34a;
-  background: rgba(22, 163, 74, 0.12);
+  color: var(--color-success-dark);
+  background: var(--color-success-dark-a12);
   padding: 1px 5px;
   border-radius: 100px;
 }
@@ -1432,19 +1599,19 @@ html.lenis body {
 .cv-saas-sub {
   margin: 0;
   font-size: 9.5px;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--color-black-a45);
 }
 
 .cv-saas-bar-wrap {
   height: 4px;
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--color-black-a10);
   border-radius: 100px;
   overflow: hidden;
 }
 
 .cv-saas-bar {
   height: 100%;
-  background: #111011;
+  background: var(--color-text);
   border-radius: 100px;
 }
 
@@ -1461,8 +1628,8 @@ html.lenis body {
   font-weight: 600;
   padding: 2px 6px;
   border-radius: 100px;
-  background: rgba(0, 0, 0, 0.08);
-  color: rgba(0, 0, 0, 0.65);
+  background: var(--color-black-a8);
+  color: var(--color-black-a65);
 }
 
 /* ── Card 3: Full stack visual ── */
@@ -1480,9 +1647,9 @@ html.lenis body {
   font-weight: 600;
   padding: 3px 7px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 0.5px solid rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.85);
+  background: var(--color-white-a12);
+  border: 0.5px solid var(--color-white-a20);
+  color: var(--color-white-a85);
   white-space: nowrap;
 }
 
@@ -1507,129 +1674,242 @@ html.lenis body {
   font-size: 22px;
   font-weight: 700;
   line-height: 1;
-  color: #ffffff;
+  color: var(--color-white);
   letter-spacing: -0.03em;
 }
 
 .cv-lead-label {
   font-size: 9px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-white-a50);
   text-align: center;
   line-height: 1.2;
 }
 
-/* Services — Framer fan deck; scale on small screens to match desktop */
-.services-fan-viewport {
+/* Services — uiwithbugvi.com (fan on desktop, vertical stack on mobile) */
+.services-header {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .services-header {
+    margin-bottom: 3.5rem;
+  }
+}
+
+.services-eyebrow {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: var(--color-primary);
+}
+
+.services-title {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 3.5625rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--color-text-subtle);
+}
+
+.services-subtitle-italic {
+  margin: 0 auto 0.75rem;
+  max-width: 640px;
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--color-black-a55);
+}
+
+.services-subtitle {
+  margin: 0 auto;
+  max-width: 640px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.services-subtitle strong {
+  font-weight: 600;
+  color: var(--color-black-a80);
+}
+
+/* Services cards — mobile stack (Bugvi) + desktop fan */
+.services-cards {
   width: 100%;
   display: flex;
   justify-content: center;
-  overflow: visible;
 }
 
-.services-fan-stage {
+/* Mobile: large stacked cards, centered with ~10px screen inset */
+.services-cards--stack {
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.services-cards--stack .services-card-slot {
   position: relative;
-  width: 642px;
-  height: 278px;
-  flex-shrink: 0;
-  transform: scale(1);
-  transform-origin: top center;
+  width: 100%;
+  max-width: min(552px, calc(100vw - 20px));
+  height: auto;
+  margin-inline: auto;
+  transform-origin: center center;
 }
 
-.services-fan-card {
+.services-cards--stack .service-card {
+  width: 100%;
+  height: auto;
+  min-height: 386px;
+  border-radius: 25px;
+  padding: 28px 24px 32px;
+  justify-content: space-between;
+  gap: 20px;
+  margin-inline: auto;
+}
+
+.services-cards--stack .service-card-visual {
+  min-height: 200px;
+  flex: 1;
+}
+
+.services-cards--stack .service-card-copy {
+  text-align: left;
+}
+
+.services-cards--stack .service-card-title {
+  font-size: clamp(26px, 7vw, 32px);
+  letter-spacing: -0.02em;
+}
+
+.services-cards--stack .service-card-desc {
+  margin-top: 8px;
+  font-size: clamp(14px, 3.8vw, 16px);
+  line-height: 1.55;
+}
+
+/* Desktop fan — compact cards */
+.services-card-slot {
+  position: relative;
   width: 200px;
   height: 245px;
+  flex-shrink: 0;
+  transform-origin: 50% 88%;
   will-change: transform;
 }
 
 .service-card {
-  will-change: box-shadow, filter;
+  width: 200px;
+  height: 245px;
+  padding: 20px 16px 16px;
+  justify-content: space-between;
+  will-change: box-shadow, filter, transform;
   transition:
     box-shadow 0.48s cubic-bezier(0.22, 1, 0.36, 1),
     border-color 0.48s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+    filter 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-card-visual {
+  height: 108px;
+}
+
+.service-card-title {
+  font-size: 18px;
+}
+
+.service-card-desc {
+  font-size: 10.5px;
 }
 
 .service-card-glow {
   background: radial-gradient(
     120% 80% at 50% 0%,
-    rgba(255, 255, 255, 0.18) 0%,
+    var(--color-white-a18) 0%,
     transparent 55%
   );
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 1px var(--color-white-a12);
   transition: opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Pop-up hover — shadow & glow follow the lifted fan card */
-.services-fan-card:hover .service-card {
-  filter: brightness(1.05);
-  border-color: rgba(255, 255, 255, 0.42);
-  box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.18),
-    0 32px 64px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
-}
+/* Pop-up hover — shadow & glow follow the lifted card (fan + mobile stack) */
+@media (hover: hover) {
+  .services-card-slot:hover .service-card,
+  .services-card-slot:focus-within .service-card {
+    filter: brightness(1.06);
+    border-color: var(--color-white-a42);
+    box-shadow:
+      0 18px 44px var(--color-black-a20),
+      0 36px 68px var(--color-black-a12),
+      0 0 0 1px var(--color-white-a10);
+  }
 
-.services-fan-card:hover .service-card--light {
-  border-color: rgba(0, 0, 0, 0.2);
-  box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.14),
-    0 32px 64px rgba(254, 75, 1, 0.08);
-}
+  .services-card-slot:hover .service-card--light,
+  .services-card-slot:focus-within .service-card--light {
+    border-color: var(--color-black-a18);
+    box-shadow:
+      0 18px 44px var(--color-black-a16),
+      0 36px 68px var(--color-primary-a10);
+  }
 
-.services-fan-card:hover .service-card-glow {
-  opacity: 1;
+  .services-card-slot:hover .service-card-glow,
+  .services-card-slot:focus-within .service-card-glow {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .services-fan-card,
+  .services-card-slot,
   .service-card {
     will-change: auto;
   }
 
-  .services-fan-card:hover .service-card {
+  .services-card-slot:hover .service-card {
     filter: none;
   }
-}
 
-@media (max-width: 899px) {
-  .services-fan-viewport {
-    --fan-scale: min(1, calc((100vw - 2.5rem) / 642));
-    overflow: hidden;
-    width: 100%;
-    height: calc(278px * var(--fan-scale));
+  .work-view-btn-fill {
+    transition: none;
   }
 
-  .services-fan-stage {
+  .work-device-stage,
+  .work-device-stage:hover {
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Desktop — Framer 2hZVO fan deck (642×278 stage) */
+@media (min-width: 900px) {
+  .services-cards--fan {
+    position: relative;
     width: 642px;
     height: 278px;
-    margin-left: 50%;
-    margin-bottom: calc(278px * (var(--fan-scale) - 1)) !important;
-    transform: translateX(-50%) scale(var(--fan-scale)) !important;
-    transform-origin: top center;
-  }
-
-  .services-fan-card {
-    width: 200px;
-    height: 245px;
-  }
-}
-
-@media (min-width: 900px) {
-  .services-fan-stage {
+    margin-inline: auto;
+    padding-top: 44px;
+    margin-top: -44px;
     transform: scale(1.18);
+    transform-origin: top center;
     margin-bottom: 85px;
   }
 
-  .services-fan-viewport {
-    height: auto;
-    padding-top: 44px;
-    margin-top: -44px;
+  .services-cards--fan .services-card-slot {
+    position: absolute;
+    transform-origin: 50% 88%;
   }
 }
 
 @media (min-width: 1100px) {
-  .services-fan-stage {
+  .services-cards--fan {
     transform: scale(1.32);
     margin-bottom: 110px;
   }
@@ -1637,7 +1917,7 @@ html.lenis body {
 
 /* Testimonials — uiwithbugvi.com */
 .testimonials-section {
-  background-color: #ffffff;
+  background-color: var(--color-white);
   padding-top: 4rem;
   padding-bottom: 5rem;
 }
@@ -1667,7 +1947,7 @@ html.lenis body {
   font-weight: 500;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: #fe4b01;
+  color: var(--color-primary);
 }
 
 .testimonials-title-row {
@@ -1685,7 +1965,7 @@ html.lenis body {
   font-weight: 600;
   line-height: 1.08;
   letter-spacing: -0.02em;
-  color: #000000;
+  color: var(--color-black);
 }
 
 .testimonials-heart {
@@ -1696,25 +1976,40 @@ html.lenis body {
   height: 35px;
 }
 
-/* Infinite auto-scroll marquee — uiwithbugvi.com project strip style */
+/* Drag-to-scroll carousel — uiwithbugvi.com */
 .testimonials-marquee-window {
   position: relative;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   width: 100%;
+  cursor: grab;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
   mask-image: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 1) 6%,
-    rgba(0, 0, 0, 1) 94%,
-    rgba(0, 0, 0, 0) 100%
+    var(--color-black-a0) 0%,
+    var(--color-black-a100) 6%,
+    var(--color-black-a100) 94%,
+    var(--color-black-a0) 100%
   );
   -webkit-mask-image: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 1) 6%,
-    rgba(0, 0, 0, 1) 94%,
-    rgba(0, 0, 0, 0) 100%
+    var(--color-black-a0) 0%,
+    var(--color-black-a100) 6%,
+    var(--color-black-a100) 94%,
+    var(--color-black-a0) 100%
   );
+}
+
+.testimonials-marquee-window::-webkit-scrollbar {
+  display: none;
+}
+
+.testimonials-marquee-window.is-dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .testimonials-marquee-track {
@@ -1722,8 +2017,7 @@ html.lenis body {
   align-items: stretch;
   width: max-content;
   min-height: 430px;
-  animation: testimonialsMarquee 72s linear infinite;
-  will-change: transform;
+  padding: 0 clamp(1rem, 4vw, 2.5rem);
 }
 
 .testimonials-marquee-set {
@@ -1732,41 +2026,23 @@ html.lenis body {
   flex-wrap: nowrap;
   align-items: stretch;
   gap: 32px;
-  padding-right: 32px;
-}
-
-.testimonials-marquee-window:hover .testimonials-marquee-track {
-  animation-play-state: paused;
-}
-
-@keyframes testimonialsMarquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  padding-right: clamp(1rem, 4vw, 2.5rem);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .testimonials-marquee-track {
-    animation: none;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 1.25rem;
-    gap: 32px;
-  }
-
   .testimonials-marquee-window {
     mask-image: none;
     -webkit-mask-image: none;
   }
 
-  .testimonials-marquee-set[aria-hidden='true'] {
-    display: none;
+  .testimonials-marquee-track {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 1.25rem;
+    gap: 32px;
   }
 
   .testimonials-marquee-set {
@@ -1784,9 +2060,9 @@ html.lenis body {
   width: 384px;
   height: 430px;
   padding: 24px;
-  border: 0.8px solid rgba(0, 0, 0, 0.3);
+  border: 0.8px solid var(--color-black-a30);
   border-radius: 16px;
-  background-color: #fafafa;
+  background-color: var(--color-surface-muted);
 }
 
 .testimonial-card-quote {
@@ -1804,7 +2080,7 @@ html.lenis body {
   font-size: 17px;
   font-weight: 500;
   line-height: 1.5;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .testimonial-card-paragraph:last-child {
@@ -1816,7 +2092,7 @@ html.lenis body {
   width: 100%;
   height: 1px;
   margin: 20px 0;
-  background-color: rgba(0, 0, 0, 0.12);
+  background-color: var(--color-black-a12);
 }
 
 .testimonial-card-author {
@@ -1828,12 +2104,17 @@ html.lenis body {
 }
 
 .testimonial-card-avatar-wrap {
+  position: relative;
   flex: none;
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  overflow: hidden;
-  border: 0.8px solid rgba(0, 0, 0, 0.2);
+  overflow: visible;
+  border: 0.8px solid var(--color-black-a20);
+}
+
+.testimonial-card-avatar-wrap .testimonial-card-avatar {
+  border-radius: 50%;
 }
 
 .testimonial-card-avatar {
@@ -1845,11 +2126,24 @@ html.lenis body {
 }
 
 .testimonial-card-avatar--placeholder {
-  background: linear-gradient(135deg, #e8e8e8, #d0d0d0);
+  background: linear-gradient(135deg, var(--color-border-light), var(--color-gray-d0));
 }
 
 .testimonial-card-meta {
   min-width: 0;
+}
+
+.testimonial-card-flag {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid var(--color-white-a90);
+  box-shadow: 0 1px 3px var(--color-black-a18);
+  object-fit: cover;
+  pointer-events: none;
 }
 
 .testimonial-card-name {
@@ -1858,7 +2152,18 @@ html.lenis body {
   font-size: 18px;
   font-weight: 700;
   line-height: 1.5;
-  color: #111011;
+  color: var(--color-text);
+}
+
+.testimonial-card-name--link {
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.testimonial-card-name--link:hover {
+  color: var(--color-primary);
 }
 
 .testimonial-card-role {
@@ -1867,12 +2172,12 @@ html.lenis body {
   font-size: 15px;
   font-weight: 300;
   line-height: 24px;
-  color: #111011;
+  color: var(--color-text);
 }
 
 /* Book a call — uiwithbugvi.com / Cal-style flow */
 .booking-section {
-  background-color: #ffffff;
+  background-color: var(--color-white);
   padding-top: 4rem;
   padding-bottom: 5rem;
 }
@@ -1902,7 +2207,7 @@ html.lenis body {
   font-weight: 500;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: #fe4b01;
+  color: var(--color-primary);
 }
 
 .booking-page-title {
@@ -1912,7 +2217,7 @@ html.lenis body {
   font-weight: 600;
   line-height: 1.08;
   letter-spacing: -0.02em;
-  color: #000000;
+  color: var(--color-black);
 }
 
 .booking-page-subtitle {
@@ -1920,7 +2225,93 @@ html.lenis body {
   max-width: 42rem;
   font-size: clamp(15px, 2vw, 17px);
   line-height: 1.55;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--color-black-a55);
+}
+
+/* Offline / preview mode — below navbar */
+.offline-banner {
+  position: fixed;
+  top: calc(24px + 52px + 12px);
+  left: 50%;
+  z-index: 40;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: calc(100% - 2rem);
+  max-width: 28rem;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  border: 0.8px solid var(--color-black-a10);
+  background: var(--color-white-a82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow:
+    0 1px 2px var(--color-black-a4),
+    0 8px 24px var(--color-black-a6);
+  transform: translateX(-50%);
+}
+
+.offline-banner-indicator {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: 0.35rem;
+  border-radius: 9999px;
+  background-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-a14);
+}
+
+.offline-banner-copy {
+  min-width: 0;
+}
+
+.offline-banner-title {
+  margin: 0 0 0.15rem;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.offline-banner-text {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--color-black-a55);
+}
+
+@media (min-width: 640px) {
+  .offline-banner {
+    top: calc(24px + 52px + 14px);
+    padding: 0.8rem 1.1rem;
+    border-radius: 100px;
+    align-items: center;
+  }
+
+  .offline-banner-indicator {
+    margin-top: 0;
+  }
+
+  .offline-banner-copy {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+  }
+
+  .offline-banner-title {
+    margin: 0;
+  }
+
+  .offline-banner-title::after {
+    content: '·';
+    margin-left: 0.5rem;
+    font-weight: 400;
+    color: var(--color-black-a28);
+  }
 }
 
 .emailjs-setup-banner {
@@ -1928,8 +2319,8 @@ html.lenis body {
   max-width: 42rem;
   padding: 1rem 1.15rem;
   border-radius: 12px;
-  border: 1px solid rgba(254, 75, 1, 0.25);
-  background: rgba(254, 75, 1, 0.06);
+  border: 1px solid var(--color-primary-a25);
+  background: var(--color-primary-a6);
   text-align: left;
 }
 
@@ -1938,14 +2329,14 @@ html.lenis body {
   font-family: var(--font-display);
   font-size: 15px;
   font-weight: 600;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .emailjs-setup-banner-text {
   margin: 0 0 0.5rem;
   font-size: 14px;
   line-height: 1.5;
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--color-black-a65);
 }
 
 .emailjs-setup-banner-list {
@@ -1953,11 +2344,11 @@ html.lenis body {
   padding-left: 1.25rem;
   font-size: 13px;
   line-height: 1.6;
-  color: rgba(0, 0, 0, 0.7);
+  color: var(--color-black-a70);
 }
 
 .emailjs-setup-banner-link {
-  color: #fe4b01;
+  color: var(--color-primary);
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -1972,11 +2363,11 @@ html.lenis body {
 
 .booking-widget {
   border-radius: 16px;
-  background-color: #111011;
-  color: #f4f4f4;
+  background-color: var(--color-text);
+  color: var(--color-bg);
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--color-white-a8);
+  box-shadow: 0 24px 80px var(--color-black-a12);
   width: 100%;
   max-width: 100%;
 }
@@ -1997,14 +2388,14 @@ html.lenis body {
 
 .booking-sidebar {
   padding: 1.25rem 1.25rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--color-white-a8);
 }
 
 @media (min-width: 900px) {
   .booking-sidebar {
     padding: 1.5rem;
     border-bottom: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid var(--color-white-a8);
   }
 }
 
@@ -2024,7 +2415,7 @@ html.lenis body {
 
 .booking-host-name {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-white-a70);
 }
 
 .booking-event-title {
@@ -2033,14 +2424,14 @@ html.lenis body {
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.3;
-  color: #ffffff;
+  color: var(--color-white);
 }
 
 .booking-event-desc {
   margin: 0 0 1.25rem;
   font-size: 14px;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--color-white-a55);
 }
 
 .booking-meta-row {
@@ -2049,11 +2440,11 @@ html.lenis body {
   gap: 0.5rem;
   margin-bottom: 0.75rem;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--color-white-a75);
 }
 
 .booking-meta-row--muted {
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--color-white-a45);
 }
 
 .booking-duration {
@@ -2062,13 +2453,13 @@ html.lenis body {
   margin-bottom: 1rem;
   padding: 3px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-white-a8);
 }
 
 .booking-duration-btn {
   border: none;
   background: transparent;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--color-white-a65);
   font-size: 13px;
   font-weight: 500;
   padding: 0.35rem 0.75rem;
@@ -2078,8 +2469,8 @@ html.lenis body {
 }
 
 .booking-duration-btn--active {
-  background: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
+  background: var(--color-white-a18);
+  color: var(--color-white);
 }
 
 .booking-timezone-select {
@@ -2096,7 +2487,7 @@ html.lenis body {
 
 .booking-calendar {
   padding: 1rem 1.25rem 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--color-white-a8);
   min-width: 0;
 }
 
@@ -2104,7 +2495,7 @@ html.lenis body {
   .booking-calendar {
     padding: 1.25rem 1.5rem;
     border-bottom: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid var(--color-white-a8);
   }
 }
 
@@ -2120,7 +2511,7 @@ html.lenis body {
   font-family: var(--font-display);
   font-size: 1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--color-white);
 }
 
 .booking-calendar-nav {
@@ -2136,13 +2527,13 @@ html.lenis body {
   height: 32px;
   border: none;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background: var(--color-white-a8);
+  color: var(--color-white);
   cursor: pointer;
 }
 
 .booking-icon-btn:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--color-white-a14);
 }
 
 .booking-calendar-weekdays {
@@ -2156,7 +2547,7 @@ html.lenis body {
   text-align: center;
   font-size: 11px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--color-white-a40);
   letter-spacing: 0.04em;
 }
 
@@ -2171,8 +2562,8 @@ html.lenis body {
   min-height: 0;
   border: none;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
+  background: var(--color-white-a6);
+  color: var(--color-white);
   font-size: 14px;
   font-weight: 500;
   font-family: var(--font-body);
@@ -2191,12 +2582,12 @@ html.lenis body {
 }
 
 .booking-day--today:not(.booking-day--selected) {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 0 0 1px var(--color-white-a35);
 }
 
 .booking-day--selected {
-  background: #ffffff;
-  color: #111011;
+  background: var(--color-white);
+  color: var(--color-text);
 }
 
 .booking-times {
@@ -2216,7 +2607,7 @@ html.lenis body {
   margin: 0;
   text-align: center;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--color-white-a45);
   padding: 0 1rem;
 }
 
@@ -2232,7 +2623,7 @@ html.lenis body {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--color-white);
 }
 
 .booking-format-toggle {
@@ -2240,13 +2631,13 @@ html.lenis body {
   gap: 2px;
   padding: 2px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-white-a8);
 }
 
 .booking-format-btn {
   border: none;
   background: transparent;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-white-a50);
   font-size: 11px;
   padding: 0.2rem 0.45rem;
   border-radius: 4px;
@@ -2255,8 +2646,8 @@ html.lenis body {
 }
 
 .booking-format-btn--active {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
+  background: var(--color-white-a15);
+  color: var(--color-white);
 }
 
 .booking-times-list {
@@ -2271,10 +2662,10 @@ html.lenis body {
 
 .booking-time-slot {
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--color-white-a20);
   border-radius: 8px;
   background: transparent;
-  color: #ffffff;
+  color: var(--color-white);
   font-size: 14px;
   padding: 0.55rem 0.75rem;
   text-align: center;
@@ -2283,13 +2674,13 @@ html.lenis body {
 }
 
 .booking-time-slot:hover {
-  border-color: rgba(255, 255, 255, 0.45);
+  border-color: var(--color-white-a45);
 }
 
 .booking-time-slot--selected {
-  background: #ffffff;
-  color: #111011;
-  border-color: #ffffff;
+  background: var(--color-white);
+  color: var(--color-text);
+  border-color: var(--color-white);
 }
 
 .booking-widget-footer {
@@ -2299,22 +2690,22 @@ html.lenis body {
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid var(--color-white-a8);
+  background: var(--color-black-a20);
 }
 
 .booking-widget-hint {
   margin: 0;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-white-a50);
 }
 
 .booking-continue-btn,
 .booking-submit-btn {
   border: none;
   border-radius: 100px;
-  background: #ffffff;
-  color: #111011;
+  background: var(--color-white);
+  color: var(--color-text);
   font-size: 14px;
   font-weight: 600;
   padding: 0.65rem 1.5rem;
@@ -2329,7 +2720,7 @@ html.lenis body {
 
 .booking-continue-btn:not(:disabled):hover,
 .booking-submit-btn:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--color-white-a90);
 }
 
 /* Step 2 — details */
@@ -2350,7 +2741,7 @@ html.lenis body {
   margin-bottom: 1.5rem;
   border: none;
   background: none;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--color-white-a65);
   font-size: 14px;
   cursor: pointer;
   font-family: var(--font-body);
@@ -2358,7 +2749,7 @@ html.lenis body {
 }
 
 .booking-back-link:hover {
-  color: #ffffff;
+  color: var(--color-white);
 }
 
 .booking-details-layout {
@@ -2379,7 +2770,7 @@ html.lenis body {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #fe4b01;
+  color: var(--color-primary);
   font-weight: 500;
 }
 
@@ -2388,28 +2779,28 @@ html.lenis body {
   font-family: var(--font-display);
   font-size: 1.75rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--color-white);
 }
 
 .booking-details-sub {
   margin: 0 0 1.5rem;
   font-size: 15px;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--color-white-a55);
 }
 
 .booking-summary-card {
   padding: 1.25rem;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--color-white-a6);
+  border: 1px solid var(--color-white-a10);
 }
 
 .booking-summary-event {
   margin: 0 0 1rem;
   font-weight: 600;
   font-size: 15px;
-  color: #ffffff;
+  color: var(--color-white);
 }
 
 .booking-summary-list {
@@ -2427,7 +2818,7 @@ html.lenis body {
   gap: 0.5rem;
   font-size: 14px;
   line-height: 1.45;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-white-a80);
 }
 
 .booking-details-form {
@@ -2443,19 +2834,19 @@ html.lenis body {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--color-white-a55);
 }
 
 .booking-field-label--light {
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--color-black-a50);
 }
 
 .booking-field-input {
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--color-white-a15);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
+  background: var(--color-white-a6);
+  color: var(--color-white);
   font-size: 15px;
   padding: 0.75rem 1rem;
   font-family: var(--font-body);
@@ -2463,13 +2854,13 @@ html.lenis body {
 }
 
 .booking-field-input:focus {
-  border-color: rgba(255, 255, 255, 0.35);
+  border-color: var(--color-white-a35);
 }
 
 .booking-field-input--light {
-  background: #ffffff;
-  color: #111011;
-  border-color: rgba(0, 0, 0, 0.12);
+  background: var(--color-white);
+  color: var(--color-text);
+  border-color: var(--color-black-a12);
 }
 
 .booking-field-textarea {
@@ -2494,7 +2885,7 @@ html.lenis body {
 }
 
 .booking-success-icon {
-  color: #4ade80;
+  color: var(--color-success-light);
   margin: 0 auto 1rem;
 }
 
@@ -2503,7 +2894,7 @@ html.lenis body {
   font-family: var(--font-display);
   font-size: 1.75rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--color-white);
 }
 
 .booking-success-text {
@@ -2511,14 +2902,14 @@ html.lenis body {
   max-width: 28rem;
   font-size: 15px;
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--color-white-a65);
 }
 
 .booking-footer-prompt {
   margin: 2rem 0 0;
   text-align: center;
   font-size: 15px;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--color-black-a55);
 }
 
 .booking-footer-link {
@@ -2526,14 +2917,14 @@ html.lenis body {
   background: none;
   padding: 0;
   font: inherit;
-  color: #111011;
+  color: var(--color-text);
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
 }
 
 .booking-footer-link:hover {
-  color: #fe4b01;
+  color: var(--color-primary);
 }
 
 /* Quick message panel */
@@ -2541,8 +2932,8 @@ html.lenis body {
   margin-top: 2rem;
   padding: 2rem;
   border-radius: 16px;
-  background: #fafafa;
-  border: 0.8px solid rgba(0, 0, 0, 0.12);
+  background: var(--color-surface-muted);
+  border: 0.8px solid var(--color-black-a12);
 }
 
 .booking-message-title {
@@ -2555,7 +2946,7 @@ html.lenis body {
 .booking-message-sub {
   margin: 0 0 1.5rem;
   font-size: 15px;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--color-black-a55);
 }
 
 .booking-message-form {
@@ -2586,7 +2977,7 @@ html.lenis body {
   border: none;
   background: none;
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--color-black-a55);
   text-decoration: underline;
   cursor: pointer;
   font-family: var(--font-body);
@@ -2620,7 +3011,7 @@ html.lenis body {
   min-height: 380px;
   padding: 3rem 1.5rem 2rem;
   border-radius: 28px;
-  background-color: #fafafa;
+  background-color: var(--color-surface-muted);
   overflow: hidden;
 }
 
@@ -2651,7 +3042,7 @@ html.lenis body {
   font-weight: 600;
   line-height: 0.85;
   letter-spacing: -0.04em;
-  color: rgba(0, 0, 0, 0.06);
+  color: var(--color-black-a6);
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
@@ -2687,11 +3078,11 @@ html.lenis body {
   font-weight: 600;
   line-height: 1.35;
   letter-spacing: -0.02em;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .footer-headline-accent {
-  color: #fe4b01;
+  color: var(--color-primary);
 }
 
 .footer-blurb {
@@ -2699,30 +3090,38 @@ html.lenis body {
   max-width: 18rem;
   font-size: 15px;
   line-height: 1.55;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--color-muted);
 }
 
 .footer-social {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
+  max-width: 100%;
 }
 
 .footer-social-link {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  color: #111011;
+  color: var(--color-text);
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .footer-social-link:hover {
-  color: #fe4b01;
+  color: var(--color-primary);
   transform: translateY(-2px);
+}
+
+.footer-social-link--disabled {
+  opacity: 0.38;
+  cursor: default;
+  pointer-events: none;
 }
 
 .footer-field-label {
@@ -2730,7 +3129,7 @@ html.lenis body {
   font-family: var(--font-display);
   font-size: 13px;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--color-black-a55);
 }
 
 .footer-field-label--spaced {
@@ -2742,7 +3141,7 @@ html.lenis body {
   align-items: center;
   gap: 0.75rem;
   text-decoration: none;
-  color: #111011;
+  color: var(--color-text);
   transition: opacity 0.2s ease;
 }
 
@@ -2765,27 +3164,27 @@ html.lenis body {
   height: 44px;
   flex-shrink: 0;
   border-radius: 50%;
-  background-color: #fe4b01;
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: var(--color-white);
   transition: transform 0.25s ease, background-color 0.2s ease;
 }
 
 .footer-cta:hover .footer-cta-arrow {
   transform: translate(2px, -2px);
-  background-color: #e64300;
+  background-color: var(--color-primary-dark);
 }
 
 .footer-email {
   font-family: var(--font-display);
   font-size: clamp(1rem, 2vw, 1.15rem);
   font-weight: 500;
-  color: #111011;
+  color: var(--color-text);
   text-decoration: none;
   word-break: break-all;
 }
 
 .footer-email:hover {
-  color: #fe4b01;
+  color: var(--color-primary);
 }
 
 .footer-col--like {
@@ -2808,8 +3207,8 @@ html.lenis body {
   padding: 0.5rem 1rem 0.5rem 0.75rem;
   border: none;
   border-radius: 100px;
-  background-color: #111011;
-  color: #ffffff;
+  background-color: var(--color-text);
+  color: var(--color-white);
   font-family: var(--font-display);
   font-size: 14px;
   font-weight: 500;
@@ -2818,12 +3217,12 @@ html.lenis body {
 }
 
 .footer-like-btn:hover:not(:disabled) {
-  background-color: #2a2a2a;
+  background-color: var(--color-surface-dark-mid);
 }
 
 .footer-like-btn--liked {
   cursor: default;
-  background-color: #2a2a2a;
+  background-color: var(--color-surface-dark-mid);
 }
 
 .footer-like-btn--pulse {
@@ -2849,7 +3248,7 @@ html.lenis body {
   min-width: 1.5rem;
   padding: 0.1rem 0.35rem;
   border-radius: 100px;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--color-white-a15);
   font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
@@ -2867,7 +3266,7 @@ html.lenis body {
 
 .footer-bar-copy {
   font-size: 13px;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--color-black-a45);
 }
 
 .footer-bar-meta {
@@ -2875,12 +3274,12 @@ html.lenis body {
   align-items: center;
   gap: 0.5rem;
   font-size: 13px;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--color-black-a45);
   font-variant-numeric: tabular-nums;
 }
 
 .footer-bar-weather {
-  color: rgba(0, 0, 0, 0.35);
+  color: var(--color-black-a35);
 }
 
 /* Why me — portfolio vibe */
@@ -2914,7 +3313,7 @@ html.lenis body {
   font-weight: 500;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: #fe4b01;
+  color: var(--color-primary);
 }
 
 .why-me-title {
@@ -2924,7 +3323,7 @@ html.lenis body {
   font-weight: 600;
   line-height: 1.08;
   letter-spacing: -0.02em;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .why-me-intro {
@@ -2932,7 +3331,7 @@ html.lenis body {
   max-width: 42rem;
   font-size: clamp(15px, 2vw, 17px);
   line-height: 1.6;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--color-muted);
 }
 
 .why-me-grid {
@@ -2941,10 +3340,10 @@ html.lenis body {
   margin: 0;
   padding: 0;
   list-style: none;
-  border: 0.8px solid rgba(0, 0, 0, 0.12);
+  border: 0.8px solid var(--color-black-a12);
   border-radius: 20px;
   overflow: hidden;
-  background: #ffffff;
+  background: var(--color-white);
 }
 
 @media (min-width: 768px) {
@@ -2961,8 +3360,8 @@ html.lenis body {
 
 .why-me-card {
   padding: 1.75rem 1.5rem;
-  border-bottom: 0.8px solid rgba(0, 0, 0, 0.08);
-  border-right: 0.8px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 0.8px solid var(--color-black-a8);
+  border-right: 0.8px solid var(--color-black-a8);
 }
 
 .why-me-card:nth-child(3n) {
@@ -2974,7 +3373,7 @@ html.lenis body {
     border-right: none;
   }
   .why-me-card:nth-child(3n) {
-    border-right: 0.8px solid rgba(0, 0, 0, 0.08);
+    border-right: 0.8px solid var(--color-black-a8);
   }
 }
 
@@ -2991,7 +3390,7 @@ html.lenis body {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
-  color: #fe4b01;
+  color: var(--color-primary);
 }
 
 .why-me-card-title {
@@ -3000,14 +3399,14 @@ html.lenis body {
   font-size: 18px;
   font-weight: 600;
   line-height: 1.3;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .why-me-card-desc {
   margin: 0;
   font-size: 14px;
   line-height: 1.55;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--color-black-a55);
 }
 
 /* Experience — matches selected work rows */
@@ -3035,7 +3434,7 @@ html.lenis body {
   font-weight: 500;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: #fe4b01;
+  color: var(--color-primary);
 }
 
 .experience-title {
@@ -3045,7 +3444,7 @@ html.lenis body {
   font-weight: 600;
   line-height: 1.08;
   letter-spacing: -0.02em;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .experience-sub {
@@ -3053,7 +3452,7 @@ html.lenis body {
   max-width: 36rem;
   font-size: 15px;
   line-height: 1.5;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--color-black-a55);
 }
 
 .experience-row {
@@ -3061,7 +3460,7 @@ html.lenis body {
   flex-direction: column;
   gap: 1.25rem;
   padding: 2.5rem 0;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 @media (min-width: 900px) {
@@ -3079,7 +3478,7 @@ html.lenis body {
   font-size: clamp(22px, 3vw, 28px);
   font-weight: 600;
   line-height: 1.35;
-  color: #6f6f71;
+  color: var(--color-work-muted);
 }
 
 .experience-role {
@@ -3088,7 +3487,7 @@ html.lenis body {
   font-size: clamp(20px, 2.5vw, 24px);
   font-weight: 600;
   line-height: 1.35;
-  color: #171717;
+  color: var(--color-text-subtle);
 }
 
 .experience-desc {
@@ -3096,7 +3495,7 @@ html.lenis body {
   max-width: 36rem;
   font-size: 15px;
   line-height: 1.6;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--color-black-a55);
 }
 
 .experience-row-meta {
@@ -3116,19 +3515,82 @@ html.lenis body {
   font-family: var(--font-display);
   font-size: 14px;
   font-weight: 600;
-  color: #111011;
+  color: var(--color-text);
 }
 
 .experience-location {
   margin: 0.35rem 0 0;
   font-size: 13px;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--color-black-a45);
 }
 
-/* Work device mockups */
-.work-device-stage {
-  background: linear-gradient(145deg, #f8f8f8 0%, #ececec 100%);
+/* View project — Bugvi left-to-right black fill */
+.work-view-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--color-black-a12);
+  background: var(--color-white);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-text);
+  cursor: pointer;
   overflow: hidden;
+  isolation: isolate;
+}
+
+.work-view-btn-fill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--color-text);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-view-btn-label,
+.work-view-btn-icon {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+  transition: color 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.08s;
+}
+
+.work-view-btn:hover,
+.work-view-btn:focus-visible {
+  color: var(--color-white);
+}
+
+.work-view-btn:hover .work-view-btn-fill,
+.work-view-btn:focus-visible .work-view-btn-fill {
+  transform: scaleX(1);
+}
+
+.work-view-btn:hover .work-view-btn-label,
+.work-view-btn:hover .work-view-btn-icon,
+.work-view-btn:focus-visible .work-view-btn-label,
+.work-view-btn:focus-visible .work-view-btn-icon {
+  color: var(--color-white);
+}
+
+/* Work device mockups — whole panel slides up slightly on hover */
+.work-device-stage {
+  background: linear-gradient(145deg, var(--color-surface-soft) 0%, var(--color-surface-elevated) 100%);
+  overflow: hidden;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .work-device-stage:hover {
+    transform: translateY(-10px);
+  }
 }
 
 .work-device-desktop-screen {
@@ -3144,7 +3606,7 @@ html.lenis body {
 .about-skills {
   width: 100%;
   padding-top: clamp(1.25rem, 2.5vw, 1.5rem);
-  border-top: 0.5px solid rgba(255, 255, 255, 0.12);
+  border-top: 0.5px solid var(--color-white-a12);
 }
 
 .about-skills-label {
@@ -3154,7 +3616,7 @@ html.lenis body {
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--color-white-a45);
   text-align: left;
 }
 
@@ -3170,13 +3632,13 @@ html.lenis body {
 
 .about-skills-pill {
   border-radius: 100px;
-  border: 0.5px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.06);
+  border: 0.5px solid var(--color-white-a25);
+  background: var(--color-white-a6);
   padding: 0.35rem 0.75rem;
   font-family: var(--font-display);
   font-size: 12px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--color-white-a75);
 }
 
 /* ─── Mobile: fit screen, same visuals ─── */
@@ -3200,8 +3662,9 @@ html.lenis body {
   }
 
   .about-drumroll-panel {
-    padding: 1.75rem 1.15rem 1.5rem;
-    border-radius: 24px;
+    min-height: auto;
+    padding: 2rem 1.15rem 1.75rem;
+    border-radius: clamp(40px, 18vw, 72px);
     gap: 1.75rem;
   }
 
@@ -3209,9 +3672,12 @@ html.lenis body {
     font-size: clamp(28px, 8vw, 40px);
   }
 
-  .about-drumroll-media {
-    max-width: 280px;
-    margin: 0 auto;
+  .about-drumroll-col--media {
+    max-width: 100%;
+  }
+
+  .about-photo-frame {
+    border-radius: 20px;
   }
 
   .about-drumroll-stats {
