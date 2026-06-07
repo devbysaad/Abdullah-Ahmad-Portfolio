@@ -153,13 +153,26 @@ html.lenis body {
     0 8px 30px var(--color-black-a8);
 }
 
-/* Mobile open — pill expands in place (framer-v-16whwnt) */
+/* Mobile open — card expands in place (uiwithbugvi.com mobile menu) */
 @media (max-width: 767px) {
   .glass-nav--open {
     max-height: calc(100dvh - 48px);
     overflow: auto;
     overscroll-behavior: contain;
     padding: 0 10px 10px 0;
+    border-radius: 32px;
+    background-color: transparent;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow:
+      inset 0 0 0 0.5px var(--color-black-a6),
+      0 16px 48px var(--color-black-a8);
+  }
+
+  .glass-nav--open.glass-nav--scrolled {
+    box-shadow:
+      inset 0 0 0 0.5px var(--color-black-a6),
+      0 16px 48px var(--color-black-a8);
   }
 }
 
