@@ -1,86 +1,88 @@
-# Vercel deployment
+# Vercel deployment checklist
 
-Two separate Vercel projects — **frontend** (`client/`) and **API** (`server/`).
+Deploy from the **repository root** — no Root Directory override.
 
-| Project | Root Directory | Example URL |
-|---------|----------------|---------------|
-| Frontend | `client` | `https://abdullah-ahmad-portfolio-lime.vercel.app` |
-| Backend | `server` | `https://abdullah-ahmad-portfolio-backend.vercel.app` |
+## 1. MongoDB Atlas
 
----
+1. Create a free cluster at [mongodb.com/atlas](https://www.mongodb.com/atlas)
+2. **Network Access** → Add IP `0.0.0.0/0` (required for Vercel serverless)
+3. **Database Access** → Create a user with read/write
+4. Copy the connection string → `MONGODB_URI`
 
-## 1. Frontend (`client`)
+## 2. Resend
 
-**Settings → General → Root Directory:** `client`
+1. Sign up at [resend.com](https://resend.com)
+2. Create an API key → `RESEND_API_KEY`
+3. **Testing:** use `Portfolio <onboarding@resend.dev>` and set `RESEND_TO_EMAIL` to the email on your Resend account
+4. **Production:** verify your domain at [resend.com/domains](https://resend.com/domains), then use `Portfolio <hello@yourdomain.com>`
 
-**Environment variables** (Production + Preview):
+## 3. Vercel environment variables
 
-| Variable | Value |
-|----------|--------|
-| `VITE_API_URL` | `https://abdullah-ahmad-portfolio-backend.vercel.app/api` |
-| `VITE_SITE_URL` | Your frontend URL (e.g. `https://abdullah-ahmad-portfolio-lime.vercel.app`) |
-| `VITE_EMAILJS_*` | EmailJS keys (see `client/.env.example`) |
+In **Project → Settings → Environment Variables**, add:
 
-Redeploy after changing `VITE_*` vars (they are baked in at build time).
+| Variable | Environments | Example |
+|----------|--------------|---------|
+| `MONGODB_URI` | Production, Preview, Development | `mongodb+srv://user:pass@cluster.mongodb.net/abdullah-portfolio` |
+| `CLIENT_URL` | Production, Preview, Development | `https://abdullahahmad.dev` |
+| `NEXT_PUBLIC_SITE_URL` | Production, Preview, Development | `https://abdullahahmad.dev` |
+| `RESEND_API_KEY` | Production, Preview, Development | `re_...` |
+| `RESEND_FROM_EMAIL` | Production, Preview, Development | `Portfolio <hello@yourdomain.com>` |
+| `RESEND_TO_EMAIL` | Production, Preview, Development | `you@example.com` |
 
----
+> Vercel preview URLs (`*.vercel.app`) are **automatically allowed** for CORS — you don't need to add each preview URL to `CLIENT_URL`.
 
-## 2. Backend (`server`)
-
-**Settings → General → Root Directory:** `server`  
-**Install Command:** `npm install` (not `npm install --prefix client`)
-
-**Environment variables** (Production + Preview):
-
-| Variable | Required | Notes |
-|----------|----------|--------|
-| `MONGODB_URI` | **Yes** | **MongoDB Atlas** URI — `mongodb+srv://...` — **never** `127.0.0.1` |
-| `JWT_SECRET` | **Yes** | Long random string (32+ chars) |
-| `ADMIN_PASSWORD` | **Yes** | Admin dashboard password |
-| `CLIENT_URL` | **Yes** | Comma-separated frontend origins, e.g. `https://abdullah-ahmad-portfolio-lime.vercel.app,https://abdullah-ahmad-portfolio-sandy.vercel.app` |
-| `NODE_ENV` | Recommended | `production` |
-| `CLOUDINARY_CLOUD_NAME` | For uploads | From Cloudinary dashboard |
-| `CLOUDINARY_API_KEY` | For uploads | |
-| `CLOUDINARY_API_SECRET` | For uploads | |
-| `CLOUDINARY_FOLDER` | Optional | e.g. `aakportfolio` |
-
-### MongoDB Atlas (fixes 503 / Preview mode)
-
-1. [cloud.mongodb.com](https://cloud.mongodb.com) → create a free cluster.
-2. **Database Access** → database user with password.
-3. **Network Access** → **Add IP Address** → `0.0.0.0/0` (required for Vercel serverless).
-4. **Connect** → Drivers → copy connection string → replace `<password>` → paste as `MONGODB_URI` in Vercel.
-5. Seed the database once from your machine:
-
-   ```bash
-   cd server
-   # Temporarily point .env MONGODB_URI at Atlas, then:
-   npm run seed
-   ```
-
-6. **Redeploy** the backend project (Deployments → … → Redeploy).
-
-### Verify
+## 4. Deploy
 
 ```bash
-curl https://abdullah-ahmad-portfolio-backend.vercel.app/api/health
-# {"ok":true,"env":"production","mongo":true}
-
-curl https://abdullah-ahmad-portfolio-backend.vercel.app/api/projects
-# {"success":true,"data":[...]}
+# Push to GitHub, then in Vercel:
+# New Project → Import repo → Deploy
 ```
 
-If you see `503` with `DATABASE_CONNECTION_FAILED`, the API cannot reach MongoDB — fix `MONGODB_URI` or Atlas network access.
+Or via CLI:
 
----
+```bash
+npx vercel --prod
+```
 
-## 3. Preview mode banner
+## 5. Seed production database (one time)
 
-The site shows **“Preview mode — saved content”** when **every** API request fails (503). The frontend still uses local fallbacks in `aak.constants.js`, so the page works but admin edits won’t appear until the API is healthy.
+Run locally against your **Atlas** URI:
 
----
+```bash
+MONGODB_URI="mongodb+srv://..." npm run seed
+```
 
-## 4. GitHub repos
+This loads all portfolio content, testimonials, and profile images into MongoDB.
 
-- [devbysaad/Abdullah-Ahmad-Portfolio](https://github.com/devbysaad/Abdullah-Ahmad-Portfolio)
-- Link each Vercel project to the same repo with the correct **Root Directory** (`client` vs `server`).
+## 6. Verify after deploy
+
+```bash
+curl https://YOUR-SITE.vercel.app/api/health
+# → {"ok":true,"mongo":true,...}
+
+curl -X POST https://YOUR-SITE.vercel.app/api/contact \
+  -H 'Content-Type: application/json' \
+  -d '{"type":"message","name":"Test","email":"test@example.com","message":"Hello"}'
+# → {"success":true,...}
+```
+
+Open the site and test **Book appointment** on the contact section.
+
+## Architecture on Vercel
+
+| Route | Handler | Purpose |
+|-------|---------|---------|
+| `/` | App Router (SSR) | Homepage from MongoDB |
+| `/api/contact` | Dedicated API route | Booking + messages (fast) |
+| `/api/health` | Dedicated API route | Health check |
+| `/api/portfolio` | Express bridge | Content bundle |
+| `/api/media/:id` | Express bridge | Profile & testimonial images |
+
+## Troubleshooting
+
+| Issue | Fix |
+|-------|-----|
+| 503 on homepage | Check `MONGODB_URI` and Atlas network access (`0.0.0.0/0`) |
+| Empty sections | Run `npm run seed` against Atlas |
+| Booking succeeds but no email | Verify Resend domain + `RESEND_FROM_EMAIL` / `RESEND_TO_EMAIL` |
+| CORS error | Set `CLIENT_URL` to your production domain |

@@ -1,0 +1,5 @@
+@import '../styles/colors.css';
+@import 'tailwindcss';
+
+/* Remaining global styles from legacy index.css */
+@import '../legacy.css';
