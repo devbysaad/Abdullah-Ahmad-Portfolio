@@ -29,15 +29,15 @@ function buildMessageEmail(payload) {
   const message = escapeHtml(payload.message).replace(/\n/g, '<br />');
 
   return {
-    subject: `Portfolio message from ${payload.name}`,
+    subject: `Message from ${payload.name} — appointment page`,
     html: `
-      <h2>New portfolio message</h2>
+      <h2>Someone left a message on your appointment page</h2>
       <p><strong>Name:</strong> ${name}</p>
       <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
       <p><strong>Message:</strong></p>
       <p>${message}</p>
     `,
-    text: `New portfolio message\n\nName: ${payload.name}\nEmail: ${payload.email}\n\n${payload.message}`,
+    text: `Someone left a message on your appointment page\n\nName: ${payload.name}\nEmail: ${payload.email}\n\n${payload.message}`,
   };
 }
 
@@ -48,9 +48,10 @@ function buildAppointmentEmail(payload) {
   const when = `${payload.appointmentDate} ${payload.appointmentTime} (${payload.timezone || 'UTC'})`;
 
   return {
-    subject: `Call request from ${payload.name} — ${when}`,
+    subject: `New appointment: ${payload.name} — ${when}`,
     html: `
-      <h2>New call booking request</h2>
+      <h2>Someone wants to book an appointment with you</h2>
+      <p style="color:#666;margin-top:0">New appointment request from your site</p>
       <p><strong>Name:</strong> ${name}</p>
       <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
       <p><strong>Duration:</strong> ${payload.duration} minutes</p>
@@ -59,7 +60,7 @@ function buildAppointmentEmail(payload) {
       <p>${notes}</p>
     `,
     text: [
-      'New call booking request',
+      'Someone wants to book an appointment with you',
       '',
       `Name: ${payload.name}`,
       `Email: ${payload.email}`,

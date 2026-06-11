@@ -47,6 +47,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${sora.variable} ${interTight.variable}`}>
+      <head>
+        <link rel="preload" href="/abdullah.png" as="image" type="image/png" />
+      </head>
       <body>
         {children}
         <Providers />

@@ -17,6 +17,7 @@ const createMedia = async ({ buffer, mimeType, filename = '', folder = 'images' 
   };
 };
 
-const getMediaById = async (id) => Media.findById(id).select('+data');
+const getMediaById = async (id) =>
+  Media.findById(id).select('mimeType size data').lean();
 
 module.exports = { createMedia, getMediaById };

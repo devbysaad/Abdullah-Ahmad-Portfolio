@@ -20,14 +20,15 @@ export default async function handler(req, res) {
     await connectDatabase();
     const doc = await getMediaById(id);
 
-    if (!doc?.data?.length) {
+    const buffer = doc?.data?.buffer ? Buffer.from(doc.data.buffer) : doc?.data;
+    if (!buffer?.length) {
       return res.status(404).json({ success: false, message: 'Image not found' });
     }
 
     res.setHeader('Content-Type', doc.mimeType);
     res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-    res.setHeader('Content-Length', doc.data.length);
-    return res.send(doc.data);
+    res.setHeader('Content-Length', buffer.length);
+    return res.send(buffer);
   } catch (err) {
     console.error('[api/media]', id, err?.message);
     return res.status(500).json({ success: false, message: 'Could not load image' });
