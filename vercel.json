@@ -8,6 +8,10 @@
       "maxDuration": 10,
       "memory": 512
     },
+    "src/pages/api/media/[id].js": {
+      "maxDuration": 30,
+      "memory": 1024
+    },
     "src/pages/api/[[...slug]].js": {
       "maxDuration": 30,
       "memory": 1024

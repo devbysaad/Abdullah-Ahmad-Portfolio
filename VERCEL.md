@@ -56,7 +56,15 @@ Run locally against your **Atlas** URI:
 MONGODB_URI="mongodb+srv://..." npm run seed
 ```
 
-This loads all portfolio content, testimonials, and profile images into MongoDB.
+This loads **everything** into MongoDB:
+
+| Stored in MongoDB | Static (not in DB) |
+|-------------------|-------------------|
+| Profile photo, project screenshots, testimonial avatars | YouTube embed URL |
+| Brand logos (from `public/brands/`) | Brand favicons (domain-only logos) |
+| Projects, services, experience, testimonials, about, FAQ, hero, site config | `public/` favicon files |
+
+Images are served at `/api/media/:id` from the Media collection.
 
 ## 6. Verify after deploy
 

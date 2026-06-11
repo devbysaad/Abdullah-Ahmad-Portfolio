@@ -8,6 +8,7 @@ const { About } = require('../modules/about/about.model');
 const { Experience } = require('../modules/experience/experience.model');
 const { Media } = require('../modules/media/media.model');
 const { SiteConfig } = require('../modules/site-config/site-config.model');
+const { seedMediaFromFile, seedMediaFromUrl } = require('./media-helpers');
 const {
   TESTIMONIAL_AVATARS,
   WHY_ME_INTRO,
@@ -26,19 +27,26 @@ const {
   YOUTUBE_VIDEO_ID,
 } = require('./site-content');
 
-/** Public static files or CDN URLs — never MongoDB blobs (they block the DB for minutes). */
-function resolveLogoUrl(entry) {
+const log = (msg) => console.log(`[seed] ${msg}`);
+
+/** Store local files + remote URLs in MongoDB Media; domain-only logos stay empty */
+async function resolveMediaUrl(entry, folder = 'images') {
   if (entry.localFile) {
-    return `/${entry.localFile.replace(/^public\//, '')}`;
+    return seedMediaFromFile(entry.localFile, folder);
   }
   if (entry.remoteUrl) {
-    return entry.remoteUrl;
+    return seedMediaFromUrl(entry.remoteUrl, folder);
+  }
+  if (typeof entry === 'string' && (entry.startsWith('http') || entry.startsWith('public/'))) {
+    if (entry.startsWith('http')) return seedMediaFromUrl(entry, folder);
+    return seedMediaFromFile(entry, folder);
   }
   return '';
 }
 
 const seed = async () => {
   await connectDatabase();
+  log('connected');
 
   await Promise.all([
     Project.deleteMany({}),
@@ -49,21 +57,29 @@ const seed = async () => {
     Media.deleteMany({}),
     SiteConfig.deleteMany({}),
   ]);
+  log('cleared collections');
 
-  // Profile photo — static public asset (fast, works on Vercel without /api/media)
-  const profileImageUrl = '/abdullah.png';
+  log('profile image → MongoDB');
+  const profileImageUrl = await seedMediaFromFile('public/abdullah.png', 'profile');
 
-  // Project screenshots load directly from aak-tech.dev CDN (fast, no /api/media round-trip)
-  const projectDocs = PROJECTS.map((project) => ({
-    name: project.name,
-    summary: project.description,
-    description: project.longDescription,
-    techStack: project.techStack,
-    imageUrl: project.imageUrl,
-    badge: project.badge,
-    badgeSub: project.badgeSub,
-    order: project.order,
-  }));
+  log('project screenshots → MongoDB');
+  const projectDocs = [];
+  for (const project of PROJECTS) {
+    const imageUrl = project.imageUrl
+      ? await seedMediaFromUrl(project.imageUrl, 'projects')
+      : '';
+    projectDocs.push({
+      name: project.name,
+      summary: project.description,
+      description: project.longDescription,
+      techStack: project.techStack,
+      imageUrl,
+      badge: project.badge,
+      badgeSub: project.badgeSub,
+      order: project.order,
+    });
+    log(`  ✓ ${project.name}`);
+  }
   await Project.insertMany(projectDocs);
 
   await Service.insertMany([
@@ -95,6 +111,13 @@ const seed = async () => {
 
   await Experience.insertMany(EXPERIENCE);
 
+  log('testimonial avatars → MongoDB');
+  const avatarUrls = {};
+  for (const [key, url] of Object.entries(TESTIMONIAL_AVATARS)) {
+    avatarUrls[key] = await seedMediaFromUrl(url, 'testimonials');
+    log(`  ✓ ${key}`);
+  }
+
   await Testimonial.insertMany([
     {
       name: 'Alphonso Roundtree',
@@ -103,7 +126,7 @@ const seed = async () => {
       profileUrl: 'https://www.linkedin.com/in/alphonsoroundtree/',
       countryCode: 'US',
       text: `I had the pleasure of hiring Abdullah and I gotta tell you man, I really enjoyed working with him. He was really fast, really understood the project, and really delivered. I must say that I do plan to continue to work with him. You got my recommendation for sure. Hire Abdullah to take care of your tech needs.`,
-      avatar: TESTIMONIAL_AVATARS.alphonso,
+      avatar: avatarUrls.alphonso,
       order: 0,
     },
     {
@@ -113,7 +136,7 @@ const seed = async () => {
       profileUrl: 'https://nybble.co.uk/team/rob-eccles/',
       countryCode: 'GB',
       text: `I had the pleasure of working with Abdullah on our Pantry Application, and I couldn't be more impressed with his expertise and commitment to delivering a high-quality product. From the start, he demonstrated a deep understanding of our project requirements, ensuring every technical detail was addressed. His skills in the technology stack were top-notch, and he consistently provided innovative solutions to challenges, streamlining our application's functionality beyond what we initially envisioned. His proactive approach, strong communication skills, and dedication to excellence made him an invaluable asset to our team. I highly recommend Abdullah for any development project — his brilliance and professionalism set him apart!`,
-      avatar: TESTIMONIAL_AVATARS.rob,
+      avatar: avatarUrls.rob,
       order: 1,
     },
     {
@@ -123,7 +146,7 @@ const seed = async () => {
       profileUrl: 'https://kelebogile.me/',
       countryCode: 'ZA',
       text: `Wow! What a great expert who genuinely cares about my work. Proactive and on point to make sure every inch of the development is done right and aligns with the big picture. Abdullah goes the extra mile and has great and timely communication skills. This is the developer to pick for your backend project. I look forward to more milestones in my project with him.`,
-      avatar: TESTIMONIAL_AVATARS.kelebogile,
+      avatar: avatarUrls.kelebogile,
       order: 2,
     },
     {
@@ -133,7 +156,7 @@ const seed = async () => {
       profileUrl: 'https://www.linkedin.com/in/saqibawan112/',
       countryCode: 'DE',
       text: `I couldn't be more satisfied with the work. Abdullah's communication skills, expertise in coding and attention to details are commendable. The follow-ups were timely and thoughtful, showing a genuine commitment to delivering the best possible outcome. Highly recommended!`,
-      avatar: TESTIMONIAL_AVATARS.saqib,
+      avatar: avatarUrls.saqib,
       order: 3,
     },
     {
@@ -143,7 +166,7 @@ const seed = async () => {
       profileUrl: 'https://www.linkedin.com/in/hisham-kwja/',
       countryCode: 'MY',
       text: `My experience with Abdullah has been exceptional. He is a true professional and dedicated expert who has worked with unicorn companies worth over 1 BILLION USD!! His efforts are unmatched compared to other agencies on Fiverr.`,
-      avatar: TESTIMONIAL_AVATARS.hisham,
+      avatar: avatarUrls.hisham,
       order: 4,
     },
     {
@@ -153,7 +176,7 @@ const seed = async () => {
       profileUrl: 'https://www.linkedin.com/in/saiyedsaroshanis/',
       countryCode: 'CA',
       text: `I had the pleasure of working with Abdullah, and I must say he is a thorough professional. He not only completed all the tasks on time but also created my website with exceptional precision. Abdullah clearly understood what I was looking for and delivered exactly what I needed. His dedication and attention to detail made the entire process smooth and stress-free. I highly recommend his services!`,
-      avatar: TESTIMONIAL_AVATARS.sarosh,
+      avatar: avatarUrls.sarosh,
       order: 5,
     },
     {
@@ -163,7 +186,7 @@ const seed = async () => {
       profileUrl: 'https://www.linkedin.com/in/bilalba/',
       countryCode: 'US',
       text: 'Talented, committed, expert on full stack projects',
-      avatar: TESTIMONIAL_AVATARS.bilal,
+      avatar: avatarUrls.bilal,
       order: 6,
     },
     {
@@ -173,7 +196,7 @@ const seed = async () => {
       profileUrl: '',
       countryCode: 'PK',
       text: `I am pleased to recommend Mr. Abdullah Ahmad, who worked as a Senior Front-End Developer and Team Lead at Dropella since 2023. Throughout his tenure, Abdullah showcased exceptional technical skills and strong leadership abilities. I am confident that Abdullah will continue to achieve excellence in his future endeavors, and I wish him all the best in his career.`,
-      avatar: TESTIMONIAL_AVATARS.salik,
+      avatar: avatarUrls.salik,
       order: 7,
     },
     {
@@ -183,7 +206,7 @@ const seed = async () => {
       profileUrl: '',
       countryCode: 'PK',
       text: `Abdullah is one of the most talented and hardworking software engineers I have worked with, and it has been an absolute pleasure. What sets him apart is his sense of responsibility and honesty in his work. Having collaborated on numerous projects with him, I can say he is someone you can always trust to get the job done right.`,
-      avatar: TESTIMONIAL_AVATARS.ahsan,
+      avatar: avatarUrls.ahsan,
       order: 8,
     },
   ]);
@@ -201,28 +224,35 @@ const seed = async () => {
     github: 'https://github.com/AbdullahAhmadAAK',
   });
 
-  const brands = await Promise.all(
-    BRANDS.map(async (brand) => ({
+  log('brand logos → MongoDB (local files only)');
+  const brands = [];
+  for (const brand of BRANDS) {
+    const logoUrl = await resolveMediaUrl(brand, 'brands');
+    brands.push({
       key: brand.key,
       name: brand.name,
       domain: brand.domain,
-      logoUrl: resolveLogoUrl(brand),
+      logoUrl,
       url: brand.url,
       badge: Boolean(brand.badge),
       order: brand.order,
-    }))
-  );
+    });
+    log(`  ✓ ${brand.name}${logoUrl ? '' : ' (domain favicon)'}`);
+  }
 
-  const experienceCompanies = await Promise.all(
-    EXPERIENCE_COMPANIES.map(async (company) => ({
+  log('experience company logos → MongoDB');
+  const experienceCompanies = [];
+  for (const company of EXPERIENCE_COMPANIES) {
+    const logoUrl = await resolveMediaUrl(company, 'brands');
+    experienceCompanies.push({
       key: company.key,
       name: company.name,
       domain: company.domain,
-      logoUrl: resolveLogoUrl(company),
+      logoUrl,
       linkedin: company.linkedin,
       order: company.order,
-    }))
-  );
+    });
+  }
 
   await SiteConfig.create({
     slug: 'main',
@@ -238,11 +268,12 @@ const seed = async () => {
     experienceCompanies,
   });
 
-  console.log('Database seeded — images use CDN + public/ assets (no MongoDB media blobs)');
+  const mediaCount = await Media.countDocuments();
+  log(`done — ${mediaCount} images in MongoDB, all content seeded`);
   await mongoose.connection.close();
 };
 
 seed().catch((err) => {
-  console.error(err);
+  console.error('[seed] failed:', err);
   process.exit(1);
 });
