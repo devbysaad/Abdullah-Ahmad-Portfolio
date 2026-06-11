@@ -1,0 +1,423 @@
+/*
+ * UI refinements — polish layer on top of legacy.css
+ * Typography rhythm, softer surfaces, refined interactions
+ */
+
+/* ── Foundation ── */
+html {
+  scroll-padding-top: 6.5rem;
+  text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -30%, var(--color-white) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, var(--color-primary-a6) 0%, transparent 50%);
+  background-attachment: fixed;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+}
+
+main {
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-primary-a25);
+  color: var(--color-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Shared tokens ── */
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-soft:
+    0 1px 2px var(--color-black-a4),
+    0 4px 16px var(--color-black-a6);
+  --shadow-elevated:
+    0 2px 4px var(--color-black-a4),
+    0 12px 40px var(--color-black-a8);
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+}
+
+/* ── Typography & labels ── */
+.label-caps,
+.hero-greeting,
+.booking-page-label,
+.testimonials-label,
+.why-me-label,
+.experience-label,
+.faq-label {
+  letter-spacing: 0.06em;
+}
+
+.heading-display,
+.hero-name-line,
+.booking-page-title,
+.testimonials-title,
+.why-me-title,
+.experience-title,
+.faq-title {
+  text-wrap: balance;
+}
+
+/* ── Buttons ── */
+.btn-primary,
+.btn-outline,
+.hero-cta-primary,
+.hero-cta-chat,
+.glass-nav-cta,
+.booking-continue-btn,
+.booking-submit-btn {
+  transition:
+    background-color 0.28s var(--ease-out-expo),
+    border-color 0.28s var(--ease-out-expo),
+    color 0.28s var(--ease-out-expo),
+    transform 0.22s var(--ease-out-expo),
+    box-shadow 0.28s var(--ease-out-expo);
+}
+
+.btn-primary,
+.hero-cta-primary {
+  box-shadow: 0 2px 8px var(--color-black-a10);
+}
+
+.btn-primary:hover,
+.hero-cta-primary:hover {
+  box-shadow: 0 8px 24px var(--color-primary-a25);
+}
+
+.btn-primary:active,
+.hero-cta-primary:active,
+.hero-cta-chat:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.surface-card,
+.card-surface {
+  border-radius: var(--radius-lg);
+  border-color: var(--color-black-a8);
+  box-shadow: var(--shadow-soft);
+  transition:
+    box-shadow 0.35s var(--ease-out-expo),
+    transform 0.35s var(--ease-out-expo),
+    border-color 0.35s var(--ease-out-expo);
+}
+
+/* ── Navbar ── */
+.glass-nav {
+  background-color: rgba(255, 255, 255, 0.72);
+  box-shadow:
+    inset 0 0 0 1px var(--color-black-a6),
+    0 4px 24px var(--color-black-a4);
+}
+
+.glass-nav--scrolled {
+  background-color: rgba(255, 255, 255, 0.88);
+  box-shadow:
+    inset 0 0 0 1px var(--color-black-a8),
+    0 12px 40px var(--color-black-a10);
+}
+
+.glass-nav-links a {
+  position: relative;
+  color: var(--color-black-a50);
+}
+
+.glass-nav-links a:hover {
+  color: var(--color-text);
+}
+
+.glass-nav-cta {
+  box-shadow: 0 2px 12px var(--color-black-a15);
+}
+
+.glass-nav-cta:hover {
+  box-shadow: 0 6px 20px var(--color-black-a22);
+  transform: translateY(-1px);
+}
+
+/* ── Hero ── */
+.hero-region::before {
+  background-size: 32px 32px;
+  opacity: 0.55;
+}
+
+.hero-available-badge {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: var(--color-black-a8);
+}
+
+.hero-photo-frame {
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 0 0 1px var(--color-black-a6),
+    0 24px 64px var(--color-black-a12),
+    0 8px 24px var(--color-black-a8);
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo);
+}
+
+.hero-photo-col:hover .hero-photo-frame {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 1px var(--color-black-a8),
+    0 32px 80px var(--color-black-a14),
+    0 12px 32px var(--color-black-a10);
+}
+
+.hero-badge {
+  border: 0.8px solid var(--color-black-a6);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.hero-stats-bar {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  border-color: var(--color-black-a6);
+}
+
+.hero-stat {
+  transition: background-color 0.25s ease;
+}
+
+.hero-stat:hover {
+  background: var(--color-surface-muted);
+}
+
+.hero-stat-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-name-accent {
+  color: var(--color-primary);
+}
+
+.hero-role-line {
+  color: var(--color-black-a50);
+}
+
+.hero-subcopy-dim {
+  color: var(--color-black-a50);
+}
+
+/* ── Why me & experience ── */
+.why-me-grid {
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  border-color: var(--color-black-a8);
+}
+
+.why-me-card {
+  transition: background-color 0.25s ease;
+}
+
+.why-me-card:hover {
+  background: var(--color-surface-muted);
+}
+
+.experience-row {
+  transition: border-color 0.25s ease;
+}
+
+.experience-row:hover {
+  border-color: var(--color-black-a12);
+}
+
+/* ── Services ── */
+.service-card {
+  border-radius: var(--radius-lg);
+  transition:
+    transform 0.4s var(--ease-out-expo),
+    box-shadow 0.4s var(--ease-out-expo);
+}
+
+/* ── Testimonials ── */
+.testimonials-section {
+  background: linear-gradient(180deg, var(--color-white) 0%, var(--color-surface-muted) 100%);
+}
+
+.testimonial-card {
+  border-radius: var(--radius-lg);
+  border-color: var(--color-black-a10);
+  background: var(--color-white);
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.35s var(--ease-out-expo),
+    box-shadow 0.35s var(--ease-out-expo),
+    border-color 0.35s var(--ease-out-expo);
+}
+
+.testimonial-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-black-a14);
+  box-shadow: var(--shadow-elevated);
+}
+
+.testimonial-card-paragraph {
+  color: var(--color-black-a80);
+  line-height: 1.58;
+}
+
+.testimonial-card-divider {
+  background: linear-gradient(90deg, transparent, var(--color-black-a12), transparent);
+}
+
+/* ── Booking / contact ── */
+.booking-section {
+  background: var(--color-white);
+}
+
+.booking-widget {
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 0 0 1px var(--color-white-a10),
+    0 32px 96px var(--color-black-a16),
+    0 12px 40px var(--color-black-a12);
+}
+
+.booking-field-input,
+.booking-field-input--light {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.booking-field-input:focus,
+.booking-field-input--light:focus {
+  border-color: var(--color-primary-a35);
+  box-shadow: 0 0 0 3px var(--color-primary-a12);
+}
+
+.booking-day:not(.booking-day--disabled):not(.booking-day--empty):hover {
+  background: var(--color-white-a12);
+}
+
+.booking-day--selected {
+  box-shadow: 0 0 0 2px var(--color-primary-a35);
+}
+
+.booking-time-slot {
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.booking-time-slot:hover:not(.booking-time-slot--selected) {
+  transform: translateX(2px);
+}
+
+.booking-time-slot--selected {
+  box-shadow: 0 0 0 1px var(--color-primary-a25);
+}
+
+.booking-continue-btn:not(:disabled),
+.booking-submit-btn {
+  box-shadow: 0 4px 16px var(--color-black-a20);
+}
+
+.booking-message-panel {
+  border-radius: var(--radius-lg);
+  border: 0.8px solid var(--color-black-a8);
+  box-shadow: var(--shadow-soft);
+}
+
+/* ── FAQ ── */
+.faq-bookcall-card {
+  border-radius: var(--radius-lg);
+  transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s var(--ease-out-expo);
+}
+
+.faq-bookcall-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-elevated);
+}
+
+.faq-question-bubble,
+.faq-answer-bubble {
+  border-radius: 18px;
+}
+
+/* ── Brands ── */
+.brand-logo-chip {
+  transition: transform 0.28s var(--ease-out-expo), opacity 0.28s ease;
+}
+
+.brand-logo-chip:hover,
+.brand-logo-chip:focus-visible {
+  transform: translateY(-2px);
+}
+
+/* ── Work ── */
+.work-panel {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  transition: box-shadow 0.35s var(--ease-out-expo);
+}
+
+/* ── Brands strip ── */
+.brands-strip-label {
+  letter-spacing: 0.06em;
+}
+
+/* ── Footer ── */
+.site-footer {
+  background: linear-gradient(180deg, var(--color-surface-muted) 0%, var(--color-bg) 100%);
+}
+
+.footer-panel {
+  border-radius: var(--radius-xl);
+  transition: box-shadow 0.35s var(--ease-out-expo);
+}
+
+.footer-cta {
+  transition:
+    background-color 0.28s var(--ease-out-expo),
+    transform 0.22s var(--ease-out-expo),
+    box-shadow 0.28s var(--ease-out-expo);
+}
+
+.footer-cta:hover {
+  transform: translateY(-1px);
+}
+
+.footer-email {
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.footer-email:hover {
+  color: var(--color-primary);
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero-photo-col:hover .hero-photo-frame,
+  .testimonial-card:hover,
+  .faq-bookcall-card:hover,
+  .brand-logo-chip:hover {
+    transform: none;
+  }
+}

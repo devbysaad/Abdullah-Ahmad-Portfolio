@@ -62,4 +62,15 @@ const env = {
   },
 };
 
+if (!globalThis.__portfolioEnvLogged) {
+  globalThis.__portfolioEnvLogged = true;
+  console.log('[env] loaded', {
+    nodeEnv: env.nodeEnv,
+    mongoUri: env.mongoUri?.replace(/\/\/[^:]+:[^@]+@/, '//***:***@'),
+    resendFrom: env.resend.fromEmail,
+    resendTo: env.resend.toEmail,
+    resendKey: env.resend.apiKey ? `${env.resend.apiKey.slice(0, 8)}…` : 'MISSING',
+  });
+}
+
 module.exports = { env };

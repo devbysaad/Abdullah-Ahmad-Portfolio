@@ -1,10 +1,17 @@
 const { Resend } = require('resend');
 const { env } = require('../config/env');
 
+const log = (step, ...args) => console.log(`[resend:${step}]`, ...args);
+
 let client = null;
 
 const getClient = () => {
-  if (!client) client = new Resend(env.resend.apiKey);
+  if (!client) {
+    log('init', 'creating Resend client', {
+      apiKey: env.resend.apiKey ? `${env.resend.apiKey.slice(0, 8)}…` : 'MISSING',
+    });
+    client = new Resend(env.resend.apiKey);
+  }
   return client;
 };
 
@@ -65,10 +72,17 @@ function buildAppointmentEmail(payload) {
 }
 
 async function sendPortfolioEmail(payload) {
+  log('1', 'build email', { type: payload.type, to: env.resend.toEmail, from: env.resend.fromEmail });
+
   const content =
     payload.type === 'appointment' ? buildAppointmentEmail(payload) : buildMessageEmail(payload);
 
+  log('2', 'subject', content.subject);
+
   const resend = getClient();
+  const sendStart = Date.now();
+
+  log('3', 'calling resend.emails.send…');
   const { data, error } = await resend.emails.send({
     from: env.resend.fromEmail,
     to: [env.resend.toEmail],
@@ -78,13 +92,16 @@ async function sendPortfolioEmail(payload) {
     text: content.text,
   });
 
+  log('4', 'response', `${Date.now() - sendStart}ms`, { data, error });
+
   if (error) {
+    log('ERR', 'Resend API error', JSON.stringify(error, null, 2));
     const err = new Error(error.message || 'Resend failed to send email');
     err.statusCode = 502;
     throw err;
   }
 
-  console.log('[resend] sent', data?.id || 'ok');
+  log('5', 'sent ok', data?.id);
   return data;
 }
 

@@ -7,14 +7,14 @@
   --color-primary: #fe4b01;
   --color-secondary: #0078ff;
   --color-accent: var(--color-primary);
-  --color-bg: #f4f4f4;
+  --color-bg: #f5f5f4;
   --color-text: #111011;
   --color-muted: rgba(0, 0, 0, 0.6);
   --color-ink: var(--color-text);
   --color-surface: #ffffff;
-  --color-border: rgba(34, 34, 34, 0.12);
+  --color-border: rgba(34, 34, 34, 0.1);
   --color-glass: rgba(244, 244, 244, 0.12);
-  --color-bg-a12: rgba(244, 244, 244, 0.12);
+  --color-bg-a12: rgba(245, 245, 244, 0.12);
   --color-black: #000000;
   --color-black-a0: rgba(0, 0, 0, 0.0);
   --color-black-a10: rgba(0, 0, 0, 0.1);

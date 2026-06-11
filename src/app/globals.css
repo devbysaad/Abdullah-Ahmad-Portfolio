@@ -3,3 +3,4 @@
 
 /* Remaining global styles from legacy index.css */
 @import '../legacy.css';
+@import '../styles/refinements.css';

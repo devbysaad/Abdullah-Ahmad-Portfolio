@@ -8,7 +8,6 @@ const { About } = require('../modules/about/about.model');
 const { Experience } = require('../modules/experience/experience.model');
 const { Media } = require('../modules/media/media.model');
 const { SiteConfig } = require('../modules/site-config/site-config.model');
-const { seedMediaFromFile, seedMediaFromUrl } = require('./media-helpers');
 const {
   TESTIMONIAL_AVATARS,
   WHY_ME_INTRO,
@@ -27,12 +26,13 @@ const {
   YOUTUBE_VIDEO_ID,
 } = require('./site-content');
 
-async function resolveLocalOrRemote(entry, folder) {
+/** Public static files or CDN URLs — never MongoDB blobs (they block the DB for minutes). */
+function resolveLogoUrl(entry) {
   if (entry.localFile) {
-    return seedMediaFromFile(entry.localFile, folder);
+    return `/${entry.localFile.replace(/^public\//, '')}`;
   }
   if (entry.remoteUrl) {
-    return seedMediaFromUrl(entry.remoteUrl, folder);
+    return entry.remoteUrl;
   }
   return '';
 }
@@ -95,12 +95,6 @@ const seed = async () => {
 
   await Experience.insertMany(EXPERIENCE);
 
-  const avatarEntries = Object.entries(TESTIMONIAL_AVATARS);
-  const avatarUrls = {};
-  for (const [key, url] of avatarEntries) {
-    avatarUrls[key] = await seedMediaFromUrl(url, 'testimonials');
-  }
-
   await Testimonial.insertMany([
     {
       name: 'Alphonso Roundtree',
@@ -109,7 +103,7 @@ const seed = async () => {
       profileUrl: 'https://www.linkedin.com/in/alphonsoroundtree/',
       countryCode: 'US',
       text: `I had the pleasure of hiring Abdullah and I gotta tell you man, I really enjoyed working with him. He was really fast, really understood the project, and really delivered. I must say that I do plan to continue to work with him. You got my recommendation for sure. Hire Abdullah to take care of your tech needs.`,
-      avatar: avatarUrls.alphonso,
+      avatar: TESTIMONIAL_AVATARS.alphonso,
       order: 0,
     },
     {
@@ -119,7 +113,7 @@ const seed = async () => {
       profileUrl: 'https://nybble.co.uk/team/rob-eccles/',
       countryCode: 'GB',
       text: `I had the pleasure of working with Abdullah on our Pantry Application, and I couldn't be more impressed with his expertise and commitment to delivering a high-quality product. From the start, he demonstrated a deep understanding of our project requirements, ensuring every technical detail was addressed. His skills in the technology stack were top-notch, and he consistently provided innovative solutions to challenges, streamlining our application's functionality beyond what we initially envisioned. His proactive approach, strong communication skills, and dedication to excellence made him an invaluable asset to our team. I highly recommend Abdullah for any development project — his brilliance and professionalism set him apart!`,
-      avatar: avatarUrls.rob,
+      avatar: TESTIMONIAL_AVATARS.rob,
       order: 1,
     },
     {
@@ -129,7 +123,7 @@ const seed = async () => {
       profileUrl: 'https://kelebogile.me/',
       countryCode: 'ZA',
       text: `Wow! What a great expert who genuinely cares about my work. Proactive and on point to make sure every inch of the development is done right and aligns with the big picture. Abdullah goes the extra mile and has great and timely communication skills. This is the developer to pick for your backend project. I look forward to more milestones in my project with him.`,
-      avatar: avatarUrls.kelebogile,
+      avatar: TESTIMONIAL_AVATARS.kelebogile,
       order: 2,
     },
     {
@@ -139,7 +133,7 @@ const seed = async () => {
       profileUrl: 'https://www.linkedin.com/in/saqibawan112/',
       countryCode: 'DE',
       text: `I couldn't be more satisfied with the work. Abdullah's communication skills, expertise in coding and attention to details are commendable. The follow-ups were timely and thoughtful, showing a genuine commitment to delivering the best possible outcome. Highly recommended!`,
-      avatar: avatarUrls.saqib,
+      avatar: TESTIMONIAL_AVATARS.saqib,
       order: 3,
     },
     {
@@ -149,7 +143,7 @@ const seed = async () => {
       profileUrl: 'https://www.linkedin.com/in/hisham-kwja/',
       countryCode: 'MY',
       text: `My experience with Abdullah has been exceptional. He is a true professional and dedicated expert who has worked with unicorn companies worth over 1 BILLION USD!! His efforts are unmatched compared to other agencies on Fiverr.`,
-      avatar: avatarUrls.hisham,
+      avatar: TESTIMONIAL_AVATARS.hisham,
       order: 4,
     },
     {
@@ -159,7 +153,7 @@ const seed = async () => {
       profileUrl: 'https://www.linkedin.com/in/saiyedsaroshanis/',
       countryCode: 'CA',
       text: `I had the pleasure of working with Abdullah, and I must say he is a thorough professional. He not only completed all the tasks on time but also created my website with exceptional precision. Abdullah clearly understood what I was looking for and delivered exactly what I needed. His dedication and attention to detail made the entire process smooth and stress-free. I highly recommend his services!`,
-      avatar: avatarUrls.sarosh,
+      avatar: TESTIMONIAL_AVATARS.sarosh,
       order: 5,
     },
     {
@@ -169,7 +163,7 @@ const seed = async () => {
       profileUrl: 'https://www.linkedin.com/in/bilalba/',
       countryCode: 'US',
       text: 'Talented, committed, expert on full stack projects',
-      avatar: avatarUrls.bilal,
+      avatar: TESTIMONIAL_AVATARS.bilal,
       order: 6,
     },
     {
@@ -179,7 +173,7 @@ const seed = async () => {
       profileUrl: '',
       countryCode: 'PK',
       text: `I am pleased to recommend Mr. Abdullah Ahmad, who worked as a Senior Front-End Developer and Team Lead at Dropella since 2023. Throughout his tenure, Abdullah showcased exceptional technical skills and strong leadership abilities. I am confident that Abdullah will continue to achieve excellence in his future endeavors, and I wish him all the best in his career.`,
-      avatar: avatarUrls.salik,
+      avatar: TESTIMONIAL_AVATARS.salik,
       order: 7,
     },
     {
@@ -189,7 +183,7 @@ const seed = async () => {
       profileUrl: '',
       countryCode: 'PK',
       text: `Abdullah is one of the most talented and hardworking software engineers I have worked with, and it has been an absolute pleasure. What sets him apart is his sense of responsibility and honesty in his work. Having collaborated on numerous projects with him, I can say he is someone you can always trust to get the job done right.`,
-      avatar: avatarUrls.ahsan,
+      avatar: TESTIMONIAL_AVATARS.ahsan,
       order: 8,
     },
   ]);
@@ -212,7 +206,7 @@ const seed = async () => {
       key: brand.key,
       name: brand.name,
       domain: brand.domain,
-      logoUrl: await resolveLocalOrRemote(brand, 'brands'),
+      logoUrl: resolveLogoUrl(brand),
       url: brand.url,
       badge: Boolean(brand.badge),
       order: brand.order,
@@ -224,7 +218,7 @@ const seed = async () => {
       key: company.key,
       name: company.name,
       domain: company.domain,
-      logoUrl: await resolveLocalOrRemote(company, 'brands'),
+      logoUrl: resolveLogoUrl(company),
       linkedin: company.linkedin,
       order: company.order,
     }))
@@ -244,7 +238,7 @@ const seed = async () => {
     experienceCompanies,
   });
 
-  console.log('Database seeded — all images stored in MongoDB Media collection');
+  console.log('Database seeded — images use CDN + public/ assets (no MongoDB media blobs)');
   await mongoose.connection.close();
 };
 
