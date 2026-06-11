@@ -28,7 +28,8 @@ function optionalEnv(name) {
 const onVercel = Boolean(process.env.VERCEL);
 const nodeEnv = runtimeNodeEnv || process.env.NODE_ENV || 'development';
 
-const mongoUri = requireEnv('MONGODB_URI');
+const { normalizeMongoUri } = require('./mongo-uri');
+const mongoUri = normalizeMongoUri(requireEnv('MONGODB_URI'));
 
 if ((nodeEnv === 'production' || onVercel) && /localhost|127\.0\.0\.1/.test(mongoUri)) {
   throw new Error(

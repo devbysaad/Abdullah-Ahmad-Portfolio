@@ -12,7 +12,8 @@
     "start": "next start",
     "lint": "eslint .",
     "seed": "node src/server/seed/seed.js",
-    "test:resend": "node scripts/test-resend.mjs"
+    "test:resend": "node scripts/test-resend.mjs",
+    "test:mongo": "node scripts/test-mongo.mjs"
   },
   "dependencies": {
     "axios": "^1.16.1",

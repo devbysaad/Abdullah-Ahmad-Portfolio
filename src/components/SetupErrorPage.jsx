@@ -8,6 +8,7 @@ const VERCEL_ENV_VARS = [
 ];
 
 export default function SetupErrorPage({ message, code }) {
+  const isWhitelist = code === 'MONGO_IP_WHITELIST' || /whitelist/i.test(message || '');
   const isVercel = code !== 'LOCAL_MONGO';
 
   return (
@@ -17,6 +18,31 @@ export default function SetupErrorPage({ message, code }) {
         <h1 className="setup-error-title">Could not load the site</h1>
         <p className="setup-error-message">{message}</p>
 
+        {isWhitelist && (
+          <div className="setup-error-alert">
+            <strong>Fix this in MongoDB Atlas (required for Vercel):</strong>
+            <ol>
+              <li>
+                Open{' '}
+                <a href="https://cloud.mongodb.com/v2" target="_blank" rel="noopener noreferrer">
+                  cloud.mongodb.com
+                </a>{' '}
+                → your project → <strong>Network Access</strong>
+              </li>
+              <li>
+                Click <strong>Add IP Address</strong> → <strong>Allow Access from Anywhere</strong>{' '}
+                (<code>0.0.0.0/0</code>)
+              </li>
+              <li>Confirm — status must show <code>0.0.0.0/0</code> Active</li>
+              <li>Wait 1–2 minutes, then <strong>Redeploy</strong> on Vercel (no code change needed)</li>
+            </ol>
+            <p className="setup-error-note">
+              Vercel uses changing IPs — your home IP works locally, but production needs{' '}
+              <code>0.0.0.0/0</code>.
+            </p>
+          </div>
+        )}
+
         <div className="setup-error-steps">
           <h2 className="setup-error-steps-title">
             {isVercel ? 'Vercel checklist' : 'Local checklist'}
@@ -24,6 +50,11 @@ export default function SetupErrorPage({ message, code }) {
           <ol className="setup-error-list">
             {isVercel ? (
               <>
+                {!isWhitelist && (
+                  <li>
+                    Atlas → <strong>Network Access</strong> → allow <code>0.0.0.0/0</code>
+                  </li>
+                )}
                 <li>
                   In <strong>Vercel → Settings → Environment Variables</strong>, set:
                   <ul>
@@ -35,18 +66,15 @@ export default function SetupErrorPage({ message, code }) {
                   </ul>
                 </li>
                 <li>
-                  <code>MONGODB_URI</code> must be <strong>Atlas</strong> (
-                  <code>mongodb+srv://…</code>), not <code>localhost</code>
+                  <code>MONGODB_URI</code> = same Atlas string as local, ending with{' '}
+                  <code>/abdullah-portfolio</code>
                 </li>
                 <li>
-                  Atlas → <strong>Network Access</strong> → allow <code>0.0.0.0/0</code>
+                  Seed once: <code>npm run seed</code> (already done if local seed succeeded)
                 </li>
                 <li>
-                  Seed once: <code>MONGODB_URI=&quot;mongodb+srv://…&quot; npm run seed</code>
-                </li>
-                <li>
-                  Redeploy, then check{' '}
-                  <code>/api/health</code> → should return <code>{'"ok":true,"mongo":true'}</code>
+                  Redeploy, then open <code>/api/health</code> → expect{' '}
+                  <code>{'"ok":true,"mongo":true'}</code>
                 </li>
               </>
             ) : (

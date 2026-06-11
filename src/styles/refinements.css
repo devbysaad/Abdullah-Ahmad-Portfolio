@@ -483,6 +483,38 @@ main {
   color: var(--color-text);
 }
 
+.setup-error-alert {
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  border: 1px solid var(--color-primary-a25);
+  background: var(--color-primary-a6);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text);
+  text-align: left;
+}
+
+.setup-error-alert ol {
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.setup-error-alert li {
+  margin-bottom: 0.5rem;
+}
+
+.setup-error-alert a {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.setup-error-note {
+  margin: 0.75rem 0 0;
+  font-size: 13px;
+  color: var(--color-black-a55);
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *,

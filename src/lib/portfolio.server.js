@@ -35,9 +35,17 @@ export async function loadPortfolio() {
       throw new PortfolioLoadError(message, error, 'LOCAL_MONGO');
     }
 
+    if (/whitelist|IP that isn't whitelisted|ServerSelectionTimedOut/i.test(message)) {
+      throw new PortfolioLoadError(
+        'MongoDB Atlas is blocking Vercel. In Atlas → Network Access → Add IP Address → choose "Allow Access from Anywhere" (0.0.0.0/0), wait 1–2 minutes, then redeploy.',
+        error,
+        'MONGO_IP_WHITELIST',
+      );
+    }
+
     if (/ECONNREFUSED|MongoServerSelectionError|MongoNetworkError|DATABASE_CONNECTION/i.test(message)) {
       throw new PortfolioLoadError(
-        'Cannot connect to MongoDB. Use a MongoDB Atlas URI in Vercel, allow IP 0.0.0.0/0 in Atlas Network Access, then redeploy.',
+        'Cannot connect to MongoDB. Set MONGODB_URI in Vercel (Atlas mongodb+srv://…), allow 0.0.0.0/0 in Atlas Network Access, then redeploy.',
         error,
         'MONGO_CONNECTION',
       );

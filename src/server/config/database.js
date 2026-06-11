@@ -8,8 +8,10 @@ if (!globalCache.__mongoose) {
   globalCache.__mongoose = { conn: null, promise: null };
 }
 
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+
 const connectDatabase = async () => {
-  if (globalCache.__mongoose.conn) {
+  if (globalCache.__mongoose.conn?.connection?.readyState === 1) {
     return globalCache.__mongoose.conn;
   }
 
@@ -18,11 +20,14 @@ const connectDatabase = async () => {
   if (!globalCache.__mongoose.promise) {
     globalCache.__mongoose.promise = mongoose
       .connect(env.mongoUri, {
-        serverSelectionTimeoutMS: 15000,
-        maxPoolSize: 10,
+        serverSelectionTimeoutMS: isServerless ? 20000 : 15000,
+        socketTimeoutMS: 45000,
+        maxPoolSize: isServerless ? 1 : 10,
+        minPoolSize: 0,
+        bufferCommands: false,
       })
       .then((conn) => {
-        console.log('MongoDB connected');
+        console.log('[mongo] connected', conn.connection.name);
         return conn;
       })
       .catch((err) => {
