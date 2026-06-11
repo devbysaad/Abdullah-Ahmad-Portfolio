@@ -9,6 +9,7 @@ const VERCEL_ENV_VARS = [
 
 export default function SetupErrorPage({ message, code }) {
   const isWhitelist = code === 'MONGO_IP_WHITELIST' || /whitelist/i.test(message || '');
+  const isAuth = code === 'MONGO_AUTH' || /authentication failed|bad auth/i.test(message || '');
   const isVercel = code !== 'LOCAL_MONGO';
 
   return (
@@ -17,6 +18,24 @@ export default function SetupErrorPage({ message, code }) {
         <p className="setup-error-eyebrow">Portfolio setup</p>
         <h1 className="setup-error-title">Could not load the site</h1>
         <p className="setup-error-message">{message}</p>
+
+        {isAuth && (
+          <div className="setup-error-alert">
+            <strong>Wrong MongoDB password in Vercel:</strong>
+            <ol>
+              <li>
+                Atlas → <strong>Database Access</strong> → confirm user <code>teamvyngr_db_user</code>{' '}
+                password
+              </li>
+              <li>
+                Copy the full connection string → update <code>MONGODB_URI</code> in Vercel env vars
+              </li>
+              <li>
+                Must end with <code>/abdullah-portfolio</code> → <strong>Redeploy</strong>
+              </li>
+            </ol>
+          </div>
+        )}
 
         {isWhitelist && (
           <div className="setup-error-alert">
