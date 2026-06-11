@@ -2,10 +2,11 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 
-class PortfolioLoadError extends Error {
-  constructor(message, cause) {
+export class PortfolioLoadError extends Error {
+  constructor(message, cause, code = 'PORTFOLIO_LOAD_FAILED') {
     super(message);
     this.name = 'PortfolioLoadError';
+    this.code = code;
     this.cause = cause;
   }
 }
@@ -24,15 +25,29 @@ export async function loadPortfolio() {
 
     if (message.includes('Missing required environment variable')) {
       throw new PortfolioLoadError(
-        `Server configuration error: ${message}. Copy .env.example to .env.local and fill in all values.`,
+        `${message}. Add it in Vercel → Project → Settings → Environment Variables, then redeploy.`,
         error,
+        'MISSING_ENV',
       );
     }
 
-    if (/ECONNREFUSED|MongoServerSelectionError|DATABASE_CONNECTION/i.test(message)) {
+    if (message.includes('MONGODB_URI points to localhost')) {
+      throw new PortfolioLoadError(message, error, 'LOCAL_MONGO');
+    }
+
+    if (/ECONNREFUSED|MongoServerSelectionError|MongoNetworkError|DATABASE_CONNECTION/i.test(message)) {
       throw new PortfolioLoadError(
-        'Cannot connect to MongoDB. Start MongoDB locally (or fix MONGODB_URI in .env.local), then run npm run seed.',
+        'Cannot connect to MongoDB. Use a MongoDB Atlas URI in Vercel, allow IP 0.0.0.0/0 in Atlas Network Access, then redeploy.',
         error,
+        'MONGO_CONNECTION',
+      );
+    }
+
+    if (/authentication failed|bad auth|SCRAM/i.test(message)) {
+      throw new PortfolioLoadError(
+        'MongoDB authentication failed. Check your Atlas username/password in MONGODB_URI.',
+        error,
+        'MONGO_AUTH',
       );
     }
 

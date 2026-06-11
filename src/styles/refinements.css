@@ -404,6 +404,85 @@ main {
   color: var(--color-primary);
 }
 
+/* ── Setup / deploy error page ── */
+.setup-error-page {
+  display: flex;
+  min-height: 100svh;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+  background: var(--color-bg);
+}
+
+.setup-error-card {
+  width: 100%;
+  max-width: 36rem;
+  padding: 2rem 1.75rem;
+  border-radius: var(--radius-xl);
+  border: 0.8px solid var(--color-black-a10);
+  background: var(--color-white);
+  box-shadow: var(--shadow-elevated);
+}
+
+.setup-error-eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.setup-error-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 1.875rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.setup-error-message {
+  margin: 0 0 1.5rem;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-black-a65);
+}
+
+.setup-error-steps-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.setup-error-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--color-black-a65);
+}
+
+.setup-error-list li {
+  margin-bottom: 0.65rem;
+}
+
+.setup-error-list ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.setup-error-list code {
+  font-size: 12px;
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  background: var(--color-surface-subtle);
+  color: var(--color-text);
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -26,8 +26,12 @@ In **Project → Settings → Environment Variables**, add:
 | `CLIENT_URL` | Production, Preview, Development | `https://abdullahahmad.dev` |
 | `NEXT_PUBLIC_SITE_URL` | Production, Preview, Development | `https://abdullahahmad.dev` |
 | `RESEND_API_KEY` | Production, Preview, Development | `re_...` |
-| `RESEND_FROM_EMAIL` | Production, Preview, Development | `Portfolio <hello@yourdomain.com>` |
-| `RESEND_TO_EMAIL` | Production, Preview, Development | `you@example.com` |
+| `RESEND_FROM_EMAIL` | Production, Preview, Development | `Abdullah Ahmad <abdullah.ahmad@devnauts.io>` |
+| `RESEND_TO_EMAIL` | Production, Preview, Development | `abdullah.ahmad@devnauts.io` |
+
+> **Important:** `MONGODB_URI` must be **MongoDB Atlas** (`mongodb+srv://…`), not `localhost`. Local `.env` values are **not** deployed — set every variable in the Vercel dashboard.
+
+> `CLIENT_URL` can be auto-derived from your Vercel URL if omitted, but set it to your production domain for best results.
 
 > Vercel preview URLs (`*.vercel.app`) are **automatically allowed** for CORS — you don't need to add each preview URL to `CLIENT_URL`.
 

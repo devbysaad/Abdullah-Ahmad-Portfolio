@@ -2,26 +2,24 @@
 
 export default function Error({ error, reset }) {
   const message =
-    error?.message ||
-    'Could not load portfolio data. Check MongoDB connection and run npm run seed.';
+    error?.message?.includes('Server Components render') || !error?.message
+      ? 'An unexpected error occurred while loading the page.'
+      : error.message;
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
-      <h1 className="heading-display text-2xl font-bold">Something went wrong</h1>
-      <p className="max-w-lg text-secondary">{message}</p>
-      <ul className="max-w-md list-disc text-left text-sm text-secondary">
-        <li>Is MongoDB running? (<code className="text-xs">mongod</code> or Docker)</li>
-        <li>Does <code className="text-xs">.env.local</code> have MONGODB_URI, CLIENT_URL, RESEND_*?</li>
-        <li>Run <code className="text-xs">npm run seed</code> after first setup</li>
-        <li>Use <code className="text-xs">npm run dev</code> for development (not a stale production server)</li>
-      </ul>
-      <button
-        type="button"
-        onClick={reset}
-        className="rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white"
-      >
-        Try again
-      </button>
+    <main className="setup-error-page">
+      <div className="setup-error-card">
+        <p className="setup-error-eyebrow">Unexpected error</p>
+        <h1 className="setup-error-title">Something went wrong</h1>
+        <p className="setup-error-message">{message}</p>
+        <p className="setup-error-message">
+          Check <code>/api/health</code> on your deployed URL for diagnostics, then verify Vercel
+          environment variables and redeploy.
+        </p>
+        <button type="button" onClick={reset} className="btn-primary mt-4">
+          Try again
+        </button>
+      </div>
     </main>
   );
 }

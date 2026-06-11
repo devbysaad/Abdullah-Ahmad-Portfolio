@@ -21,20 +21,42 @@ function requireEnv(name) {
   return value;
 }
 
-const mongoUri = requireEnv('MONGODB_URI');
-const clientUrlRaw = requireEnv('CLIENT_URL');
-const resendApiKey = requireEnv('RESEND_API_KEY');
-const resendFromEmail = requireEnv('RESEND_FROM_EMAIL');
-const resendToEmail = requireEnv('RESEND_TO_EMAIL');
+function optionalEnv(name) {
+  return process.env[name]?.trim() || '';
+}
 
-const nodeEnv = runtimeNodeEnv || process.env.NODE_ENV || 'development';
 const onVercel = Boolean(process.env.VERCEL);
+const nodeEnv = runtimeNodeEnv || process.env.NODE_ENV || 'development';
+
+const mongoUri = requireEnv('MONGODB_URI');
+
+if ((nodeEnv === 'production' || onVercel) && /localhost|127\.0\.0\.1/.test(mongoUri)) {
+  throw new Error(
+    'MONGODB_URI points to localhost — use a MongoDB Atlas connection string in Vercel environment variables',
+  );
+}
+
+/** CLIENT_URL — auto-derive from Vercel host when not set */
+let clientUrlRaw = optionalEnv('CLIENT_URL') || optionalEnv('NEXT_PUBLIC_SITE_URL');
+if (!clientUrlRaw && onVercel) {
+  const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  if (vercelHost) {
+    clientUrlRaw = vercelHost.startsWith('http') ? vercelHost : `https://${vercelHost}`;
+  }
+}
+if (!clientUrlRaw) {
+  throw new Error('Missing required environment variable: CLIENT_URL');
+}
+
+/** Resend — only required when sending email, not for homepage SSR */
+const resendApiKey = optionalEnv('RESEND_API_KEY');
+const resendFromEmail = optionalEnv('RESEND_FROM_EMAIL');
+const resendToEmail = optionalEnv('RESEND_TO_EMAIL');
 
 const { parseClientUrls } = require('../lib/corsOrigins');
 
 const clientUrls = parseClientUrls(clientUrlRaw);
 
-/** Auto-allow Vercel deployment URLs (production + preview) */
 if (onVercel) {
   for (const key of ['VERCEL_URL', 'VERCEL_BRANCH_URL']) {
     const host = process.env[key]?.trim();
@@ -59,6 +81,7 @@ const env = {
     apiKey: resendApiKey,
     fromEmail: resendFromEmail,
     toEmail: resendToEmail,
+    configured: Boolean(resendApiKey && resendFromEmail && resendToEmail),
   },
 };
 
@@ -66,10 +89,10 @@ if (!globalThis.__portfolioEnvLogged) {
   globalThis.__portfolioEnvLogged = true;
   console.log('[env] loaded', {
     nodeEnv: env.nodeEnv,
+    onVercel: env.onVercel,
     mongoUri: env.mongoUri?.replace(/\/\/[^:]+:[^@]+@/, '//***:***@'),
-    resendFrom: env.resend.fromEmail,
-    resendTo: env.resend.toEmail,
-    resendKey: env.resend.apiKey ? `${env.resend.apiKey.slice(0, 8)}…` : 'MISSING',
+    clientUrl: env.clientUrl,
+    resendConfigured: env.resend.configured,
   });
 }
 

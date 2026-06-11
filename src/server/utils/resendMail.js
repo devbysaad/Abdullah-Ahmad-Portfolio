@@ -72,6 +72,14 @@ function buildAppointmentEmail(payload) {
 }
 
 async function sendPortfolioEmail(payload) {
+  if (!env.resend.configured) {
+    const err = new Error(
+      'Resend is not configured. Set RESEND_API_KEY, RESEND_FROM_EMAIL, and RESEND_TO_EMAIL in Vercel environment variables.',
+    );
+    err.statusCode = 503;
+    throw err;
+  }
+
   log('1', 'build email', { type: payload.type, to: env.resend.toEmail, from: env.resend.fromEmail });
 
   const content =
