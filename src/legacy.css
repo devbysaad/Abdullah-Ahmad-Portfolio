@@ -1996,14 +1996,14 @@ html.lenis body {
   height: 35px;
 }
 
-/* Drag-to-scroll carousel — uiwithbugvi.com */
+/* Drag-to-scroll carousel (desktop mouse) — native touch scroll on tablet */
 .testimonials-marquee-window {
   position: relative;
   overflow-x: auto;
   overflow-y: hidden;
   width: 100%;
   cursor: grab;
-  touch-action: pan-x;
+  touch-action: pan-x pan-y;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
@@ -3360,6 +3360,38 @@ html.lenis body {
 @media (max-width: 767px) {
   .why-me-card {
     border-right: none;
+  }
+
+  /* Testimonials: vertical stack so users are not stuck in horizontal scroll */
+  .testimonials-marquee-window {
+    overflow: visible;
+    touch-action: auto;
+    cursor: default;
+    overscroll-behavior: auto;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .testimonials-marquee-track {
+    width: 100%;
+    min-height: 0;
+    padding: 0 1.25rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .testimonials-marquee-set {
+    flex-direction: column;
+    width: 100%;
+    gap: 1.25rem;
+    padding-right: 0;
+  }
+
+  .testimonial-card {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
   }
 }
 

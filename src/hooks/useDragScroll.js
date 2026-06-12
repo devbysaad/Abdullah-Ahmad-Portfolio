@@ -28,7 +28,9 @@ export function useDragScroll(ref) {
     };
 
     const onPointerDown = (event) => {
-      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      // Touch: use native scroll so vertical page scroll still works on mobile
+      if (event.pointerType !== 'mouse') return;
+      if (event.button !== 0) return;
 
       dragRef.current = {
         active: true,

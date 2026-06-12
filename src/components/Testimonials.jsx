@@ -52,6 +52,7 @@ export default function Testimonials({ testimonials }) {
         variants={fadeIn}
         ref={scrollerRef}
         className="testimonials-marquee-window"
+        data-lenis-prevent
         data-name="testimonials-marquee-window"
       >
         <div className="testimonials-marquee-track" data-name="testimonials-marquee-track">
