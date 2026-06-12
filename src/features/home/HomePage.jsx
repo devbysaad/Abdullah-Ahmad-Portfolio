@@ -2,6 +2,7 @@
 
 import Navbar from '@/components/Navbar';
 import HeroHeadingSection from '@/components/HeroHeadingSection';
+import HeroVideoSection from '@/components/HeroVideoSection';
 import BrandsStrip from '@/components/BrandsStrip';
 import WhyMe from '@/components/WhyMe';
 import Services from '@/components/Services';
@@ -25,6 +26,7 @@ export default function HomePage({ portfolio }) {
           <HeroHeadingSection about={about} site={site} />
         </div>
 
+        <HeroVideoSection about={about} />
         <BrandsStrip site={site} />
         <WhyMe about={about} site={site} />
         <Services services={services} />
